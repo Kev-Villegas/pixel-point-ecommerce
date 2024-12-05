@@ -10,7 +10,7 @@ const Header = () => {
     <header className="bg-white px-10 shadow-md">
       <div className="mx-auto py-4">
         <div className="mb-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-primary">
+          <Link href="/" className="mr-3 text-2xl font-bold text-primary">
             Logo
           </Link>
           <Input

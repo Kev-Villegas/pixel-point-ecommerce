@@ -58,7 +58,9 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <Banner banners={banners} />
+      <div className="rounded-2xl px-10 pt-4">
+        <Banner banners={banners} />
+      </div>
       <div className="px-10">
         <ProductList href="1" title="Mas vendidos 1" />
         <ProductList href="2" title="Mas vendidos 2" />

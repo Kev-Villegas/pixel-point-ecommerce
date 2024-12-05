@@ -38,19 +38,19 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
   }, [banners.length]);
 
   return (
-    <div className="relative h-64 w-full sm:h-80 lg:h-96">
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="relative h-64 w-full rounded-3xl sm:h-80 lg:h-96">
+      <div className="absolute inset-0 overflow-hidden rounded-3xl">
         <Image
           src={banners[currentIndex].imageUrl}
           alt={banners[currentIndex].altText}
-          layout="fill"
-          objectFit="cover"
-          quality={75}
+          fill
+          style={{ objectFit: "cover" }}
+          quality={90}
           className="h-full w-full object-cover transition-all delay-100 duration-300 ease-in-out"
         />
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-black bg-opacity-50">
         <div className="px-4 text-center text-white sm:px-8">
           <h2 className="mb-2 text-3xl font-bold sm:text-4xl">
             {banners[currentIndex].title}
