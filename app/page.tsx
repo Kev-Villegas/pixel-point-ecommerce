@@ -1,5 +1,6 @@
 import Banner from "./_components/Banner";
 import Header from "./_components/Header";
+import ProductList from "./_components/ProductList";
 
 export default function Home() {
   const banners = [
@@ -58,6 +59,11 @@ export default function Home() {
     <div>
       <Header />
       <Banner banners={banners} />
+      <div className="px-10">
+        <ProductList href="1" title="Mas vendidos 1" />
+        <ProductList href="2" title="Mas vendidos 2" />
+        <ProductList href="3" title="Mas vendidos 3" />
+      </div>
     </div>
   );
 }
