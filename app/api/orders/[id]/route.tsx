@@ -1,16 +1,13 @@
 import { db } from "@/app/_lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-// type Params = Promise<{ id: string }>;
-
 export async function GET(
   request: NextRequest,
-  params: Promise<{ id: string }>,
+  props: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await params;
-
+  const params = await props.params;
   const order = await db.order.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: parseInt(params.id) },
   });
 
   if (!order) {
