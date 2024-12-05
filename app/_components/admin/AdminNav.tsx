@@ -36,7 +36,7 @@ export default function AdminNav({ show }: { show: boolean }) {
           Dashboard
         </Link>
         <Link
-          href="/products"
+          href="/protected/products"
           className={pathname.includes("/products") ? activeLink : inactiveLink}
         >
           <svg
@@ -57,8 +57,8 @@ export default function AdminNav({ show }: { show: boolean }) {
           </svg>
           Products
         </Link>
-        <Link
-          href="/categories"
+        {/* <Link
+          href="/protected/categories"
           className={
             pathname.includes("/categories") ? activeLink : inactiveLink
           }
@@ -80,9 +80,9 @@ export default function AdminNav({ show }: { show: boolean }) {
             />
           </svg>
           Categories
-        </Link>
+        </Link> */}
         <Link
-          href="/orders"
+          href="/protected/orders"
           className={pathname.includes("/orders") ? activeLink : inactiveLink}
         >
           <svg
@@ -101,7 +101,7 @@ export default function AdminNav({ show }: { show: boolean }) {
           </svg>
           Orders
         </Link>
-        <Link
+        {/* <Link
           href="/settings"
           className={pathname.includes("/settings") ? activeLink : inactiveLink}
         >
@@ -127,7 +127,7 @@ export default function AdminNav({ show }: { show: boolean }) {
             />
           </svg>
           Settings
-        </Link>
+        </Link> */}
         <button onClick={() => signOut()} className={inactiveLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

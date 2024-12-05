@@ -9,6 +9,53 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           Int         @id @default(autoincrement())
+  name         String
+  brand        String
+  stock        Boolean     @default(true)
+  propertiesId Int?
+  properties   Properties? @relation(fields: [propertiesId], references: [id])
+  Order        Order?      @relation(fields: [orderId], references: [id])
+  orderId      Int?
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  items         Product[]
+  username      String
+  email         String
+  city          String
+  postalCode    String
+  streetAddress String
+  province      String
+  phonenumber   Int
+  paid          Boolean
+  createdAt     DateTime  @default(now())
+}
+
+model Properties {
+  id      Int       @id @default(autoincrement())
+  color   Color[]
+  storage Storage[]
+  Product Product[]
+}
+
+model Color {
+  id           Int        @id @default(autoincrement())
+  colorName    String
+  propertiesId Int
+  Properties   Properties @relation(fields: [propertiesId], references: [id])
+}
+
+model Storage {
+  id           Int        @id @default(autoincrement())
+  total        Int
+  prefix       String
+  propertiesId Int
+  Properties   Properties @relation(fields: [propertiesId], references: [id])
 }
