@@ -28,6 +28,7 @@ export default function ProductCard({
           style={{ objectFit: "contain" }}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority
+          className="transition-transform duration-500 ease-in-out hover:scale-110"
         />
       </div>
       <CardContent className="p-2">
