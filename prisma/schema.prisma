@@ -18,6 +18,8 @@ model Product {
   name         String
   brand        String
   stock        Boolean     @default(true)
+  images       Image[]
+  price        Float
   propertiesId Int?
   properties   Properties? @relation(fields: [propertiesId], references: [id])
   Order        Order?      @relation(fields: [orderId], references: [id])
@@ -58,4 +60,11 @@ model Storage {
   prefix       String
   propertiesId Int
   Properties   Properties @relation(fields: [propertiesId], references: [id])
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
 }
