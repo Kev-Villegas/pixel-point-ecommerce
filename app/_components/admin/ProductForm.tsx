@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { CldUploadButton } from "next-cloudinary";
 import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
@@ -8,24 +9,32 @@ interface CloudinaryResult {
   secure_url: string;
 }
 
-type Category = {
-  _id: string; // El ID único de la categoría
-  name: string; // El nombre de la categoría
-};
+interface ItemType {
+  id: number;
+  url: string;
+}
 
 export default function ProductForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [category, setCategory] = useState("");
-  const [productProperties, setProductProperties] = useState({});
-
-  const [categories, setCategories] = useState([]);
+  const [price, setPrice] = useState<number>(159.99);
+  const [images, setImages] = useState<ItemType[]>([]);
+  const [productBrand, setProductBrand] = useState("");
+  // const [productProperties, setProductProperties] = useState({})
 
   const [isUploading, setIsUploading] = useState(false);
 
-  const saveProduct = () => {};
+  const brands = ["Apple", "Samsung", "Xiaomi", "Motorola"];
+
+  const saveProduct = async (e) => {
+    e.preventDefault();
+    const data = { title, description, price, images, productBrand };
+    console.log(data);
+
+    await axios
+      .post("/api/products", data)
+      .then((response) => console.log(response));
+  };
 
   const updateImagesOrder = (images) => {
     setImages(images);
@@ -40,13 +49,17 @@ export default function ProductForm() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+
       <label>Marca</label>
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select
+        value={productBrand}
+        onChange={(e) => setProductBrand(e.target.value)}
+      >
         <option value="">Sin Marca</option>
-        {categories.length > 0 &&
-          categories.map((category) => (
-            <option key={category._id} value={category._id}>
-              {category}
+        {brands.length > 0 &&
+          brands.map((brand) => (
+            <option key={brand} value={brand}>
+              {brand}
             </option>
           ))}
       </select>
@@ -59,12 +72,16 @@ export default function ProductForm() {
           setList={updateImagesOrder}
         >
           {!!images?.length &&
-            images.map((link) => (
+            images.map((image) => (
               <div
-                key={link}
+                key={image.id}
                 className="h-24 rounded-sm border border-gray-200 bg-white p-4 shadow-sm"
               >
-                <img src={link} alt="A product image" className="rounded-lg" />
+                <img
+                  src={image.url}
+                  alt="A product image"
+                  className="rounded-lg"
+                />
               </div>
             ))}
         </ReactSortable>
@@ -76,13 +93,21 @@ export default function ProductForm() {
         <CldUploadButton
           className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-sm border border-primary bg-white text-center text-sm text-primary shadow-sm"
           uploadPreset="pixelimages"
+          onQueuesStart={() => setIsUploading(true)}
           onQueuesEnd={(response: any, widget: any) => widget.close()}
           onSuccess={(response: any) => {
             const info = response.info as CloudinaryResult;
             setImages((oldImages) => {
-              return [...oldImages, info.secure_url];
+              return [
+                ...oldImages,
+                {
+                  id: `img-${oldImages.length}`,
+                  url: info.secure_url,
+                },
+              ];
             });
-            console.log(images);
+
+            setIsUploading(false);
           }}
         >
           <svg
@@ -101,24 +126,6 @@ export default function ProductForm() {
           </svg>
           <div>Agregar</div>
         </CldUploadButton>
-        {/* <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-sm border border-primary bg-white text-center text-sm text-primary shadow-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-            />
-          </svg>
-          <div>Agregar</div>
-          <input type="file" className="hidden" onChange={uploadImages} />
-        </label> */}
       </div>
 
       <label>Descripción</label>
@@ -132,7 +139,7 @@ export default function ProductForm() {
         type="number"
         placeholder="Precio"
         value={price}
-        onChange={(event) => setPrice(event.target.value)}
+        onChange={(event) => setPrice(+event.target.value)}
       />
       <button className="btn-primary" type="submit">
         Guardar

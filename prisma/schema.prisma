@@ -16,14 +16,15 @@ datasource db {
 model Product {
   id           Int         @id @default(autoincrement())
   name         String
+  description  String
   brand        String
   stock        Boolean     @default(true)
   images       Image[]
   price        Float
-  propertiesId Int?
   properties   Properties? @relation(fields: [propertiesId], references: [id])
-  Order        Order?      @relation(fields: [orderId], references: [id])
+  order        Order?      @relation(fields: [orderId], references: [id])
   orderId      Int?
+  propertiesId Int?
 }
 
 model Order {
@@ -44,19 +45,19 @@ model Properties {
   id      Int       @id @default(autoincrement())
   color   Color[]
   storage Storage[]
-  Product Product[]
+  product Product[]
 }
 
 model Color {
   id           Int        @id @default(autoincrement())
-  colorName    String
+  colorName    String     @unique
   propertiesId Int
-  Properties   Properties @relation(fields: [propertiesId], references: [id])
+  properties   Properties @relation(fields: [propertiesId], references: [id])
 }
 
 model Storage {
   id           Int        @id @default(autoincrement())
-  total        Int
+  total        Int        @unique
   prefix       String
   propertiesId Int
   Properties   Properties @relation(fields: [propertiesId], references: [id])
@@ -65,6 +66,6 @@ model Storage {
 model Image {
   id        Int      @id @default(autoincrement())
   url       String
-  Product   Product? @relation(fields: [productId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
   productId Int?
 }
