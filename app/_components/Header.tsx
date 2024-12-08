@@ -1,12 +1,26 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import React, { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
 import { Search, ShoppingCart, User } from "lucide-react";
 
 const Header = () => {
+  const context = useContext(CartContext);
+
+  if (!context) {
+    throw new Error("CartContext debe estar dentro de un CartContextProvider");
+  }
+
+  const { cartProducts } = context;
+
+  const totalProducts = cartProducts.reduce(
+    (total, product) => total + product.quantity,
+    0,
+  );
+
   return (
     <header className="bg-white px-10 shadow-md">
       <div className="mx-auto py-4">
@@ -41,9 +55,14 @@ const Header = () => {
               Categoría 4
             </a>
           </nav>
-          <div className="flex items-center space-x-4">
-            <Link href="/cart">
+          <div className="relative flex items-center space-x-4">
+            <Link href="/cart" className="relative">
               <ShoppingCart className="h-6 w-6" />
+              {totalProducts > 0 && (
+                <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                  {totalProducts}
+                </span>
+              )}
             </Link>
             <User className="h-6 w-6" />
             <span className="sr-only">Login</span>

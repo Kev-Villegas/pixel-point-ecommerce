@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import { useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 import Header from "../_components/Header";
 import { Button } from "../_components/ui/button";
 import { CartContext } from "@/context/CartContext";
 import { Trash2, Plus, Minus, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "../_components/ui/separator";
+import { EmptyCartBanner } from "../_components/EmptyCartBanner";
 import { Card, CardDescription, CardTitle } from "../_components/ui/card";
 
 export default function CartPage() {
@@ -68,9 +69,9 @@ export default function CartPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
-                className="mt-10 text-center text-gray-600"
+                className="text-center text-gray-600"
               >
-                <p className="text-lg">¡Tu carrito está vacío!</p>
+                <EmptyCartBanner />
               </motion.div>
             ) : (
               <motion.div
@@ -162,48 +163,53 @@ export default function CartPage() {
               </motion.div>
             )}
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -25 }}
-              transition={{ duration: 0.4 }}
-              className="h-min px-6"
-            >
-              <Card className="px-4 py-4">
-                <CardTitle className="mb-2 text-2xl font-semibold">
-                  Resumen de Orden
-                </CardTitle>
-                {cartProducts.map((product) => (
-                  <CardDescription className="text-slate-800" key={product.id}>
-                    <div className="flex justify-between">
-                      <h2 className="text-base">
-                        {product.name} (x{product.quantity})
-                      </h2>
-                      <p>${(product.price * product.quantity).toFixed(2)}</p>
-                    </div>
-                  </CardDescription>
-                ))}
-                <Separator className="my-2" />
-                <div className="flex flex-col gap-2 font-semibold">
-                  <div className="flex justify-between">
-                    <span className="text-xl font-semibold">Subtotal:</span>
-                    <span className="text-xl font-semibold">
-                      ${getTotalOrderPrice().toFixed(2)}
-                    </span>
-                  </div>
+            {cartProducts.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.4 }}
+                className="h-min px-6"
+              >
+                <Card className="px-4 py-4">
+                  <CardTitle className="mb-2 text-2xl font-semibold">
+                    Resumen de Orden
+                  </CardTitle>
+                  {cartProducts.map((product) => (
+                    <CardDescription
+                      className="text-slate-800"
+                      key={product.id}
+                    >
+                      <div className="flex justify-between">
+                        <h2 className="text-base">
+                          {product.name} (x{product.quantity})
+                        </h2>
+                        <p>${(product.price * product.quantity).toFixed(2)}</p>
+                      </div>
+                    </CardDescription>
+                  ))}
                   <Separator className="my-2" />
-                  <div className="flex justify-between">
-                    <span className="text-xl font-semibold">Total:</span>
-                    <span className="text-xl font-semibold">
-                      ${getTotalOrderPrice().toFixed(2)}
-                    </span>
+                  <div className="flex flex-col gap-2 font-semibold">
+                    <div className="flex justify-between">
+                      <span className="text-xl font-semibold">Subtotal:</span>
+                      <span className="text-xl font-semibold">
+                        ${getTotalOrderPrice().toFixed(2)}
+                      </span>
+                    </div>
+                    <Separator className="my-2" />
+                    <div className="flex justify-between">
+                      <span className="text-xl font-semibold">Total:</span>
+                      <span className="text-xl font-semibold">
+                        ${getTotalOrderPrice().toFixed(2)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <Button className="mt-4 w-full" size="lg">
-                  Continuar al Pago
-                </Button>
-              </Card>
-            </motion.div>
+                  <Button className="mt-4 w-full" size="lg">
+                    Continuar al Pago
+                  </Button>
+                </Card>
+              </motion.div>
+            )}
           </div>
         </div>
       </motion.div>
