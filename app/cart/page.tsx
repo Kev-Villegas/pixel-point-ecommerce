@@ -9,7 +9,7 @@ import { CartContext } from "@/context/CartContext";
 import { Trash2, Plus, Minus, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "../_components/ui/separator";
-import { EmptyCartBanner } from "../_components/EmptyCartBanner";
+import { EmptyCartBanner } from "./_components/EmptyCartBanner";
 import { Card, CardDescription, CardTitle } from "../_components/ui/card";
 
 export default function CartPage() {
