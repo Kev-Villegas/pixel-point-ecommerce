@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Link, Search, ShoppingCart, User } from "lucide-react";
+import { Search, ShoppingCart, User } from "lucide-react";
 
 const Header = () => {
   return (
@@ -41,7 +42,9 @@ const Header = () => {
             </a>
           </nav>
           <div className="flex items-center space-x-4">
-            <ShoppingCart className="h-6 w-6" />
+            <Link href="/cart">
+              <ShoppingCart className="h-6 w-6" />
+            </Link>
             <User className="h-6 w-6" />
             <span className="sr-only">Login</span>
           </div>

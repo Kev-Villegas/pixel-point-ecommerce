@@ -4,27 +4,19 @@ import Link from "next/link";
 import ps5 from "@/public/ps5.png";
 import s21 from "@/public/s21.png";
 import macbook from "@/public/macbook.webp";
-import { StaticImageData } from "next/image";
+import { ProductBase } from "@/types/types";
 import iPhone from "@/public/iphone-example.png";
 import notebookMsi from "@/public/notebookMsi.png";
 import xboxseriesx from "@/public/xboxxseries.png";
 import { useInView } from "react-intersection-observer";
 import ProductCard from "@/app/_components/ProductCard";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: StaticImageData;
-  brand: string;
-}
-
 interface ProductListProps {
   title: string;
   href: string;
 }
 
-const products: Product[] = [
+const products: ProductBase[] = [
   {
     id: 1,
     name: "iPhone",
@@ -71,9 +63,10 @@ const products: Product[] = [
 
 export default function ProductList({ title, href }: ProductListProps) {
   const { ref, inView } = useInView({
+    threshold: 0.1,
     triggerOnce: true,
-    rootMargin: "100px",
   });
+
   return (
     <div className="mx-auto px-4 py-8" ref={ref}>
       {inView && (
@@ -91,10 +84,11 @@ export default function ProductList({ title, href }: ProductListProps) {
             {products.map((product) => (
               <ProductCard
                 key={product.id}
-                imageSrc={product.image}
+                id={product.id}
                 name={product.name}
-                price={product.price}
                 brand={product.brand}
+                price={product.price}
+                image={product.image}
               />
             ))}
           </div>

@@ -1,20 +1,33 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import { useContext } from "react";
+import toast from "react-hot-toast";
+import { ProductBase } from "@/types/types";
+import { CartContext } from "@/context/CartContext";
 import { BadgeCheck, ShoppingBag } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
 
-interface ProductCardProps {
-  imageSrc: StaticImageData | string;
-  name: string;
-  price: number;
-  brand: string;
-}
+interface ProductCardProps extends ProductBase {}
 
 export default function ProductCard({
-  imageSrc,
+  id,
+  image,
   name,
   price,
   brand,
 }: ProductCardProps) {
+  const context = useContext(CartContext);
+
+  if (!context) {
+    throw new Error("CartContext debe estar dentro de un CartContextProvider");
+  }
+
+  const { addProduct } = context;
+
+  const handleAddToCart = () => {
+    addProduct({ id, name, price, brand, image });
+    toast.success(`Producto ${name} agregado al carrito`);
+  };
+
   return (
     <Card
       className="w-full max-w-[225px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
@@ -22,7 +35,7 @@ export default function ProductCard({
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
         <Image
-          src={imageSrc}
+          src={image}
           alt={name}
           fill
           style={{ objectFit: "contain" }}
@@ -49,6 +62,7 @@ export default function ProductCard({
             <button
               className="rounded-full p-2 text-primary transition-transform duration-200 ease-in-out hover:scale-110 hover:bg-primary hover:text-primary-foreground"
               aria-label="Añadir al carrito"
+              onClick={handleAddToCart}
             >
               <ShoppingBag className="h-5 w-5" />
             </button>
