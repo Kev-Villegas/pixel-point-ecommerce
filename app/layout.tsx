@@ -1,8 +1,9 @@
-import "./globals.css";
-import React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import React from "react";
 import { Toaster } from "react-hot-toast";
+import SessionWrapper from "./_components/SessionWrapper";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,26 +28,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <React.StrictMode>
-          <main>{children}</main>
-        </React.StrictMode>
-        <Toaster
-          position="top-center"
-          reverseOrder={true}
-          gutter={8}
-          toastOptions={{
-            duration: 1500,
-            style: {
-              background: "#e7e5e4",
-              color: "#0a0a0a",
-            },
-          }}
-        />
-      </body>
-    </html>
+    <SessionWrapper>
+      <html lang="es">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <React.StrictMode>
+            <main>{children}</main>
+          </React.StrictMode>
+          <Toaster
+            position="top-center"
+            reverseOrder={true}
+            gutter={8}
+            toastOptions={{
+              duration: 1500,
+              style: {
+                background: "#e7e5e4",
+                color: "#0a0a0a",
+              },
+            }}
+          />
+        </body>
+      </html>
+    </SessionWrapper>
   );
 }

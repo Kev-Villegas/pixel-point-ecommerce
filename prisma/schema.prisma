@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Product {
+  id           Int         @id @default(autoincrement())
+  name         String
+  description  String
+  brand        String
+  stock        Boolean     @default(true)
+  images       Image[]
+  price        Float
+  properties   Properties? @relation(fields: [propertiesId], references: [id])
+  order        Order?      @relation(fields: [orderId], references: [id])
+  orderId      Int?
+  propertiesId Int?
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  items         Product[]
+  username      String
+  email         String
+  city          String
+  postalCode    String
+  streetAddress String
+  province      String
+  phonenumber   String
+  paid          Boolean
+  createdAt     DateTime  @default(now())
+}
+
+model Properties {
+  id               Int       @id @default(autoincrement())
+  model            String
+  capacity         String
+  ram              String
+  color            String
+  rearCamera       String?
+  frontCamera      String?
+  battery          String?
+  fastCharging     Boolean?
+  operatingSystem  String?
+  processor        String?
+  graphics         String?
+  simCard          String?
+  chipset          String?
+  connectivity     String?
+  navigation       String?
+  network2G        String?
+  network3G        String?
+  network4G        String?
+  network5G        String?
+  screenType       String?
+  screenSize       String?
+  screenResolution String?
+  audio            String?
+  sensors          String?
+  features         String?
+  weight           String?
+  dimensions       String?
+  product          Product[]
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+}
