@@ -3,7 +3,6 @@ import React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
-import { CartContextProvider } from "@/context/CartContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,16 +32,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <React.StrictMode>
-          <CartContextProvider>
-            <main>{children}</main>
-          </CartContextProvider>
+          <main>{children}</main>
         </React.StrictMode>
         <Toaster
           position="top-center"
           reverseOrder={true}
           gutter={8}
           toastOptions={{
-            duration: 3000,
+            duration: 1500,
             style: {
               background: "#e7e5e4",
               color: "#0a0a0a",

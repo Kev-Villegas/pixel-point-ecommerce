@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { useContext } from "react";
 import toast from "react-hot-toast";
 import { ProductBase } from "@/types/types";
-import { CartContext } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
 import { BadgeCheck, ShoppingBag } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { useState } from "react";
 
 interface ProductCardProps extends ProductBase {}
 
@@ -15,17 +15,18 @@ export default function ProductCard({
   price,
   brand,
 }: ProductCardProps) {
-  const context = useContext(CartContext);
-
-  if (!context) {
-    throw new Error("CartContext debe estar dentro de un CartContextProvider");
-  }
-
-  const { addProduct } = context;
+  const { addProduct } = useCartStore();
+  const [isAdding, setIsAdding] = useState(false);
 
   const handleAddToCart = () => {
+    if (isAdding) return;
+    setIsAdding(true);
     addProduct({ id, name, price, brand, image });
     toast.success(`Producto ${name} agregado al carrito`);
+
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 800);
   };
 
   return (
@@ -60,9 +61,12 @@ export default function ProductCard({
               ${price.toFixed(2)}
             </span>
             <button
-              className="rounded-full p-2 text-primary transition-transform duration-200 ease-in-out hover:scale-110 hover:bg-primary hover:text-primary-foreground"
+              className={`rounded-full p-2 text-primary transition-transform duration-200 ease-in-out hover:scale-110 hover:bg-primary hover:text-primary-foreground ${
+                isAdding ? "cursor-not-allowed opacity-50" : ""
+              }`}
               aria-label="Añadir al carrito"
               onClick={handleAddToCart}
+              disabled={isAdding}
             >
               <ShoppingBag className="h-5 w-5" />
             </button>

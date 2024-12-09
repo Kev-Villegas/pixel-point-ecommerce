@@ -1,12 +1,11 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useContext } from "react";
 import { toast } from "react-hot-toast";
 import Header from "../_components/Header";
 import { Card } from "../_components/ui/card";
 import { Button } from "../_components/ui/button";
-import { CartContext } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "../_components/ui/separator";
 import { EmptyCartBanner } from "./_components/EmptyCartBanner";
@@ -14,14 +13,8 @@ import { CartProductItem } from "./_components/CartProductItem";
 import { CartOrderSummary } from "./_components/CartOrderSummary";
 
 export default function CartPage() {
-  const context = useContext(CartContext);
-
-  if (!context) {
-    throw new Error("CartContext debe estar dentro de un CartContextProvider");
-  }
-
   const { cartProducts, removeProduct, clearCart, updateProductQuantity } =
-    context;
+    useCartStore();
 
   const handleRemoveProduct = (productId: number) => {
     removeProduct(productId);

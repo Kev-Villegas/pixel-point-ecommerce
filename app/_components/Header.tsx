@@ -1,20 +1,14 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import React, { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
 import { Search, ShoppingCart, User } from "lucide-react";
 
 const Header = () => {
-  const context = useContext(CartContext);
-
-  if (!context) {
-    throw new Error("CartContext debe estar dentro de un CartContextProvider");
-  }
-
-  const { cartProducts } = context;
+  const { cartProducts } = useCartStore();
 
   const totalProducts = cartProducts.reduce(
     (total, product) => total + product.quantity,
