@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import { CldUploadButton } from "next-cloudinary";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Spinner from "./Spinner";
@@ -14,12 +15,30 @@ interface ItemType {
   url: string;
 }
 
-export default function ProductForm() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number>(159.99);
-  const [images, setImages] = useState<ItemType[]>([]);
-  const [productBrand, setProductBrand] = useState("");
+type ProductFormProps = {
+  id?: string;
+  name?: string;
+  description?: string;
+  price?: number;
+  images?: ItemType[]; // Asumo que `images` es un array de URLs (ajústalo si es necesario)
+  category?: string;
+  brand?: string;
+  // properties?: Record<string, string>; // Ajusta según la estructura de `properties`
+};
+
+export default function ProductForm({
+  name: existingName,
+  description: existingDescription,
+  price: existingPrice,
+  images: existingImages,
+  brand: existingBrand,
+}: ProductFormProps) {
+  const router = useRouter();
+  const [title, setTitle] = useState(existingName || "");
+  const [description, setDescription] = useState(existingDescription || "");
+  const [price, setPrice] = useState<number>(existingPrice || 159.99);
+  const [images, setImages] = useState<ItemType[]>(existingImages || []);
+  const [productBrand, setProductBrand] = useState(existingBrand || "");
   // const [productProperties, setProductProperties] = useState({})
 
   const [isUploading, setIsUploading] = useState(false);
@@ -34,6 +53,8 @@ export default function ProductForm() {
     await axios
       .post("/api/products", data)
       .then((response) => console.log(response));
+
+    router.push("/");
   };
 
   const updateImagesOrder = (images) => {

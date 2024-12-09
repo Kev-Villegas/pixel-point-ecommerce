@@ -8,6 +8,7 @@ export async function GET(
   const params = await props.params;
   const product = await db.product.findUnique({
     where: { id: parseInt(params.id) },
+    include: { images: true },
   });
 
   if (!product) {
