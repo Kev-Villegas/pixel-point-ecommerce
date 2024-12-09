@@ -101,10 +101,11 @@ export const useCartStore = create<CartState>((set, get) => ({
             ? product.quantity + 1
             : product.quantity - 1;
           if (newQuantity > 0) return { ...product, quantity: newQuantity };
+          return null;
         }
         return product;
       })
-      .filter((product) => product !== undefined) as CartProduct[];
+      .filter((product) => product !== null) as CartProduct[];
 
     saveDebouncedCartToLocalStorage(updatedCart);
     set({ cartProducts: updatedCart });
