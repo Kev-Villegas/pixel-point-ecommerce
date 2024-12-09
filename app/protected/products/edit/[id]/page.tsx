@@ -8,9 +8,7 @@ export default async function EditPage({
 }) {
   const { id } = await params;
 
-  console.log("/api/products/" + id);
   let { data } = await axios.get(`http://localhost:3000/api/products/${id}`);
-  console.log(data);
 
   return (
     <div>

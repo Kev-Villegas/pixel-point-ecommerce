@@ -14,12 +14,19 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   // const { title, description, price, images, category, properties } = req.body
   const body = await request.json();
+  const formattedProperties = body.properties.reduce((acc, prop) => {
+    const key = prop.name.toLowerCase(); // Convierte a minúscula para coincidencia
+    acc[key] = prop.values;
+    return acc;
+  }, {});
+
   const product = await db.product.create({
     data: {
       name: body.title,
       description: body.description,
       brand: body.productBrand,
       price: body.price,
+      properties: { create: { ...formattedProperties } },
       images: {
         create: body.images.map((image: Image) => ({
           url: image.url,

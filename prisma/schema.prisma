@@ -42,25 +42,35 @@ model Order {
 }
 
 model Properties {
-  id      Int       @id @default(autoincrement())
-  color   Color[]
-  storage Storage[]
-  product Product[]
-}
-
-model Color {
-  id           Int        @id @default(autoincrement())
-  colorName    String     @unique
-  propertiesId Int
-  properties   Properties @relation(fields: [propertiesId], references: [id])
-}
-
-model Storage {
-  id           Int        @id @default(autoincrement())
-  total        Int        @unique
-  prefix       String
-  propertiesId Int
-  Properties   Properties @relation(fields: [propertiesId], references: [id])
+  id               Int       @id @default(autoincrement())
+  model            String
+  capacity         String
+  ram              String
+  color            String
+  rearCamera       String?
+  frontCamera      String?
+  battery          String?
+  fastCharging     Boolean?
+  operatingSystem  String?
+  processor        String?
+  graphics         String?
+  simCard          String?
+  chipset          String?
+  connectivity     String?
+  navigation       String?
+  network2G        String?
+  network3G        String?
+  network4G        String?
+  network5G        String?
+  screenType       String?
+  screenSize       String?
+  screenResolution String?
+  audio            String?
+  sensors          String?
+  features         String?
+  weight           String?
+  dimensions       String?
+  product          Product[]
 }
 
 model Image {

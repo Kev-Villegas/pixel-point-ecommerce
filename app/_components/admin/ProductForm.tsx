@@ -2,7 +2,7 @@
 import axios from "axios";
 import { CldUploadButton } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Spinner from "./Spinner";
 
@@ -23,7 +23,7 @@ type ProductFormProps = {
   images?: ItemType[]; // Asumo que `images` es un array de URLs (ajústalo si es necesario)
   category?: string;
   brand?: string;
-  // properties?: Record<string, string>; // Ajusta según la estructura de `properties`
+  properties?: Record<string, string>; // Ajusta según la estructura de `properties`
 };
 
 export default function ProductForm({
@@ -32,6 +32,7 @@ export default function ProductForm({
   price: existingPrice,
   images: existingImages,
   brand: existingBrand,
+  properties: existingProperties,
 }: ProductFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState(existingName || "");
@@ -39,16 +40,34 @@ export default function ProductForm({
   const [price, setPrice] = useState<number>(existingPrice || 159.99);
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
-  // const [productProperties, setProductProperties] = useState({})
+  const [properties, setProperties] = useState(existingProperties || []);
 
   const [isUploading, setIsUploading] = useState(false);
 
   const brands = ["Apple", "Samsung", "Xiaomi", "Motorola"];
 
+  useEffect(() => {
+    if (existingProperties) {
+      const formattedProperties = Object.entries(existingProperties)
+        .map(([key, value]) => ({
+          name: key,
+          values: value,
+        }))
+        .filter((prop) => prop.values !== null);
+      setProperties([...formattedProperties]);
+    }
+  }, []);
+
   const saveProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price, images, productBrand };
-    console.log(data);
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      productBrand,
+      properties,
+    };
 
     await axios
       .post("/api/products", data)
@@ -59,6 +78,36 @@ export default function ProductForm({
 
   const updateImagesOrder = (images) => {
     setImages(images);
+  };
+
+  // MANEJAR PROPIEDADES
+  const addProperty = () => {
+    setProperties((prev) => {
+      return [...prev, { name: "", values: "" }];
+    });
+  };
+
+  const handlePropertyNameChange = (index, property, newName) => {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].name = newName;
+      return properties;
+    });
+  };
+  const handlePropertyValuesChange = (index, property, newValues) => {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].values = newValues;
+      return properties;
+    });
+  };
+
+  const removeProperty = (indexToRemove) => {
+    setProperties((prev) => {
+      return [...prev].filter((p, pIndex) => {
+        return pIndex !== indexToRemove;
+      });
+    });
   };
 
   return (
@@ -155,6 +204,46 @@ export default function ProductForm({
         value={description}
         onChange={(event) => setDescription(event.target.value)}
       />
+      <div className="mb-2">
+        <label className="block">Propiedades</label>
+        <button
+          className="btn-default mb-2 text-sm"
+          type="button"
+          onClick={addProperty}
+        >
+          Add property
+        </button>
+        {properties.length > 0 &&
+          properties.map((property, index) => (
+            <div className="mb-2 flex gap-1" key={index}>
+              <input
+                type="text"
+                value={property.name}
+                className="mb-0"
+                onChange={(e) =>
+                  handlePropertyNameChange(index, property, e.target.value)
+                }
+                placeholder="Property name (example: color)"
+              />
+              <input
+                type="text"
+                className="mb-0"
+                onChange={(e) =>
+                  handlePropertyValuesChange(index, property, e.target.value)
+                }
+                value={property.values}
+                placeholder="Values, comma separated"
+              />
+              <button
+                type="button"
+                onClick={() => removeProperty(index)}
+                className="btn-red"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+      </div>
       <label>Precio</label>
       <input
         type="number"
