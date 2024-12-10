@@ -5,17 +5,22 @@ type Image = {
   url: string;
 };
 
-export async function GET(request: NextRequest) {
-  const products = await db.product.findMany();
-
-  return NextResponse.json(products);
+export async function GET() {
+  try {
+    const products = await db.product.findMany();
+    return NextResponse.json(products);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al obtener productos" },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
-  // const { title, description, price, images, category, properties } = req.body
   const body = await request.json();
   const formattedProperties = body.properties.reduce((acc, prop) => {
-    const key = prop.name.toLowerCase(); // Convierte a minúscula para coincidencia
+    const key = prop.name.toLowerCase();
     acc[key] = prop.values;
     return acc;
   }, {});

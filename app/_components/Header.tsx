@@ -1,19 +1,33 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import debounce from "lodash.debounce";
+import React, { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { Search, ShoppingCart, User } from "lucide-react";
+import { useSearchProductStore } from "@/store/useSearchProductStore";
 
 const Header = () => {
   const { cartProducts } = useCartStore();
-
   const totalProducts = cartProducts.reduce(
     (total, product) => total + product.quantity,
     0,
   );
+
+  const { searchResults, isSearching, handleSearch } = useSearchProductStore();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const debouncedSearch = debounce((query: string) => {
+    handleSearch(query);
+  }, 300);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
 
   return (
     <header className="bg-white px-10 shadow-md">
@@ -22,13 +36,33 @@ const Header = () => {
           <Link href="/" className="mr-3 text-2xl font-bold text-primary">
             Logo
           </Link>
-          <Input
-            type="text"
-            placeholder="Search products..."
-            className="w-full"
-          />
+          <div className="relative flex-grow">
+            <Input
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={handleInputChange}
+              className="w-full"
+            />
+            {isSearching && (
+              <div className="absolute left-0 top-10">Cargando...</div>
+            )}
+            {searchResults.length > 0 && (
+              <div className="absolute z-10 max-h-60 w-full overflow-y-auto rounded-lg bg-white shadow-lg">
+                {searchResults.map((product) => (
+                  <Link
+                    key={product.id}
+                    href={`/product/${product.id}`}
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    {product.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
           <div className="ml-[8px]">
-            <Button size="icon" className=" ">
+            <Button size="icon">
               <Search className="h-4 w-4" />
               <span className="sr-only">Search</span>
             </Button>
@@ -41,12 +75,6 @@ const Header = () => {
             </a>
             <a href="/category/2" className="hover:text-primary">
               Categoría 2
-            </a>
-            <a href="/category/3" className="hover:text-primary">
-              Categoría 3
-            </a>
-            <a href="/category/4" className="hover:text-primary">
-              Categoría 4
             </a>
           </nav>
           <div className="relative flex items-center space-x-4">
