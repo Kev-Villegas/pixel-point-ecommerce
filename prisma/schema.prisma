@@ -15,17 +15,16 @@ datasource db {
 }
 
 model Product {
-  id           Int         @id @default(autoincrement())
-  name         String
-  description  String
-  brand        String
-  stock        Boolean     @default(true)
-  images       Image[]
-  price        Float
-  properties   Properties? @relation(fields: [propertiesId], references: [id])
-  order        Order?      @relation(fields: [orderId], references: [id])
-  orderId      Int?
-  propertiesId Int?
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  brand       String
+  stock       Boolean     @default(true)
+  images      Image[]
+  price       Float
+  order       Order?      @relation(fields: [orderId], references: [id])
+  orderId     Int?
+  properties  Properties?
 }
 
 model Order {
@@ -43,35 +42,36 @@ model Order {
 }
 
 model Properties {
-  id               Int       @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   model            String
   capacity         String
   ram              String
   color            String
-  rearCamera       String?
-  frontCamera      String?
+  rearcamera       String?
+  frontcamera      String?
   battery          String?
-  fastCharging     Boolean?
-  operatingSystem  String?
+  fastcharging     Boolean?
+  operatingsystem  String?
   processor        String?
   graphics         String?
   simCard          String?
   chipset          String?
   connectivity     String?
   navigation       String?
-  network2G        String?
-  network3G        String?
-  network4G        String?
-  network5G        String?
-  screenType       String?
-  screenSize       String?
-  screenResolution String?
+  network2g        String?
+  network3g        String?
+  network4g        String?
+  network5g        String?
+  screentype       String?
+  screensize       String?
+  screenresolution String?
   audio            String?
   sensors          String?
   features         String?
   weight           String?
   dimensions       String?
-  product          Product[]
+  product          Product? @relation(fields: [productId], references: [id])
+  productId        Int?     @unique
 }
 
 model Image {

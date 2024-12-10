@@ -2,81 +2,84 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.product.deleteMany({});
+  await prisma.image.deleteMany({});
+  await prisma.properties.deleteMany({});
+
   const products = [
     {
-      name: "iPhone 14 Pro",
-      description: "El último smartphone de Apple con Dynamic Island.",
-      brand: "Apple",
-      stock: true,
-      price: 999.99,
-      images: {
-        create: [{ url: "https://example.com/images/iphone-14-pro.jpg" }],
-      },
-      properties: {
-        create: {
-          model: "14 Pro",
-          capacity: "256GB",
-          ram: "6GB",
-          color: "Negro Espacial",
-          rearCamera: "48 MP",
-          frontCamera: "12 MP",
-          battery: "3200 mAh",
-          fastCharging: true,
-          operatingSystem: "iOS 17",
-          screenSize: "6.1 pulgadas",
-        },
-      },
-    },
-    {
       name: "Samsung Galaxy S23 Ultra",
-      description: "Potente smartphone con S Pen integrado.",
+      description: "El último smartphone de Samsung con cámara de 200 MP.",
       brand: "Samsung",
-      stock: true,
       price: 1199.99,
       images: {
         create: [{ url: "https://example.com/images/galaxy-s23-ultra.jpg" }],
       },
-      properties: {
+      Properties: {
         create: {
-          model: "S23 Ultra",
-          capacity: "512GB",
+          model: "Galaxy S23 Ultra",
+          capacity: "256GB",
           ram: "12GB",
           color: "Phantom Black",
-          rearCamera: "200 MP",
-          frontCamera: "12 MP",
           battery: "5000 mAh",
-          fastCharging: true,
-          operatingSystem: "Android 13",
-          screenSize: "6.8 pulgadas",
         },
       },
     },
     {
-      name: "Google Pixel 8",
-      description:
-        "El smartphone de Google con la mejor experiencia de Android.",
-      brand: "Google",
-      stock: true,
-      price: 799.99,
+      name: "iPhone 15 Pro Max",
+      description: "El smartphone de Apple con el chip más avanzado, el A17.",
+      brand: "Apple",
+      price: 1399.99,
       images: {
-        create: [{ url: "https://example.com/images/pixel-8.jpg" }],
+        create: [{ url: "https://example.com/images/iphone-15-pro-max.jpg" }],
       },
-      properties: {
+      Properties: {
         create: {
-          model: "Pixel 8",
-          capacity: "128GB",
+          model: "iPhone 15 Pro Max",
+          capacity: "512GB",
           ram: "8GB",
-          color: "Obsidian",
-          rearCamera: "50 MP",
-          frontCamera: "12 MP",
-          battery: "4700 mAh",
-          fastCharging: true,
-          operatingSystem: "Android 14",
-          screenSize: "6.2 pulgadas",
+          color: "Titanium Gray",
+          battery: "4323 mAh",
         },
       },
     },
-    // Agrega 7 productos más aquí con marcas reales como Xiaomi, OnePlus, Huawei, Motorola, etc.
+    {
+      name: "Google Pixel 8 Pro",
+      description:
+        "El smartphone de Google con la mejor experiencia de Android y cámara avanzada.",
+      brand: "Google",
+      price: 899.99,
+      images: {
+        create: [{ url: "https://example.com/images/pixel-8-pro.jpg" }],
+      },
+      Properties: {
+        create: {
+          model: "Pixel 8 Pro",
+          capacity: "128GB",
+          ram: "12GB",
+          color: "Obsidian",
+          battery: "5000 mAh",
+        },
+      },
+    },
+    {
+      name: "OnePlus 11",
+      description: "Un smartphone rápido y eficiente, con Snapdragon 8 Gen 2.",
+      brand: "OnePlus",
+      price: 799.99,
+      images: {
+        create: [{ url: "https://example.com/images/oneplus-11.jpg" }],
+      },
+      Properties: {
+        create: {
+          model: "OnePlus 11",
+          capacity: "256GB",
+          ram: "16GB",
+          color: "Emerald Green",
+          battery: "5000 mAh",
+        },
+      },
+    },
   ];
 
   for (const product of products) {

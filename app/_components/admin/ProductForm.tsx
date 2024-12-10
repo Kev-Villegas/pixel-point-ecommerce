@@ -27,6 +27,7 @@ type ProductFormProps = {
 };
 
 export default function ProductForm({
+  id,
   name: existingName,
   description: existingDescription,
   price: existingPrice,
@@ -69,11 +70,16 @@ export default function ProductForm({
       properties,
     };
 
-    await axios
-      .post("/api/products", data)
-      .then((response) => console.log(response));
-
-    router.push("/");
+    if (id) {
+      await axios
+        .patch(`/api/products/${id}`, { ...data, id })
+        .then((response) => console.log(response));
+    } else {
+      await axios
+        .post("/api/products", data)
+        .then((response) => console.log(response));
+    }
+    router.push("/protected/products");
   };
 
   const updateImagesOrder = (images) => {
