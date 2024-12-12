@@ -13,9 +13,13 @@ async function main() {
       brand: "Samsung",
       price: 1199.99,
       images: {
-        create: [{ url: "https://example.com/images/galaxy-s23-ultra.jpg" }],
+        create: [
+          {
+            url: `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/v1734025114/pixelpoint/qpmcfsgkrxqjy7n7eypr.jpg`,
+          },
+        ],
       },
-      Properties: {
+      properties: {
         create: {
           model: "Galaxy S23 Ultra",
           capacity: "256GB",
@@ -31,9 +35,13 @@ async function main() {
       brand: "Apple",
       price: 1399.99,
       images: {
-        create: [{ url: "https://example.com/images/iphone-15-pro-max.jpg" }],
+        create: [
+          {
+            url: `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/v1734025114/pixelpoint/iqov3cvmsitksbeaapj2.jpg`,
+          },
+        ],
       },
-      Properties: {
+      properties: {
         create: {
           model: "iPhone 15 Pro Max",
           capacity: "512GB",
@@ -50,9 +58,13 @@ async function main() {
       brand: "Google",
       price: 899.99,
       images: {
-        create: [{ url: "https://example.com/images/pixel-8-pro.jpg" }],
+        create: [
+          {
+            url: `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/v1734025114/pixelpoint/qkge49tsetyyygxglsdt.jpg`,
+          },
+        ],
       },
-      Properties: {
+      properties: {
         create: {
           model: "Pixel 8 Pro",
           capacity: "128GB",
@@ -68,9 +80,13 @@ async function main() {
       brand: "OnePlus",
       price: 799.99,
       images: {
-        create: [{ url: "https://example.com/images/oneplus-11.jpg" }],
+        create: [
+          {
+            url: `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/v1734025114/pixelpoint/qlxkxcj0x9qwk2n9phlx.jpg`,
+          },
+        ],
       },
-      Properties: {
+      properties: {
         create: {
           model: "OnePlus 11",
           capacity: "256GB",

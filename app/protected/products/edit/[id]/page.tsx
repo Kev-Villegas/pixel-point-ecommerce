@@ -10,6 +10,9 @@ export default async function EditPage({
 
   let { data } = await axios.get(`http://localhost:3000/api/products/${id}`);
 
+  delete data.properties.id;
+  delete data.properties.productId;
+
   return (
     <div>
       <h1>Edit Product</h1>

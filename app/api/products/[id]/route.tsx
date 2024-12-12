@@ -25,7 +25,7 @@ export async function GET(
   return NextResponse.json(product);
 }
 
-export async function PATCH(
+export async function PUT(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
@@ -46,10 +46,12 @@ export async function PATCH(
       brand: body.productBrand,
       price: body.price,
       properties: {
-        update: { ...formattedProperties },
+        delete: {},
+        create: { ...formattedProperties },
       },
       images: {
-        update: body.images.map((image: Image) => ({
+        deleteMany: {},
+        create: body.images.map((image: { url: string }) => ({
           url: image.url,
         })),
       },
