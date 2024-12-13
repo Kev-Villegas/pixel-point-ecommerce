@@ -1,13 +1,13 @@
 import axios from "axios";
 import { create } from "zustand";
+import { Product, Image } from "@prisma/client";
 
-type Product = {
-  id: number;
-  name: string;
+type ProductWithImages = Product & {
+  images: Image[];
 };
 
 interface SearchProductStore {
-  searchResults: Product[];
+  searchResults: ProductWithImages[];
   isSearching: boolean;
   searchTerm: string;
   handleSearch: (query: string) => Promise<void>;
@@ -21,17 +21,19 @@ export const useSearchProductStore = create<SearchProductStore>((set) => {
     }
 
     set({ isSearching: true });
-    try {
-      const response = await axios.get(`/api/products/search`, {
-        params: { q: query },
-      });
 
-      set({ searchResults: response.data });
+    try {
+      const response = await axios.get<ProductWithImages[]>(
+        "/api/products/search",
+        {
+          params: { q: query },
+        },
+      );
+
+      set({ searchResults: response.data, isSearching: false });
     } catch (error) {
       console.error("Error al buscar productos:", error);
-      set({ searchResults: [] });
-    } finally {
-      set({ isSearching: false });
+      set({ searchResults: [], isSearching: false });
     }
   };
 
