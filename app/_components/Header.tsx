@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import debounce from "lodash.debounce";
@@ -53,9 +54,18 @@ const Header = () => {
                   <Link
                     key={product.id}
                     href={`/product/${product.id}`}
-                    className="block px-4 py-2 hover:bg-gray-100"
+                    className="flex items-center space-x-4 px-4 py-2 hover:bg-gray-100"
                   >
-                    {product.name}
+                    {product.images.length > 0 && (
+                      <Image
+                        src={product.images[0].url}
+                        width={40}
+                        height={40}
+                        alt={product.name}
+                        className="h-8 w-8 rounded object-cover"
+                      />
+                    )}
+                    <span>{product.name}</span>
                   </Link>
                 ))}
               </div>
