@@ -3,6 +3,7 @@ import axios from "axios";
 import { CldUploadButton } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { ReactSortable } from "react-sortablejs";
 import Spinner from "./Spinner";
 
@@ -73,9 +74,18 @@ export default function ProductForm({
     if (id) {
       await axios.put(`/api/products/${id}`, { ...data, id });
     } else {
-      await axios.post("/api/products", data);
+      try {
+        const response = await axios.post("/api/products", data);
+        if (response.status === 201) {
+          toast.success("Producto creado correctamente");
+          router.push("/protected/products");
+        }
+      } catch (error: any) {
+        const errorMessage = error.response.data.error || "Error desconocido";
+
+        toast.error(`Error: ${errorMessage}`);
+      }
     }
-    router.push("/protected/products");
   };
 
   const updateImagesOrder = (images) => {

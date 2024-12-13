@@ -25,20 +25,28 @@ export async function POST(request: NextRequest) {
     return acc;
   }, {});
 
-  const product = await db.product.create({
-    data: {
-      name: body.title,
-      description: body.description,
-      brand: body.productBrand,
-      price: body.price,
-      properties: { create: { ...formattedProperties } },
-      images: {
-        create: body.images.map((image: Image) => ({
-          url: image.url,
-        })),
+  try {
+    const product = await db.product.create({
+      data: {
+        name: body.title,
+        description: body.description,
+        brand: body.productBrand,
+        price: body.price,
+        properties: { create: { ...formattedProperties } },
+        images: {
+          create: body.images.map((image: Image) => ({
+            url: image.url,
+          })),
+        },
       },
-    },
-  });
+    });
 
-  return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(product, { status: 201 });
+  } catch (e: any) {
+    // const match = e.message.match(/Argument `.+` is missing\./);
+    const match = e.message.match(/Argument `.+` is missing\./);
+    const errorMessage = match ? match[0] : e.message;
+
+    return NextResponse.json({ error: errorMessage }, { status: 400 }); // Status 400: Bad Request
+  }
 }
