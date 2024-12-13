@@ -1,7 +1,9 @@
 "use client";
 import axios from "axios";
+import { Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AlertDialogDemo } from "../Alert";
 
 interface Properties {
   id: number;
@@ -28,6 +30,11 @@ function ProductList() {
       setProducts(response.data);
     });
   }, []);
+
+  const handleDelete = async (id: number) => {
+    await axios.delete(`/api/products/${id}`);
+    location.reload();
+  };
 
   return (
     <table className="basic mt-2">
@@ -62,7 +69,7 @@ function ProductList() {
                 </svg>
                 Edit
               </Link>
-              <Link className="btn-red" href={"/products/delete/" + product.id}>
+              {/* <Link className="btn-red" href={"/api/products/?id=" + product.id}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -78,7 +85,14 @@ function ProductList() {
                   />
                 </svg>
                 Delete
-              </Link>
+              </Link> */}
+              <AlertDialogDemo
+                button="Delete"
+                confirmation="Are you sure?"
+                description="The product will be permanently removed from the database"
+                handleAction={() => handleDelete(product.id)}
+                icon={<Trash2 />}
+              />
             </td>
           </tr>
         ))}

@@ -1,10 +1,6 @@
 import { db } from "@/app/_lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-type Image = {
-  url: string;
-};
-
 export async function GET(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
@@ -65,4 +61,29 @@ export async function PUT(
   return NextResponse.json(updatedProduct);
 }
 
-export async function POST(request: NextRequest) {}
+export async function DELETE(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
+  const params = await props.params;
+  // const { searchParams } = new URL(request.url);
+  // const id = searchParams.get("id");
+
+  // if (!id) {
+  //   return NextResponse.json({ success: false, message: "ID not found" });
+  // }
+
+  const product = await db.product.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  if (!product) {
+    NextResponse.json({ error: "Product not found" }, { status: 404 });
+  }
+
+  await db.product.delete({
+    where: { id: parseInt(params.id) },
+  });
+
+  return NextResponse.json({}, { status: 200 });
+}
