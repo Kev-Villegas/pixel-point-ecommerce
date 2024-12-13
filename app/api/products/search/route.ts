@@ -1,5 +1,5 @@
 import { db } from "@/app/_lib/prisma";
-import { Product, Image } from "@prisma/client";
+import { Image, Product } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 type ProductWithImages = Product & {
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q") || "";
 
-  console.log("Received query:", query);
+  // console.log("Received query:", query);
 
   try {
     const products: ProductWithImages[] = await db.product.findMany({
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log("Products found:", products);
+    // console.log("Products found:", products);
 
     return NextResponse.json(products);
   } catch (error) {
