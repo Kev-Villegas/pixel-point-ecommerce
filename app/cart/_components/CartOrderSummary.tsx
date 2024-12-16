@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
 import { Button } from "@/app/_components/ui/button";
-import { Separator } from "@/app/_components/ui/separator";
 import { Card, CardDescription, CardTitle } from "@/app/_components/ui/card";
+import { Separator } from "@/app/_components/ui/separator";
+import axios from "axios";
+import { motion } from "framer-motion";
 
 interface CartOrderSummaryProps {
   cartProducts: {
@@ -18,6 +19,12 @@ export function CartOrderSummary({
   getTotalOrderPrice,
 }: CartOrderSummaryProps) {
   const subtotal = getTotalOrderPrice();
+
+  const toPayment = async () => {
+    await axios
+      .post("/api/checkout", cartProducts)
+      .then((response) => console.log(response));
+  };
 
   return (
     <motion.div
@@ -61,9 +68,12 @@ export function CartOrderSummary({
           </div>
         </div>
 
-        <Button className="mt-4 w-full" size="lg">
+        <Button className="mt-4 w-full" size="lg" onClick={() => toPayment()}>
           Continuar al Pago
         </Button>
+        {/* <Link className='mt-4 w-full h-10 bg-black text-white px-8 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0' href='/checkout'>
+          Continuar al Pago
+        </Link> */}
       </Card>
     </motion.div>
   );
