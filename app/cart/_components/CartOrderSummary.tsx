@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/app/_components/ui/button";
 import { Separator } from "@/app/_components/ui/separator";
 import { Card, CardDescription, CardTitle } from "@/app/_components/ui/card";
+import Link from "next/link";
 
 interface CartOrderSummaryProps {
   cartProducts: {
@@ -61,9 +62,11 @@ export function CartOrderSummary({
           </div>
         </div>
 
-        <Button className="mt-4 w-full" size="lg">
-          Continuar al Pago
-        </Button>
+        <Link href="/payment/address">
+          <Button className="mt-4 w-full" size="lg">
+            Continuar al Pago
+          </Button>
+        </Link>
       </Card>
     </motion.div>
   );
