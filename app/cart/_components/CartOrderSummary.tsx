@@ -3,6 +3,7 @@ import { Card, CardDescription, CardTitle } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import axios from "axios";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface CartOrderSummaryProps {
   cartProducts: {
@@ -68,12 +69,11 @@ export function CartOrderSummary({
           </div>
         </div>
 
-        <Button className="mt-4 w-full" size="lg" onClick={() => toPayment()}>
-          Continuar al Pago
-        </Button>
-        {/* <Link className='mt-4 w-full h-10 bg-black text-white px-8 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0' href='/checkout'>
-          Continuar al Pago
-        </Link> */}
+        <Link href="/payment/address">
+          <Button className="mt-4 w-full" size="lg">
+            Continuar al Pago
+          </Button>
+        </Link>
       </Card>
     </motion.div>
   );
