@@ -1,13 +1,13 @@
 "use client";
 
-import * as z from "zod";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
-import { Label } from "@/app/_components/ui/label";
-import { Input } from "@/app/_components/ui/input";
 import { Button } from "@/app/_components/ui/button";
+import { Input } from "@/app/_components/ui/input";
+import { Label } from "@/app/_components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as z from "zod";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -115,7 +115,7 @@ export function UserAddressForm() {
           <Label htmlFor="city">Ciudad</Label>
           <Input
             id="city"
-            placeholder="Misiones"
+            placeholder="Iguazú"
             {...register("city")}
             name="city"
           />
@@ -128,7 +128,7 @@ export function UserAddressForm() {
           <Label htmlFor="province">Provincia</Label>
           <Input
             id="province"
-            placeholder="Iguazú"
+            placeholder="Misiones"
             {...register("province")}
             name="province"
           />
