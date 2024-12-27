@@ -1,13 +1,24 @@
 "use client";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
 
 export default function PaymentPage() {
+  const [preferenceId, setPreferenceId] = useState("");
+
+  useEffect(() => {
+    const preferenceId = localStorage.getItem("id");
+    if (preferenceId) {
+      const parsedPreferenceId = JSON.parse(preferenceId);
+      setPreferenceId(parsedPreferenceId);
+    }
+  }, []);
+
   const initialization = {
     amount: 50,
-    preferenceId: "<PREFERENCE_ID>",
+    preferenceId: preferenceId,
   };
 
   const customization = {
@@ -37,14 +48,7 @@ export default function PaymentPage() {
       axios
         .post("/api/checkout", JSON.stringify(formData))
         .then((response) => console.log(response))
-        .then((response) => {
-          // receive payment result
-          resolve();
-        })
-        .catch((error) => {
-          // handle error response when trying to create payment
-          reject();
-        });
+        .catch((error) => console.log(error));
     });
   };
 
@@ -58,6 +62,7 @@ export default function PaymentPage() {
     Callback called when Brick is ready.
     Here you can hide loadings from your site, for example.
   */
+    // console.log('AHORA READYYYYYYYYYYY');
   };
 
   return (

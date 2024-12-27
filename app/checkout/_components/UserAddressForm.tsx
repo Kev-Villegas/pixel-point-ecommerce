@@ -4,7 +4,8 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
@@ -35,6 +36,14 @@ const formSchema = z.object({
 
 export function UserAddressForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    axios.post("/api/checkout/preferences").then((response) => {
+      window.localStorage.setItem(
+        "id",
+        JSON.stringify(response.data.response.id),
+      );
+    });
+  }, []);
 
   const {
     register,
@@ -49,6 +58,7 @@ export function UserAddressForm() {
     setIsSubmitting(true);
     // !Handle Api Data here
     console.log(values);
+
     setTimeout(() => {
       setIsSubmitting(false);
       toast.success("Dirección guardada con exito");
