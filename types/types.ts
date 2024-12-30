@@ -1,11 +1,15 @@
-import { StaticImageData } from "next/image";
-
 export interface ProductBase {
   id: number;
   name: string;
   brand: string;
   price: number;
-  image: string | StaticImageData;
+  images: images[];
+}
+
+interface images {
+  id: number;
+  url: string;
+  productId: number;
 }
 
 export interface CartProduct extends ProductBase {

@@ -1,16 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import debounce from "lodash.debounce";
-import React, { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
-import { Search, ShoppingCart, User } from "lucide-react";
 import { useSearchProductStore } from "@/store/useSearchProductStore";
+import debounce from "lodash.debounce";
+import { Search, ShoppingCart, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const Header = () => {
+  const brands = ["Apple", "Samsung", "Xiaomi"];
   const { cartProducts } = useCartStore();
   const totalProducts = cartProducts.reduce(
     (total, product) => total + product.quantity,
@@ -80,12 +81,14 @@ const Header = () => {
         </div>
         <div className="flex items-center justify-between">
           <nav className="flex space-x-4 text-sm font-medium text-gray-700">
-            <a href="/category/1" className="hover:text-primary">
-              Categoría 1
-            </a>
-            <a href="/category/2" className="hover:text-primary">
+            {brands.map((brand) => (
+              <a href="/category/1" className="hover:text-primary" key={brand}>
+                {brand}
+              </a>
+            ))}
+            {/* <a href="/category/2" className="hover:text-primary">
               Categoría 2
-            </a>
+            </a> */}
           </nav>
           <div className="relative flex items-center space-x-4">
             <Link href="/cart" className="relative">

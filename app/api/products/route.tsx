@@ -7,7 +7,11 @@ type Image = {
 
 export async function GET() {
   try {
-    const products = await db.product.findMany();
+    const products = await db.product.findMany({
+      include: {
+        images: true,
+      },
+    });
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json(
