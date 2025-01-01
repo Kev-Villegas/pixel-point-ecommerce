@@ -39,7 +39,7 @@ export default function ProductForm({
   const router = useRouter();
   const [title, setTitle] = useState(existingName || "");
   const [description, setDescription] = useState(existingDescription || "");
-  const [price, setPrice] = useState<number>(existingPrice || 159.99);
+  const [price, setPrice] = useState<number>(existingPrice ?? 159.99); // Usa `??` para evitar problemas con `null`
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
   const [properties, setProperties] = useState<
@@ -48,7 +48,7 @@ export default function ProductForm({
     existingProperties
       ? Object.entries(existingProperties).map(([key, value]) => ({
           name: key,
-          values: value,
+          values: value || "",
         }))
       : [],
   );
@@ -81,7 +81,10 @@ export default function ProductForm({
     };
 
     if (id) {
-      await axios.put(`/api/products/${id}`, { ...data, id });
+      await axios.put(`/api/products/${id}`, { ...data, id }).then(() => {
+        toast.success("Producto actualizado correctamente");
+        router.push("/protected/products");
+      });
     } else {
       try {
         const response = await axios.post("/api/products", data);
@@ -154,7 +157,7 @@ export default function ProductForm({
       <input
         type="text"
         placeholder="Nombre"
-        value={title}
+        value={title || ""} // Asegúrate de que nunca sea `null` o `undefined`
         onChange={(e) => setTitle(e.target.value)}
       />
 
@@ -260,7 +263,7 @@ export default function ProductForm({
       <label>Descripción</label>
       <textarea
         placeholder="Descripción"
-        value={description}
+        value={description || ""} // Asegúrate de que nunca sea `null` o `undefined`
         onChange={(event) => setDescription(event.target.value)}
       />
       <div className="mb-2">
@@ -307,7 +310,7 @@ export default function ProductForm({
       <input
         type="number"
         placeholder="Precio"
-        value={price}
+        value={price || 0} // Asegúrate de que nunca sea `null` o `undefined`
         onChange={(event) => setPrice(+event.target.value)}
       />
       <button className="btn-primary" type="submit">
