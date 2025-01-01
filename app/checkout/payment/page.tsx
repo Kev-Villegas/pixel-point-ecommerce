@@ -1,5 +1,6 @@
 "use client";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
+import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -21,7 +22,7 @@ export default function PaymentPage() {
     preferenceId: preferenceId,
   };
 
-  const customization = {
+  const customization: IPaymentBrickCustomization = {
     visual: {
       style: {
         theme: "default",
@@ -35,7 +36,7 @@ export default function PaymentPage() {
     },
   };
 
-  const onSubmit = async ({ selectedPaymentMethod, formData }) => {
+  const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
     // callback called when clicking the submit data button
     return new Promise((resolve, reject) => {
       // fetch("/process_payment", {
@@ -52,7 +53,7 @@ export default function PaymentPage() {
     });
   };
 
-  const onError = async (error) => {
+  const onError = async (error: any) => {
     // callback called for all Brick error cases
     console.log(error);
   };
