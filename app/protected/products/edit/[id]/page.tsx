@@ -8,7 +8,7 @@ export default async function EditPage({
 }) {
   const { id } = await params;
 
-  let { data } = await axios.get(`http://localhost:3000/api/products/${id}`);
+  let { data } = await axios.get(`/api/products/${id}`);
 
   delete data.properties.id;
   delete data.properties.productId;
