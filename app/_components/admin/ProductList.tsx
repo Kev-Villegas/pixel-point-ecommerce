@@ -26,9 +26,11 @@ function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    axios.get("/api/products").then((response) => {
-      setProducts(response.data);
-    });
+    axios
+      .get("https://pixel-point-ecommerce.vercel.app/api/products")
+      .then((response) => {
+        setProducts(response.data);
+      });
   }, []);
 
   const handleDelete = async (id: number) => {
