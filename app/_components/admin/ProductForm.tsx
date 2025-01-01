@@ -42,7 +42,16 @@ export default function ProductForm({
   const [price, setPrice] = useState<number>(existingPrice || 159.99);
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
-  const [properties, setProperties] = useState(existingProperties || []);
+  const [properties, setProperties] = useState<
+    { name: string; values: string }[]
+  >(
+    existingProperties
+      ? Object.entries(existingProperties).map(([key, value]) => ({
+          name: key,
+          values: value,
+        }))
+      : [],
+  );
 
   const [isUploading, setIsUploading] = useState(false);
 
