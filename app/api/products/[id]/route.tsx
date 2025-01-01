@@ -28,7 +28,7 @@ export async function PUT(
   const params = await props.params;
   const body = await request.json();
 
-  const formattedProperties = body.properties.reduce((acc, prop) => {
+  const formattedProperties = body.properties.reduce((acc: any, prop: any) => {
     const key = prop.name.toLowerCase();
     acc[key] = prop.values;
     return acc;
