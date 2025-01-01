@@ -69,7 +69,7 @@ export default function ProductForm({
     }
   }, []);
 
-  const saveProduct = async (e) => {
+  const saveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = {
       title,
@@ -97,7 +97,7 @@ export default function ProductForm({
     }
   };
 
-  const updateImagesOrder = (images) => {
+  const updateImagesOrder = (images: any) => {
     setImages(images);
   };
 
@@ -108,14 +108,22 @@ export default function ProductForm({
     });
   };
 
-  const handlePropertyNameChange = (index, property, newName) => {
+  const handlePropertyNameChange = (
+    index: any,
+    property: any,
+    newName: any,
+  ) => {
     setProperties((prev) => {
       const properties = [...prev];
       properties[index].name = newName;
       return properties;
     });
   };
-  const handlePropertyValuesChange = (index, property, newValues) => {
+  const handlePropertyValuesChange = (
+    index: any,
+    property: any,
+    newValues: any,
+  ) => {
     setProperties((prev) => {
       const properties = [...prev];
       properties[index].values = newValues;
@@ -123,7 +131,7 @@ export default function ProductForm({
     });
   };
 
-  const removeProperty = (indexToRemove) => {
+  const removeProperty = (indexToRemove: any) => {
     setProperties((prev) => {
       return [...prev].filter((p, pIndex) => {
         return pIndex !== indexToRemove;
@@ -222,7 +230,7 @@ export default function ProductForm({
               return [
                 ...oldImages,
                 {
-                  id: `img-${oldImages.length}`,
+                  id: oldImages.length,
                   url: info.secure_url,
                 },
               ];
