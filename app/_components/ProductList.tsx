@@ -20,9 +20,8 @@ export default function ProductList({ title, href }: ProductListProps) {
   });
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/products")
-      .then((response) => setProducts(response.data));
+    // https://pixel-point-ecommerce.vercel.app/api/products
+    axios.get("/api/products").then((response) => setProducts(response.data));
   }, []);
 
   return (
