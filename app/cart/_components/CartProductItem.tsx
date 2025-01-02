@@ -1,8 +1,14 @@
 /* eslint-disable */
-import { motion } from "framer-motion";
-import { Trash2, Plus, Minus } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
 import { Button } from "@/app/_components/ui/button";
+import { motion } from "framer-motion";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
+
+interface images {
+  id: number;
+  url: string;
+  productId: number;
+}
 
 interface CartProductItemProps {
   product: {
@@ -10,7 +16,7 @@ interface CartProductItemProps {
     name: string;
     price: number;
     quantity: number;
-    image: string | StaticImageData;
+    images: images[];
   };
   onQuantityChange: (productId: number, increment: boolean) => void;
   onRemove: (productId: number) => void;
@@ -32,7 +38,7 @@ export function CartProductItem({
     >
       <div className="flex items-center gap-4">
         <Image
-          src={product.image}
+          src={product.images[0].url}
           alt={product.name}
           width={60}
           height={60}

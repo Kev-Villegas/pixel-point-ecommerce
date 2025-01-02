@@ -1,71 +1,28 @@
 "use client";
 
-import Link from "next/link";
-import ps5 from "@/public/ps5.png";
-import s21 from "@/public/s21.png";
-import macbook from "@/public/macbook.webp";
-import { ProductBase } from "@/types/types";
-import iPhone from "@/public/iphone-example.png";
-import notebookMsi from "@/public/notebookMsi.png";
-import xboxseriesx from "@/public/xboxxseries.png";
-import { useInView } from "react-intersection-observer";
 import ProductCard from "@/app/_components/ProductCard";
+import { ProductBase } from "@/types/types";
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 interface ProductListProps {
   title: string;
   href: string;
 }
 
-const products: ProductBase[] = [
-  {
-    id: 1,
-    name: "iPhone",
-    brand: "Apple",
-    price: 799.99,
-    image: iPhone,
-  },
-  {
-    id: 2,
-    name: "Macbook Pro",
-    brand: "Apple",
-    price: 1299.99,
-    image: macbook,
-  },
-  {
-    id: 3,
-    name: "Playstation 5",
-    brand: "Sony",
-    price: 499.99,
-    image: ps5,
-  },
-  {
-    id: 4,
-    name: "Samsung Galaxy S21",
-    brand: "Samsung",
-    price: 699.99,
-    image: s21,
-  },
-  {
-    id: 5,
-    name: "MSI Notebook",
-    brand: "MSI",
-    price: 999.99,
-    image: notebookMsi,
-  },
-  {
-    id: 6,
-    name: "Xbox Series X",
-    brand: "Microsoft",
-    price: 499.99,
-    image: xboxseriesx,
-  },
-];
-
 export default function ProductList({ title, href }: ProductListProps) {
+  const [products, setProducts] = useState<ProductBase[]>([]);
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  useEffect(() => {
+    // https://pixel-point-ecommerce.vercel.app/api/products
+    axios.get("/api/products").then((response) => setProducts(response.data));
+  }, []);
 
   return (
     <div className="mx-auto px-4 py-8" ref={ref}>
@@ -88,7 +45,7 @@ export default function ProductList({ title, href }: ProductListProps) {
                 name={product.name}
                 brand={product.brand}
                 price={product.price}
-                image={product.image}
+                images={product.images}
               />
             ))}
           </div>
