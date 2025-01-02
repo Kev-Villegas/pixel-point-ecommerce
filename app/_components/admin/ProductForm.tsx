@@ -39,10 +39,19 @@ export default function ProductForm({
   const router = useRouter();
   const [title, setTitle] = useState(existingName || "");
   const [description, setDescription] = useState(existingDescription || "");
-  const [price, setPrice] = useState<number>(existingPrice || 159.99);
+  const [price, setPrice] = useState<number>(existingPrice ?? 159.99); // Usa `??` para evitar problemas con `null`
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
-  const [properties, setProperties] = useState(existingProperties || []);
+  const [properties, setProperties] = useState<
+    { name: string; values: string }[]
+  >(
+    existingProperties
+      ? Object.entries(existingProperties).map(([key, value]) => ({
+          name: key,
+          values: value || "",
+        }))
+      : [],
+  );
 
   const [isUploading, setIsUploading] = useState(false);
 
@@ -60,7 +69,7 @@ export default function ProductForm({
     }
   }, []);
 
-  const saveProduct = async (e) => {
+  const saveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = {
       title,
@@ -72,7 +81,10 @@ export default function ProductForm({
     };
 
     if (id) {
-      await axios.put(`/api/products/${id}`, { ...data, id });
+      await axios.put(`/api/products/${id}`, { ...data, id }).then(() => {
+        toast.success("Producto actualizado correctamente");
+        router.push("/protected/products");
+      });
     } else {
       try {
         const response = await axios.post("/api/products", data);
@@ -88,7 +100,7 @@ export default function ProductForm({
     }
   };
 
-  const updateImagesOrder = (images) => {
+  const updateImagesOrder = (images: any) => {
     setImages(images);
   };
 
@@ -99,14 +111,22 @@ export default function ProductForm({
     });
   };
 
-  const handlePropertyNameChange = (index, property, newName) => {
+  const handlePropertyNameChange = (
+    index: any,
+    property: any,
+    newName: any,
+  ) => {
     setProperties((prev) => {
       const properties = [...prev];
       properties[index].name = newName;
       return properties;
     });
   };
-  const handlePropertyValuesChange = (index, property, newValues) => {
+  const handlePropertyValuesChange = (
+    index: any,
+    property: any,
+    newValues: any,
+  ) => {
     setProperties((prev) => {
       const properties = [...prev];
       properties[index].values = newValues;
@@ -114,7 +134,7 @@ export default function ProductForm({
     });
   };
 
-  const removeProperty = (indexToRemove) => {
+  const removeProperty = (indexToRemove: any) => {
     setProperties((prev) => {
       return [...prev].filter((p, pIndex) => {
         return pIndex !== indexToRemove;
@@ -137,7 +157,7 @@ export default function ProductForm({
       <input
         type="text"
         placeholder="Nombre"
-        value={title}
+        value={title || ""} // Asegúrate de que nunca sea `null` o `undefined`
         onChange={(e) => setTitle(e.target.value)}
       />
 
@@ -213,7 +233,7 @@ export default function ProductForm({
               return [
                 ...oldImages,
                 {
-                  id: `img-${oldImages.length}`,
+                  id: oldImages.length,
                   url: info.secure_url,
                 },
               ];
@@ -243,7 +263,7 @@ export default function ProductForm({
       <label>Descripción</label>
       <textarea
         placeholder="Descripción"
-        value={description}
+        value={description || ""} // Asegúrate de que nunca sea `null` o `undefined`
         onChange={(event) => setDescription(event.target.value)}
       />
       <div className="mb-2">
@@ -290,7 +310,7 @@ export default function ProductForm({
       <input
         type="number"
         placeholder="Precio"
-        value={price}
+        value={price || 0} // Asegúrate de que nunca sea `null` o `undefined`
         onChange={(event) => setPrice(+event.target.value)}
       />
       <button className="btn-primary" type="submit">

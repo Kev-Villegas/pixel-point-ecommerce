@@ -1,16 +1,16 @@
-import Image from "next/image";
-import toast from "react-hot-toast";
-import { ProductBase } from "@/types/types";
-import { useCartStore } from "@/store/useCartStore";
-import { BadgeCheck, ShoppingBag } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { useCartStore } from "@/store/useCartStore";
+import { ProductBase } from "@/types/types";
+import { BadgeCheck, ShoppingBag } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface ProductCardProps extends ProductBase {}
 
 export default function ProductCard({
   id,
-  image,
+  images,
   name,
   price,
   brand,
@@ -21,7 +21,7 @@ export default function ProductCard({
   const handleAddToCart = () => {
     if (isAdding) return;
     setIsAdding(true);
-    addProduct({ id, name, price, brand, image });
+    addProduct({ id, name, price, brand, images });
     toast.success(`Producto ${name} agregado al carrito`);
 
     setTimeout(() => {
@@ -36,7 +36,7 @@ export default function ProductCard({
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
         <Image
-          src={image}
+          src={images[0].url}
           alt={name}
           fill
           style={{ objectFit: "contain" }}
