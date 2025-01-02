@@ -18,7 +18,7 @@ export default function PaymentPage() {
   }, []);
 
   const initialization = {
-    amount: 50,
+    amount: 10,
     preferenceId: preferenceId,
   };
 
