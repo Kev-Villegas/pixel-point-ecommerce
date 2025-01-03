@@ -57,7 +57,7 @@ export default function CartPage() {
             Carrito de Compras
           </h1>
 
-          <div className="grid w-full grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {cartProducts.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -88,7 +88,11 @@ export default function CartPage() {
                   </AnimatePresence>
                 </Card>
                 <Separator />
-                <div className="mt-4 flex justify-between">
+                <div className="mt-4 flex justify-between gap-4 px-2 sm:flex-row">
+                  <div className="pr-1 text-lg font-semibold text-gray-700">
+                    {cartProducts.length}{" "}
+                    {cartProducts.length === 1 ? "Artículo" : "Artículos"}
+                  </div>
                   <Button
                     variant="destructive"
                     className="rounded-lg bg-red-500 px-4 py-2 text-white transition duration-200 hover:bg-red-600"
@@ -97,10 +101,6 @@ export default function CartPage() {
                     <X className="h-4 w-4" />
                     Vaciar Carrito
                   </Button>
-                  <div className="pr-1 text-lg font-semibold text-gray-700">
-                    {cartProducts.length}{" "}
-                    {cartProducts.length === 1 ? "Artículo" : "Artículos"}
-                  </div>
                 </div>
               </motion.div>
             )}
