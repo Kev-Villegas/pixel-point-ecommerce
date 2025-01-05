@@ -3,6 +3,7 @@ import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
 
@@ -61,13 +62,15 @@ export default function PaymentPage() {
 
   return (
     // <main className='flex items-center justify-center text-center'>
-    <Payment
-      initialization={initialization}
-      customization={customization}
-      onSubmit={onSubmit}
-      onReady={onReady}
-      onError={onError}
-    />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Payment
+        initialization={initialization}
+        customization={customization}
+        onSubmit={onSubmit}
+        onReady={onReady}
+        onError={onError}
+      />
+    </Suspense>
     // </main>
   );
 }
