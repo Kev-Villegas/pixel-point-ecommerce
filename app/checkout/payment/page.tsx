@@ -2,20 +2,13 @@
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
 
 export default function PaymentPage() {
-  const [preferenceId, setPreferenceId] = useState("");
-
-  useEffect(() => {
-    const preferenceId = localStorage.getItem("id");
-    if (preferenceId) {
-      const parsedPreferenceId = JSON.parse(preferenceId);
-      setPreferenceId(parsedPreferenceId);
-    }
-  }, []);
+  const searchParams = useSearchParams();
+  const preferenceId = searchParams.get("preference") || undefined;
 
   const initialization = {
     amount: 10,

@@ -1,13 +1,13 @@
 "use client";
-
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
+import { useCartStore } from "@/store/useCartStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -29,21 +29,15 @@ const formSchema = z.object({
   province: z.string().min(2, {
     message: "La provincia debe tener al menos 2 caracteres.",
   }),
-  postalCode: z.string().regex(/^[0-9]{5}$/, {
-    message: "Debe ser un código postal válido de 5 dígitos.",
+  postalCode: z.string().regex(/^[0-9]{4}$/, {
+    message: "Debe ser un código postal válido.",
   }),
 });
 
 export function UserAddressForm() {
+  const router = useRouter();
+  const { cartProducts } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  useEffect(() => {
-    axios.post("/api/checkout/preferences").then((response) => {
-      window.localStorage.setItem(
-        "id",
-        JSON.stringify(response.data.response.id),
-      );
-    });
-  }, []);
 
   const {
     register,
@@ -56,14 +50,21 @@ export function UserAddressForm() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-    // !Handle Api Data here
-    console.log(values);
+    const payload = {
+      cart: cartProducts,
+      payer: values,
+    };
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success("Dirección guardada con exito");
-      reset();
-    }, 2000);
+    axios.post("/api/checkout/preferences", payload).then((response) => {
+      console.log(response.data);
+      router.push(`/checkout/payment?preference=${response.data.response.id}`);
+    });
+
+    // reset();
+    // toast.success("Dirección guardada con exito");
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    // }, 2000);
   };
 
   return (
@@ -111,7 +112,7 @@ export function UserAddressForm() {
         <Label htmlFor="phoneNumber">Número de teléfono</Label>
         <Input
           id="phoneNumber"
-          placeholder="+543757148213"
+          placeholder="3519999999"
           {...register("phoneNumber")}
           name="phoneNumber"
         />
