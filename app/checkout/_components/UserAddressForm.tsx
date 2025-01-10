@@ -1,15 +1,15 @@
 "use client";
 
-import * as z from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
-import { Button } from "@/app/_components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { userAddressValidation } from "@/app/_schemas/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as z from "zod";
 
 export function UserAddressForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -92,7 +92,7 @@ export function UserAddressForm() {
         <Label htmlFor="street_number">Número de calle</Label>
         <Input
           id="street_number"
-          placeholder="123"
+          placeholder="4900"
           {...register("street_number")}
           name="street_number"
         />
@@ -113,31 +113,32 @@ export function UserAddressForm() {
           <p className="text-sm text-red-500">{errors.email.message}</p>
         )}
       </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="area_code">Código de área</Label>
+          <Input
+            id="area_code"
+            placeholder="351"
+            {...register("area_code")}
+            name="area_code"
+          />
+          {errors.area_code && (
+            <p className="text-sm text-red-500">{errors.area_code.message}</p>
+          )}
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="area_code">Código de área</Label>
-        <Input
-          id="area_code"
-          placeholder="+54"
-          {...register("area_code")}
-          name="area_code"
-        />
-        {errors.area_code && (
-          <p className="text-sm text-red-500">{errors.area_code.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="number">Número de teléfono</Label>
-        <Input
-          id="number"
-          placeholder="757148213"
-          {...register("number")}
-          name="number"
-        />
-        {errors.number && (
-          <p className="text-sm text-red-500">{errors.number.message}</p>
-        )}
+        <div className="space-y-2">
+          <Label htmlFor="number">Número de teléfono</Label>
+          <Input
+            id="number"
+            placeholder="757148213"
+            {...register("number")}
+            name="number"
+          />
+          {errors.number && (
+            <p className="text-sm text-red-500">{errors.number.message}</p>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
