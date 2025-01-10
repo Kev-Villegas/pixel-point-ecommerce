@@ -3,6 +3,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { ProductBase } from "@/types/types";
 import { BadgeCheck, ShoppingBag } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -35,21 +36,25 @@ export default function ProductCard({
       tabIndex={0}
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
-        <Image
-          src={images[0].url}
-          alt={name}
-          fill
-          style={{ objectFit: "contain" }}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority
-          className="transition-transform duration-500 ease-in-out hover:scale-110"
-        />
+        <Link href={`/products/${id}`}>
+          <Image
+            src={images[0].url}
+            alt={name}
+            fill
+            style={{ objectFit: "contain" }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            className="transition-transform duration-500 ease-in-out hover:scale-110"
+          />
+        </Link>
       </div>
       <CardContent className="p-2">
         <div className="flex flex-col space-y-1">
-          <h3 className="cursor-pointer truncate text-base font-medium leading-tight hover:text-primary">
-            {name}
-          </h3>
+          <Link href={`/products/${id}`}>
+            <h3 className="cursor-pointer truncate text-base font-medium leading-tight hover:text-primary">
+              {name}
+            </h3>
+          </Link>
           {brand && (
             <p className="flex items-center gap-[3px] truncate pt-1 text-sm text-muted-foreground">
               {brand}
