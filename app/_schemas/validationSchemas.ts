@@ -51,7 +51,7 @@ export const userAddressValidation = z.object({
     }),
   number: z
     .string()
-    .regex(/^[0-9]{10,14}$/, {
+    .regex(/^[0-9]{7,10}$/, {
       message: "Debe ser un número de teléfono válido.",
     })
     .max(15, {
@@ -75,8 +75,8 @@ export const userAddressValidation = z.object({
     }),
   postalCode: z
     .string()
-    .regex(/^[0-9]{5}$/, {
-      message: "Debe ser un código postal válido de 5 dígitos.",
+    .regex(/^[0-9]{4,5}$/, {
+      message: "Debe ser un código postal válido.",
     })
     .max(5, {
       message: "El código postal no debe exceder los 5 caracteres.",

@@ -5,7 +5,6 @@ import { Label } from "@/app/_components/ui/label";
 import { userAddressValidation } from "@/app/_schemas/validationSchemas";
 import { useCartStore } from "@/store/useCartStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,10 +31,11 @@ export function UserAddressForm() {
       payer: values,
     };
 
-    axios.post("/api/checkout/preferences", payload).then((response) => {
-      console.log(response.data);
-      router.push(`/checkout/payment?preference=${response.data.response.id}`);
-    });
+    console.log(payload);
+    // axios.post("/api/checkout/preferences", payload).then((response) => {
+    //   console.log(response.data);
+    //   router.push(`/checkout/payment?preference=${response.data.response.id}`);
+    // });
 
     // reset();
     // toast.success("Dirección guardada con exito");
