@@ -3,14 +3,24 @@
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
+import { Card } from "@/app/_components/ui/card";
+import { useCartStore } from "@/store/useCartStore";
 import { Button } from "@/app/_components/ui/button";
 import { useParams, useRouter } from "next/navigation";
-import { Battery, Cpu, MemoryStick, Palette } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Product as PrismaProduct,
   Image as PrismaImage,
   Properties as PrismaProperties,
 } from "@prisma/client";
+import {
+  BadgeCheck,
+  Battery,
+  Cpu,
+  MemoryStick,
+  Palette,
+  ShoppingBag,
+} from "lucide-react";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -20,9 +30,11 @@ interface Product extends PrismaProduct {
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const router = useRouter();
+  const { addProduct } = useCartStore();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -55,11 +67,25 @@ const ProductDetailsPage = () => {
     product;
 
   const handleAddToCart = () => {
-    if (stock) {
-      toast.success("Producto agregado al carrito");
-    } else {
-      toast.error("Este producto está agotado");
-    }
+    if (isAdding || !stock) return;
+
+    setIsAdding(true);
+    addProduct({
+      id: Number(id),
+      name,
+      price,
+      brand,
+      images: product.images.map((image) => ({
+        id: image.id,
+        url: image.url,
+        productId: image.productId ?? 0,
+      })),
+    });
+    toast.success(`Se agregó ${name} al carrito`);
+
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 800);
   };
 
   return (
@@ -74,7 +100,7 @@ const ProductDetailsPage = () => {
                 alt={`Imagen ${index + 1} de ${name}`}
                 width={80}
                 height={80}
-                className={`cursor-pointer rounded border object-cover ${
+                className={`cursor-pointer rounded border object-cover transition-all duration-100 ${
                   selectedImage === image.url
                     ? "border-primary"
                     : "border-gray-300"
@@ -86,70 +112,100 @@ const ProductDetailsPage = () => {
 
           <div className="flex-1">
             <div className="relative h-[500px] w-[500px] overflow-hidden rounded-lg bg-gray-100 shadow-md">
-              <Image
-                src={selectedImage || "/placeholder.png"}
-                alt={name}
-                fill
-                className="object-contain"
-              />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedImage}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={selectedImage || "/placeholder.png"}
+                    alt={name}
+                    fill
+                    className="object-contain"
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-2">
           <h1 className="text-3xl font-bold text-gray-800">{name}</h1>
-          <p className="text-sm text-gray-500">Marca: {brand}</p>
+          <p className="flex items-center gap-[3px] text-sm text-gray-500">
+            {brand}
+            <BadgeCheck className="mt-[1px] h-4 w-4 font-bold text-blue-700" />
+          </p>
           <p className="text-lg text-gray-600">{description}</p>
-          <div className="text-2xl font-semibold text-primary">
+          <div className="text-2xl font-bold text-primary">
             ${price.toFixed(2)}
           </div>
-          <p className={`text-lg ${stock ? "text-green-600" : "text-red-600"}`}>
+          <p
+            className={`text-lg font-medium ${
+              stock ? "font-medium text-green-600" : "font-medium text-red-600"
+            }`}
+          >
             {stock ? "En stock" : "Agotado"}
           </p>
           <Button
             variant="default"
-            className="mt-4 px-6 py-3 text-lg"
+            className={`mt-4 flex items-center gap-2 px-6 py-3 text-lg ${
+              isAdding || !stock ? "cursor-not-allowed opacity-50" : ""
+            }`}
             onClick={handleAddToCart}
+            disabled={isAdding || !stock}
           >
-            {stock ? "Añadir al carrito" : "Notificarme"}
+            {stock ? (
+              <>
+                <ShoppingBag className="h-5 w-5" /> Añadir al carrito
+              </>
+            ) : (
+              "Notificarme"
+            )}
           </Button>
         </div>
       </div>
 
       <div className="mt-10">
         <h2 className="text-2xl font-bold text-gray-800">
-          Especificaciones técnicas
+          Especificaciones Técnicas
         </h2>
-        <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-          {properties.battery && (
-            <li className="flex items-center space-x-2 text-gray-600">
-              <Battery className="text-green-500" />
-              <span className="font-medium capitalize">Batería:</span>
-              <span>{properties.battery}</span>
-            </li>
-          )}
-          {properties.processor && (
-            <li className="flex items-center space-x-2 text-gray-600">
-              <Cpu className="text-gray-800" />
-              <span className="font-medium capitalize">Procesador:</span>
-              <span>{properties.processor}</span>
-            </li>
-          )}
-          {properties.color && (
-            <li className="flex items-center space-x-2 text-gray-600">
-              <Palette className="text-gray-800" />
-              <span className="font-medium capitalize">Color:</span>
-              <span>{properties.color}</span>
-            </li>
-          )}
-          {properties.ram && (
-            <li className="flex items-center space-x-2 text-gray-600">
-              <MemoryStick className="text-primary" />
-              <span className="font-medium capitalize">RAM:</span>
-              <span>{properties.ram}</span>
-            </li>
-          )}
-        </ul>
+        <Card className="mt-4 px-4 py-4">
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {properties.battery && (
+              <li className="flex items-center space-x-2 text-gray-600">
+                <Battery className="text-green-500" />
+                <span className="font-medium capitalize">Batería:</span>
+                <span>{properties.battery}</span>
+              </li>
+            )}
+            {properties.processor && (
+              <li className="flex items-center space-x-2 text-gray-600">
+                <Cpu className="text-gray-800" />
+                <span className="font-medium capitalize">Procesador:</span>
+                <span>{properties.processor}</span>
+              </li>
+            )}
+
+            {properties.color && (
+              <li className="flex items-center space-x-2 text-gray-600">
+                <Palette className="text-gray-800" />
+                <span className="font-medium capitalize">Color:</span>
+                <span>{properties.color}</span>
+              </li>
+            )}
+            {properties.ram && (
+              <li className="flex items-center space-x-2 text-gray-600">
+                <MemoryStick className="text-primary" />
+                <span className="font-medium capitalize">RAM:</span>
+                <span>{properties.ram}</span>
+              </li>
+            )}
+          </ul>
+        </Card>
       </div>
     </div>
   );
