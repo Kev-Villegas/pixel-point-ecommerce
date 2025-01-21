@@ -54,7 +54,7 @@ model Properties {
   operatingsystem  String?
   processor        String?
   graphics         String?
-  simCard          String?
+  simcard          String?
   chipset          String?
   connectivity     String?
   navigation       String?
