@@ -21,6 +21,8 @@ import {
   Palette,
   ShoppingBag,
 } from "lucide-react";
+import RelatedProductsCarousel from "./RelatedProductsCarousel";
+import { Separator } from "@/app/_components/ui/separator";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -206,6 +208,10 @@ const ProductDetailsPage = () => {
             )}
           </ul>
         </Card>
+      </div>
+      <Separator className="my-5" />
+      <div className="">
+        <RelatedProductsCarousel brand={brand} currentProductId={Number(id)} />
       </div>
     </div>
   );
