@@ -1,6 +1,7 @@
 "use client";
 
 import { Label } from "@/app/_components/ui/label";
+import { useFilterStore } from "@/store/useFilterStore";
 import {
   Select,
   SelectContent,
@@ -8,25 +9,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
-import { useState } from "react";
 
 interface FilterProductsByProps {
   onChange: (order: "asc" | "desc", filterBy: "price" | "name") => void;
 }
 
 export default function FilterProductsBy({ onChange }: FilterProductsByProps) {
-  const [selectedOption, setSelectedOption] = useState<"asc" | "desc">("asc");
-  const [selectedFilter, setSelectedFilter] = useState<"price" | "name">(
-    "price",
-  );
+  const { selectedOption, selectedFilter, setFilter } = useFilterStore();
 
   const handleChange = (value: string) => {
     const [filterBy, order] = value.split("-") as [
       "price" | "name",
       "asc" | "desc",
     ];
-    setSelectedOption(order);
-    setSelectedFilter(filterBy);
+    setFilter(filterBy, order);
     onChange(order, filterBy);
   };
 
