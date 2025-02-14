@@ -21,13 +21,19 @@ export default function ProductByBrandList({
 }: ProductByBrandListProps) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
-  const handleFilterChange = (order: "asc" | "desc") => {
+  const handleFilterChange = (
+    order: "asc" | "desc",
+    filterBy: "price" | "name",
+  ) => {
     const sortedProducts = [...filteredProducts].sort((a, b) => {
-      if (order === "asc") {
-        return a.price - b.price;
-      } else {
-        return b.price - a.price;
+      if (filterBy === "price") {
+        return order === "asc" ? a.price - b.price : b.price - a.price;
+      } else if (filterBy === "name") {
+        return order === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
       }
+      return 0;
     });
     setFilteredProducts(sortedProducts);
   };

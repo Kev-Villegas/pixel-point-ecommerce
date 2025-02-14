@@ -82,7 +82,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <nav className="flex space-x-4 text-sm font-medium text-gray-700">
             {brands.map((brand) => (
-              <a href="/category/1" className="hover:text-primary" key={brand}>
+              <a
+                href={`/brands/${brand}`}
+                className="hover:text-primary"
+                key={brand}
+              >
                 {brand}
               </a>
             ))}

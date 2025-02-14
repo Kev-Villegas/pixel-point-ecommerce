@@ -1,34 +1,52 @@
 "use client";
 
+import { Label } from "@/app/_components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/_components/ui/select";
 import { useState } from "react";
 
 interface FilterProductsByProps {
-  onChange: (order: "asc" | "desc") => void;
+  onChange: (order: "asc" | "desc", filterBy: "price" | "name") => void;
 }
 
 export default function FilterProductsBy({ onChange }: FilterProductsByProps) {
   const [selectedOption, setSelectedOption] = useState<"asc" | "desc">("asc");
+  const [selectedFilter, setSelectedFilter] = useState<"price" | "name">(
+    "price",
+  );
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as "asc" | "desc";
-    setSelectedOption(value);
-    onChange(value); // Llamamos a la función `onChange` pasada como prop
+  const handleChange = (value: string) => {
+    const [filterBy, order] = value.split("-") as [
+      "price" | "name",
+      "asc" | "desc",
+    ];
+    setSelectedOption(order);
+    setSelectedFilter(filterBy);
+    onChange(order, filterBy);
   };
 
   return (
     <div className="mb-4">
-      <label htmlFor="filter" className="mr-2">
-        Ordenar por precio:
-      </label>
-      <select
-        id="filter"
-        value={selectedOption}
-        onChange={handleChange}
-        className="rounded border px-3 py-2"
+      <Label>Ordenar Por</Label>
+      <Select
+        value={`${selectedFilter}-${selectedOption}`}
+        onValueChange={handleChange}
       >
-        <option value="asc">Precio: Bajo a Alto</option>
-        <option value="desc">Precio: Alto a Bajo</option>
-      </select>
+        <SelectTrigger className="w-[280px]">
+          <SelectValue placeholder="Ordenar Por" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="price-asc">Precio: Bajo a Alto</SelectItem>
+          <SelectItem value="price-desc">Precio: Alto a Bajo</SelectItem>
+          <SelectItem value="name-asc">Nombre: A - Z</SelectItem>
+          <SelectItem value="name-desc">Nombre: Z - A</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 }
