@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Button } from "@/app/_components/ui/button";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Product as PrismaProduct } from "@prisma/client";
 
@@ -55,11 +54,11 @@ const RelatedProductsCarousel = ({
 
   return (
     <div className="">
-      <h2 className="mb-4 text-2xl font-bold text-gray-800">
+      <h2 className="text-2xl font-bold text-gray-800">
         Más productos de {brand}
       </h2>
       <motion.div
-        className="flex space-x-4 overflow-x-auto"
+        className="flex space-x-4 overflow-x-auto px-1 py-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -67,8 +66,9 @@ const RelatedProductsCarousel = ({
         {products.map((product) => (
           <motion.div
             key={product.id}
-            className="min-w-[200px] max-w-[200px] rounded-lg p-4 shadow-md transition-shadow hover:shadow-lg"
-            whileHover={{ scale: 1.05 }}
+            className="min-w-[200px] max-w-[200px] rounded-lg border border-gray-300 p-4 shadow-md hover:cursor-pointer"
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.3 }}
             onClick={() => router.push(`/products/${product.id}`)}
           >
             <Image
