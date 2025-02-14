@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,16 +14,17 @@ model Product {
   description String
   brand       String
   stock       Boolean     @default(true)
-  images      Image[]
   price       Float
-  order       Order?      @relation(fields: [orderId], references: [id])
   orderId     Int?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime
+  images      Image[]
+  order       Order?      @relation(fields: [orderId], references: [id])
   properties  Properties?
 }
 
 model Order {
   id            Int       @id @default(autoincrement())
-  items         Product[]
   username      String
   email         String
   city          String
@@ -39,6 +34,7 @@ model Order {
   phonenumber   String
   paid          Boolean
   createdAt     DateTime  @default(now())
+  items         Product[]
 }
 
 model Properties {
@@ -47,36 +43,92 @@ model Properties {
   capacity         String
   ram              String
   color            String
-  rearcamera       String?
-  frontcamera      String?
   battery          String?
-  fastcharging     Boolean?
-  operatingsystem  String?
   processor        String?
   graphics         String?
-  simcard          String?
   chipset          String?
   connectivity     String?
   navigation       String?
-  network2g        String?
-  network3g        String?
-  network4g        String?
-  network5g        String?
-  screentype       String?
-  screensize       String?
-  screenresolution String?
   audio            String?
   sensors          String?
   features         String?
   weight           String?
   dimensions       String?
-  product          Product? @relation(fields: [productId], references: [id])
+  fastcharging     Boolean?
+  frontcamera      String?
+  network2g        String?
+  network3g        String?
+  network4g        String?
+  network5g        String?
+  operatingsystem  String?
+  rearcamera       String?
+  screenresolution String?
+  screensize       String?
+  screentype       String?
   productId        Int?     @unique
+  simcard          String?
+  product          Product? @relation(fields: [productId], references: [id])
 }
 
 model Image {
   id        Int      @id @default(autoincrement())
   url       String
-  product   Product? @relation(fields: [productId], references: [id])
   productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role UserRole @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
 }
