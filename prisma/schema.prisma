@@ -17,7 +17,7 @@ model Product {
   price       Float
   orderId     Int?
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime    @updatedAt
   images      Image[]
   order       Order?      @relation(fields: [orderId], references: [id])
   properties  Properties?
@@ -34,6 +34,7 @@ model Order {
   phonenumber   String
   paid          Boolean
   createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   items         Product[]
 }
 
@@ -117,7 +118,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  role UserRole @default(USER)
+  role          UserRole  @default(USER)
   accounts      Account[]
   sessions      Session[]
 }
