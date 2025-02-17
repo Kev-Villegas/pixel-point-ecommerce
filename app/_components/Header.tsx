@@ -1,14 +1,14 @@
 "use client";
 
-import { useCartStore } from "@/store/useCartStore";
-import { useSearchProductStore } from "@/store/useSearchProductStore";
-import debounce from "lodash.debounce";
-import { Search, ShoppingCart, User } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { Button } from "./ui/button";
+import Image from "next/image";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import debounce from "lodash.debounce";
+import React, { useState } from "react";
+import { useCartStore } from "@/store/useCartStore";
+import { Search, ShoppingCart, User } from "lucide-react";
+import { useSearchProductStore } from "@/store/useSearchProductStore";
 
 const Header = () => {
   const brands = ["Apple", "Samsung", "Xiaomi"];
@@ -18,8 +18,12 @@ const Header = () => {
     0,
   );
 
-  const { searchResults, isSearching, handleSearch } = useSearchProductStore();
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const { searchResults, handleSearch } = useSearchProductStore();
+
+  const handleFocus = () => setShowSuggestions(true);
+  const handleBlur = () => setTimeout(() => setShowSuggestions(false), 200);
 
   const debouncedSearch = debounce((query: string) => {
     handleSearch(query);
@@ -44,17 +48,17 @@ const Header = () => {
               placeholder="Search products..."
               value={searchTerm}
               onChange={handleInputChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               className="w-full"
             />
-            {isSearching && (
-              <div className="absolute left-0 top-10">Cargando...</div>
-            )}
-            {searchResults.length > 0 && (
+
+            {showSuggestions && searchResults.length > 0 && (
               <div className="absolute z-10 max-h-60 w-full overflow-y-auto rounded-lg bg-white shadow-lg">
                 {searchResults.map((product) => (
                   <Link
                     key={product.id}
-                    href={`/product/${product.id}`}
+                    href={`/products/${product.id}`}
                     className="flex items-center space-x-4 px-4 py-2 hover:bg-gray-100"
                   >
                     {product.images.length > 0 && (
