@@ -94,3 +94,25 @@ export const userAddressValidation = z.object({
     })
     .optional(),
 });
+
+export const userRegisterSchema = z
+  .object({
+    email: z.string().min(1, "El email es obligatorio").email("Email inválido"),
+    password: z
+      .string()
+      .min(6, "La contraseña debe tener al menos 6 caracteres"),
+    confirmPassword: z.string().min(6, "Debes confirmar la contraseña"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
+
+export type UserRegisterSchema = z.infer<typeof userRegisterSchema>;
+
+export const userLoginSchema = z.object({
+  email: z.string().min(1, "El email es obligatorio").email("Email inválido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+});
+
+export type UserLoginSchema = z.infer<typeof userLoginSchema>;

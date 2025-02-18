@@ -107,8 +107,10 @@ const Header = () => {
                 </span>
               )}
             </Link>
-            <User className="h-6 w-6" />
-            <span className="sr-only">Login</span>
+            <Link href="/signin">
+              <User className="h-6 w-6" />
+              <span className="sr-only">Login</span>
+            </Link>
           </div>
         </div>
       </div>
