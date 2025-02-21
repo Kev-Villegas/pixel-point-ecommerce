@@ -1,14 +1,12 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
+// export const { auth: middleware } = NextAuth(authOptions);
+
 const protectedRoutes = ["/protected/dashboard"];
 
 export default async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-  // Logs para depuración
-  // console.log("Path:", req.nextUrl.pathname);
-  // console.log("Token:", token);
 
   const isProtectedRoute = protectedRoutes.includes(req.nextUrl.pathname);
 

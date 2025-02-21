@@ -6,26 +6,35 @@ export async function POST(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
+  const { payer, cart } = await request.json();
 
   const body = {
-    items: [
-      {
-        id: "1",
-        unit_price: 50,
-        quantity: 1,
-        title: "Pedras",
-      },
-    ],
+    items: cart.map((item: any) => ({
+      id: item.id,
+      unit_price: item.price,
+      quantity: item.quantity,
+      title: item.name,
+      picture_url: item.images[0].url,
+      category_id: item.brand,
+    })),
+    // [
+    //   {
+    //     id: "1",
+    //     unit_price: 50,
+    //     quantity: 1,
+    //     title: "Pedras",
+    //   },
+    // ],
     metadata: {
       text: "joder",
     },
     payer: {
-      name: "Test",
+      name: payer.fullName,
       surname: "User",
-      email: "your_test_email@example.com",
+      email: payer.email,
       phone: {
         area_code: "11",
-        number: "4444-4444",
+        number: payer.phoneNumber,
       },
       // identification: {
       //   type: 'DNI',
@@ -49,9 +58,9 @@ export async function POST(request: NextRequest) {
         free_shipping: false,
         dimensions: "10x10x20,500",
         receiver_address: {
-          zip_code: "06000000",
+          zip_code: payer.postalCode,
           street_number: 123,
-          street_name: "Street",
+          street_name: payer.streetAddress,
           floor: "12",
           apartment: "120A",
         },
@@ -62,11 +71,5 @@ export async function POST(request: NextRequest) {
 
   const response = await preference.create({ body });
 
-  // console.log(response);
-  // if (typeof Storage !== "undefined") {
-  //   // LocalStorage disponible
-  //   console.log('wwwwwwwwwwwwwwwwwwAAAAAAAAAA');
-  //   console.log('wwwwwwwwwwwwwwwwwwAAAAAAAAAA');
-  // }
   return NextResponse.json({ response });
 }

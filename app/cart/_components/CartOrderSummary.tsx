@@ -69,7 +69,7 @@ export function CartOrderSummary({
           </div>
         </div>
 
-        <Link href="/payment/address">
+        <Link href="/checkout">
           <Button className="mt-4 w-full" size="lg">
             Continuar al Pago
           </Button>

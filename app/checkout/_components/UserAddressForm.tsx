@@ -1,27 +1,19 @@
 "use client";
-
-import * as z from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
-import { Button } from "@/app/_components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { userAddressValidation } from "@/app/_schemas/validationSchemas";
+import { useCartStore } from "@/store/useCartStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 export function UserAddressForm() {
+  const router = useRouter();
+  const { cartProducts } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    axios.post("/api/checkout/preferences").then((response) => {
-      window.localStorage.setItem(
-        "id",
-        JSON.stringify(response.data.response.id),
-      );
-    });
-  }, []);
 
   const {
     register,
@@ -34,22 +26,22 @@ export function UserAddressForm() {
 
   const onSubmit = (values: z.infer<typeof userAddressValidation>) => {
     setIsSubmitting(true);
-    const address = {
-      receiver_address: {
-        zip_code: values.postalCode,
-        street_number: values.street_number,
-        street_name: values.street_name,
-        floor: values.floor,
-        apartment: values.apartment,
-      },
+    const payload = {
+      cart: cartProducts,
+      payer: values,
     };
 
-    console.log(address);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success("Dirección guardada con éxito");
-      reset();
-    }, 2000);
+    console.log(payload);
+    // axios.post("/api/checkout/preferences", payload).then((response) => {
+    //   console.log(response.data);
+    //   router.push(`/checkout/payment?preference=${response.data.response.id}`);
+    // });
+
+    // reset();
+    // toast.success("Dirección guardada con exito");
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    // }, 2000);
   };
 
   return (
@@ -92,7 +84,7 @@ export function UserAddressForm() {
         <Label htmlFor="street_number">Número de calle</Label>
         <Input
           id="street_number"
-          placeholder="123"
+          placeholder="4900"
           {...register("street_number")}
           name="street_number"
         />
@@ -113,31 +105,32 @@ export function UserAddressForm() {
           <p className="text-sm text-red-500">{errors.email.message}</p>
         )}
       </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="area_code">Código de área</Label>
+          <Input
+            id="area_code"
+            placeholder="351"
+            {...register("area_code")}
+            name="area_code"
+          />
+          {errors.area_code && (
+            <p className="text-sm text-red-500">{errors.area_code.message}</p>
+          )}
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="area_code">Código de área</Label>
-        <Input
-          id="area_code"
-          placeholder="+54"
-          {...register("area_code")}
-          name="area_code"
-        />
-        {errors.area_code && (
-          <p className="text-sm text-red-500">{errors.area_code.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="number">Número de teléfono</Label>
-        <Input
-          id="number"
-          placeholder="757148213"
-          {...register("number")}
-          name="number"
-        />
-        {errors.number && (
-          <p className="text-sm text-red-500">{errors.number.message}</p>
-        )}
+        <div className="space-y-2">
+          <Label htmlFor="number">Número de teléfono</Label>
+          <Input
+            id="number"
+            placeholder="757148213"
+            {...register("number")}
+            name="number"
+          />
+          {errors.number && (
+            <p className="text-sm text-red-500">{errors.number.message}</p>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

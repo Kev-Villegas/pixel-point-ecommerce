@@ -20,7 +20,7 @@ interface Product {
 }
 
 async function ProductList() {
-  let { data } = await axios.get(`http://localhost:3000/api/products`);
+  let { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/products`);
 
   const products: Product[] = data.map((product: any) => ({
     id: product.id,
