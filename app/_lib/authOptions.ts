@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
       token: JWT;
       user?: User | undefined;
       account?: Account | null | undefined;
-      Profile?: Profile | undefined;
+      profile?: Profile | undefined;
       isNewUser?: boolean | undefined;
     }) {
       if (params.user) {
