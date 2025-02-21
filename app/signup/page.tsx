@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import Header from "../_components/Header";
+import { useRouter } from "next/navigation";
+import { signUp } from "../actions/users/signUp";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { Button } from "@/app/_components/ui/button";
@@ -23,6 +26,7 @@ import {
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -35,11 +39,18 @@ const Page = () => {
   const onSubmit = async (data: UserRegisterSchema) => {
     setLoading(true);
     try {
-      console.log("Datos del formulario:", data);
-      // here we send the data to the server / API
-      // const response = await fetch("/api/register", { method: "POST", body: JSON.stringify(data) });
+      const response = await signUp(data.email, data.password);
+
+      if (response.error) {
+        console.error(response.error);
+        toast.error(response.error);
+      } else {
+        toast.success("Usuario registrado exitosamente.");
+        router.push("/signin");
+      }
     } catch (error) {
-      console.error("Error al registrar usuario:", error);
+      console.error("Error en el registro:", error);
+      toast.error("Ocurrió un error al registrar el usuario.");
     } finally {
       setLoading(false);
     }
