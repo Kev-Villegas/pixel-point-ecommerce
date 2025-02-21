@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const brand = searchParams.get("brand");
-  const excludeId = parseInt(searchParams.get("excludeId") || "0", 10);
+  const excludeId = searchParams.get("excludeId");
 
   if (!brand) {
     return NextResponse.json({ error: "Brand is required" }, { status: 400 });
@@ -13,10 +13,11 @@ export async function GET(request: NextRequest) {
   try {
     const products = await db.product.findMany({
       where: {
-        brand: brand,
-        id: {
-          not: excludeId,
+        brand: {
+          equals: brand,
+          mode: "insensitive",
         },
+        id: excludeId ? { not: parseInt(excludeId, 10) } : undefined,
       },
       include: {
         images: true,
