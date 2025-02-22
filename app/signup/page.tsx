@@ -1,28 +1,29 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
-import Header from "../_components/Header";
-import { useRouter } from "next/navigation";
-import { signUp } from "../actions/users/signUp";
-import { Input } from "@/app/_components/ui/input";
-import { Label } from "@/app/_components/ui/label";
 import { Button } from "@/app/_components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  userRegisterSchema,
-  UserRegisterSchema,
-} from "@/app/_schemas/validationSchemas";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/app/_components/ui/card";
+import { Input } from "@/app/_components/ui/input";
+import { Label } from "@/app/_components/ui/label";
+import {
+  userRegisterSchema,
+  UserRegisterSchema,
+} from "@/app/_schemas/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import Header from "../_components/Header";
+import { signUp } from "../actions/users/signUp";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -118,11 +119,15 @@ const Page = () => {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-white px-2 text-muted-foreground">
-                  O Continua con
+                  O Continúa con
                 </span>
               </div>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => signIn("google")}
+            >
               Google
             </Button>
           </CardFooter>
