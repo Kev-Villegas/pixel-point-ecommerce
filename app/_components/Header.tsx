@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import debounce from "lodash.debounce";
-import React, { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
-import { Search, ShoppingCart, User } from "lucide-react";
 import { useSearchProductStore } from "@/store/useSearchProductStore";
+import debounce from "lodash.debounce";
+import { Search, ShoppingCart, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const Header = () => {
   const brands = ["Apple", "Samsung", "Xiaomi"];
@@ -107,7 +107,7 @@ const Header = () => {
                 </span>
               )}
             </Link>
-            <Link href="/signin">
+            <Link href="/auth/signin">
               <User className="h-6 w-6" />
               <span className="sr-only">Login</span>
             </Link>

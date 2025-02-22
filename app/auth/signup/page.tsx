@@ -22,8 +22,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Header from "../_components/Header";
-import { signUp } from "../actions/users/signUp";
+import Header from "../../_components/Header";
+import { signUp } from "../../actions/users/signUp";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -39,6 +39,7 @@ const Page = () => {
 
   const onSubmit = async (data: UserRegisterSchema) => {
     setLoading(true);
+
     try {
       const response = await signUp(data.email, data.password);
 
@@ -47,7 +48,7 @@ const Page = () => {
         toast.error(response.error);
       } else {
         toast.success("Usuario registrado exitosamente.");
-        router.push("/signin");
+        router.push("/auth/signin");
       }
     } catch (error) {
       console.error("Error en el registro:", error);
@@ -126,14 +127,17 @@ const Page = () => {
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => signIn("google")}
+              onClick={(e) => {
+                e.preventDefault(); // Evita que el formulario se valide
+                signIn("google");
+              }}
             >
               Google
             </Button>
           </CardFooter>
           <div className="pb-4 text-center text-sm text-gray-600">
             Ya tienes una cuenta?{" "}
-            <Link href="/signin" className="text-blue-700 hover:underline">
+            <Link href="/auth/signin" className="text-blue-700 hover:underline">
               Iniciar Sesión
             </Link>
           </div>

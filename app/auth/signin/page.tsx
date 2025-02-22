@@ -20,7 +20,7 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Header from "../_components/Header";
+import Header from "../../_components/Header";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -35,6 +35,7 @@ export default function LoginPage() {
 
   const onSubmit = async (data: UserLoginSchema) => {
     setLoading(true);
+
     try {
       console.log("Datos de inicio de sesión:", data);
       // here we send data to the API
@@ -102,14 +103,17 @@ export default function LoginPage() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => signIn("google")}
+              onClick={(e) => {
+                e.preventDefault();
+                signIn("google");
+              }}
             >
               Google
             </Button>
           </CardFooter>
           <div className="pb-4 text-center text-sm text-gray-600">
             No tienes una cuenta?{" "}
-            <Link href="/signup" className="text-blue-700 hover:underline">
+            <Link href="/auth/signup" className="text-blue-700 hover:underline">
               Crear Cuenta
             </Link>
           </div>
