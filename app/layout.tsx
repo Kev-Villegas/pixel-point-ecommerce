@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
 import { Toaster } from "react-hot-toast";
+import Header from "./_components/Header";
 import SessionWrapper from "./_components/SessionWrapper";
 import "./globals.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <React.StrictMode>
+            <Header />
             <main>{children}</main>
           </React.StrictMode>
           <Toaster

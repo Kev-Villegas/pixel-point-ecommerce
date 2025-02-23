@@ -1,3 +1,4 @@
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Account, NextAuthOptions, Profile, Session, User } from "next-auth";
@@ -7,6 +8,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { db } from "./prisma";
 
 export const authOptions: NextAuthOptions = {
+  // adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(db),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -75,7 +78,6 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
   },
-  // adapter: PrismaAdapter(db),
   callbacks: {
     async session(params: { session: Session; token: JWT; user: User }) {
       if (params.session.user) {

@@ -1,39 +1,50 @@
-"use client";
-
-import { useCartStore } from "@/store/useCartStore";
-import { useSearchProductStore } from "@/store/useSearchProductStore";
-import debounce from "lodash.debounce";
-import { Search, ShoppingCart, User } from "lucide-react";
-import Image from "next/image";
+"use server";
+import { User } from "lucide-react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
-import React, { useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { authOptions } from "../_lib/authOptions";
+import CartInfo from "./navbar/CartInfo";
+import SearchInput from "./navbar/SearchInput";
 
-const Header = () => {
-  const brands = ["Apple", "Samsung", "Xiaomi"];
-  const { cartProducts } = useCartStore();
-  const totalProducts = cartProducts.reduce(
-    (total, product) => total + product.quantity,
-    0,
-  );
+export default async function Header() {
+  const brands = [
+    "Apple",
+    "Samsung",
+    "Xiaomi",
+    "Realme",
+    "Honor",
+    "Oneplus",
+    "Oppo",
+  ];
+  const session = await getServerSession(authOptions);
+  console.log(session);
+  // const { cartProducts } = useCartStore();
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const { searchResults, handleSearch } = useSearchProductStore();
+  // const totalProducts = cartProducts.reduce(
+  //   (total, product) => total + product.quantity,
+  //   0,
+  // );
 
-  const handleFocus = () => setShowSuggestions(true);
-  const handleBlur = () => setTimeout(() => setShowSuggestions(false), 200);
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const [showSuggestions, setShowSuggestions] = useState(false);
+  // const { searchResults, handleSearch } = useSearchProductStore();
 
-  const debouncedSearch = debounce((query: string) => {
-    handleSearch(query);
-  }, 300);
+  // const handleFocus = () => setShowSuggestions(true);
+  // const handleBlur = () => setTimeout(() => setShowSuggestions(false), 200);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    debouncedSearch(value);
-  };
+  // const debouncedSearch = debounce((query: string) => {
+  //   handleSearch(query);
+  // }, 300);
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   setSearchTerm(value);
+  //   debouncedSearch(value);
+  // };
+
+  // const handleSignOut = async () => {
+  //   await signOut({ callbackUrl: '/', redirect: true });
+  // };
 
   return (
     <header className="bg-white px-10 shadow-md">
@@ -42,7 +53,8 @@ const Header = () => {
           <Link href="/" className="mr-3 text-2xl font-bold text-primary">
             Logo
           </Link>
-          <div className="relative flex-grow">
+          <SearchInput />
+          {/* <div className="relative flex-grow">
             <Input
               type="text"
               placeholder="Search products..."
@@ -81,41 +93,59 @@ const Header = () => {
               <Search className="h-4 w-4" />
               <span className="sr-only">Search</span>
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="flex items-center justify-between">
           <nav className="flex space-x-4 text-sm font-medium text-gray-700">
             {brands.map((brand) => (
-              <a
+              <Link
                 href={`/brands/${brand}`}
                 className="hover:text-primary"
                 key={brand}
               >
                 {brand}
-              </a>
+              </Link>
             ))}
             {/* <a href="/category/2" className="hover:text-primary">
               Categoría 2
             </a> */}
           </nav>
           <div className="relative flex items-center space-x-4">
-            <Link href="/cart" className="relative">
+            <CartInfo />
+            {/* <Link href="/cart" className="relative">
               <ShoppingCart className="h-6 w-6" />
               {totalProducts > 0 && (
                 <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                   {totalProducts}
                 </span>
               )}
-            </Link>
-            <Link href="/auth/signin">
-              <User className="h-6 w-6" />
-              <span className="sr-only">Login</span>
-            </Link>
+            </Link> */}
+            {session && session.user?.email ? (
+              <Link href="/auth/signout">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
+                  />
+                </svg>
+              </Link>
+            ) : (
+              <Link href="/auth/signin">
+                <User className="h-6 w-6" />
+                <span className="sr-only">Login</span>
+              </Link>
+            )}
           </div>
         </div>
       </div>
     </header>
   );
-};
-
-export default Header;
+}

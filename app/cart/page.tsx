@@ -1,16 +1,15 @@
 "use client";
 
+import { useCartStore } from "@/store/useCartStore";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { toast } from "react-hot-toast";
-import Header from "../_components/Header";
-import { Card } from "../_components/ui/card";
 import { Button } from "../_components/ui/button";
-import { useCartStore } from "@/store/useCartStore";
-import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "../_components/ui/card";
 import { Separator } from "../_components/ui/separator";
-import { EmptyCartBanner } from "./_components/EmptyCartBanner";
-import { CartProductItem } from "./_components/CartProductItem";
 import { CartOrderSummary } from "./_components/CartOrderSummary";
+import { CartProductItem } from "./_components/CartProductItem";
+import { EmptyCartBanner } from "./_components/EmptyCartBanner";
 
 export default function CartPage() {
   const { cartProducts, removeProduct, clearCart, updateProductQuantity } =
@@ -45,7 +44,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

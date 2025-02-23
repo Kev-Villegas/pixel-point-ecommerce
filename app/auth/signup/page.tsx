@@ -22,7 +22,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Header from "../../_components/Header";
 import { signUp } from "../../actions/users/signUp";
 
 const Page = () => {
@@ -60,7 +59,7 @@ const Page = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex min-h-screen items-center justify-center bg-gray-100"

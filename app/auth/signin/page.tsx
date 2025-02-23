@@ -16,14 +16,16 @@ import {
   UserLoginSchema,
 } from "@/app/_schemas/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Header from "../../_components/Header";
 
-export default function LoginPage() {
+export default function SigninPage() {
   const [loading, setLoading] = useState(false);
+  const { status } = useSession();
+  const router = useRouter();
 
   const {
     register,
@@ -47,9 +49,16 @@ export default function LoginPage() {
     }
   };
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.refresh();
+      router.push("/");
+    }
+  }, [status]);
+
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex min-h-screen items-center justify-center bg-gray-100"
