@@ -1,6 +1,19 @@
 "use client";
 
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/app/_components/ui/input";
+import { Label } from "@/app/_components/ui/label";
+import { signIn, useSession } from "next-auth/react";
 import { Button } from "@/app/_components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  userLoginSchema,
+  UserLoginSchema,
+} from "@/app/_schemas/validationSchemas";
 import {
   Card,
   CardContent,
@@ -9,18 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { Input } from "@/app/_components/ui/input";
-import { Label } from "@/app/_components/ui/label";
-import {
-  userLoginSchema,
-  UserLoginSchema,
-} from "@/app/_schemas/validationSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 
 export default function SigninPage() {
   const [loading, setLoading] = useState(false);
@@ -39,11 +40,21 @@ export default function SigninPage() {
     setLoading(true);
 
     try {
-      console.log("Datos de inicio de sesión:", data);
-      // here we send data to the API
-      // const response = await fetch("/api/login", { method: "POST", body: JSON.stringify(data) });
+      const signInResponse = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+      if (signInResponse?.error) {
+        console.error(signInResponse.error);
+        toast.error(signInResponse.error);
+      } else {
+        toast.success("Inicio de sesión exitoso.");
+        router.push("/");
+      }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
+      toast.error("Ocurrió un error al iniciar sesión.");
     } finally {
       setLoading(false);
     }
