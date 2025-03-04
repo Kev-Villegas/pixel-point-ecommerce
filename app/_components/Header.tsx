@@ -1,10 +1,12 @@
 "use server";
 import { User } from "lucide-react";
-import { getServerSession } from "next-auth";
+// import { getServerSession } from "next-auth";
+// import getServerSession from "next-auth"
 import Link from "next/link";
-import { authOptions } from "../_lib/authOptions";
+// import { authOptions } from "../_lib/authOptions";
 import CartInfo from "./navbar/CartInfo";
 import SearchInput from "./navbar/SearchInput";
+import { auth } from "../_lib/auth";
 
 export default async function Header() {
   const brands = [
@@ -16,7 +18,8 @@ export default async function Header() {
     "Oneplus",
     "Oppo",
   ];
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
+  const session = await auth();
   console.log(session);
   // const { cartProducts } = useCartStore();
 

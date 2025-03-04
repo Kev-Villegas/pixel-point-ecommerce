@@ -1,0 +1,61 @@
+import bcrypt from "bcryptjs";
+import type { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import { db } from "./prisma";
+
+export default {
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: `${profile.given_name} ${profile.family_name}`,
+          email: profile.email,
+          image: profile.picture,
+          role: "USER",
+        };
+      },
+    }),
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text", placeholder: "jsmith" },
+        password: { label: "Contraseña", type: "password" },
+      },
+      async authorize(credentials, req) {
+        if (!credentials) {
+          return null;
+        }
+
+        const { email, password } = credentials;
+
+        // Add runtime type checks for email and password
+        if (typeof email !== "string" || typeof password !== "string") {
+          return null;
+        }
+
+        const user = await db.user.findUnique({
+          where: {
+            email,
+          },
+        });
+
+        if (!user || !user.passwordHash) {
+          return null;
+        }
+
+        const userPassword = user.passwordHash;
+
+        const isValid = bcrypt.compareSync(password, userPassword);
+        if (!isValid) {
+          return null;
+        }
+
+        return user;
+      },
+    }),
+  ],
+} satisfies NextAuthConfig;
