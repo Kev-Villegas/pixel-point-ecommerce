@@ -5,6 +5,21 @@ import Google from "next-auth/providers/google";
 import { db } from "./prisma";
 
 export default {
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
+  callbacks: {
+    jwt({ token, user }: { token: any; user?: any }) {
+      if (user?.role) token.role = user.role;
+      return token;
+    },
+    session({ session, token }: { session: any; token: any }) {
+      if (token.role) session.user.role = token.role;
+      return session;
+    },
+  },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -15,7 +30,7 @@ export default {
           name: `${profile.given_name} ${profile.family_name}`,
           email: profile.email,
           image: profile.picture,
-          role: "USER",
+          role: profile.role || "USER",
         };
       },
     }),

@@ -6,7 +6,8 @@ const { auth } = NextAuth(authConfig);
 
 export default auth(async function middleware(req: NextRequest) {
   const session = await auth();
-
+  console.log("LA SESSSIOONNN");
+  console.log(session);
   if (session?.user?.role !== "ADMIN") {
     console.warn(
       "Acceso no autorizado a ruta protegida:",
