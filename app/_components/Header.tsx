@@ -20,7 +20,6 @@ export default async function Header() {
   ];
   // const session = await getServerSession(authOptions);
   const session = await auth();
-  console.log(session);
   // const { cartProducts } = useCartStore();
 
   // const totalProducts = cartProducts.reduce(
