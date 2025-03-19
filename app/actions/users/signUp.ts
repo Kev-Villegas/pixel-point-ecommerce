@@ -6,7 +6,8 @@ import { userRegisterSchema } from "@/app/_schemas/validationSchemas";
 
 export const signUp = async (email: string, password: string) => {
   try {
-    // validate with zod before process
+    email = email.trim().toLowerCase();
+
     const result = userRegisterSchema.safeParse({
       email,
       password,

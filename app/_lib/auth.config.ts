@@ -45,7 +45,8 @@ export default {
           return null;
         }
 
-        const { email, password } = credentials;
+        const email = String(credentials.email).trim().toLowerCase();
+        const password = String(credentials.password);
 
         // Add runtime type checks for email and password
         if (typeof email !== "string" || typeof password !== "string") {
