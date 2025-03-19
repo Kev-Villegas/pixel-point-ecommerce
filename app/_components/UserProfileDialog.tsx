@@ -14,6 +14,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 interface UserProfileDialogProps {
   open: boolean;
@@ -44,11 +46,24 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     updateUser({ [e.target.id]: e.target.value });
   };
 
-  const handleSave = () => {
-    console.log("Usuario actualizado:", {
-      firstName,
-      lastName,
-      email,
+  const handleSave = async () => {
+    // console.log("Usuario actualizado:", {
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   phoneNumber,
+    //   streetName,
+    //   streetNumber,
+    //   province,
+    //   city,
+    //   postalCode,
+    //   apartment,
+    //   floor,
+    // });
+    const userData = {
+      // firstName,
+      // lastName,
+      // email,
       phoneNumber,
       streetName,
       streetNumber,
@@ -57,9 +72,28 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
       postalCode,
       apartment,
       floor,
-    });
+    };
+
+    try {
+      const response = await axios.put("/api/users", userData, {
+        // headers: {
+        // "Content-Type": "application/json",
+        // Si necesitas autenticación, agrega el token:
+        // Authorization: `Bearer ${token}`,
+        // },
+      });
+
+      console.log("Usuario actualizado:", response.data);
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Hubo un error al actualizar el usuario:", error);
+    }
+
     onOpenChange(false);
   };
+
+  const session = useSession();
+  console.log(session);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -78,15 +112,25 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
         <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2">
           <div className="flex flex-col">
             <Label htmlFor="firstName">Nombre</Label>
-            <Input id="firstName" value={firstName} onChange={handleChange} />
+            <Input
+              id="firstName"
+              value={session?.data?.user?.name ?? ""}
+              onChange={handleChange}
+              disabled
+            />
           </div>
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <Label htmlFor="lastName">Apellido</Label>
-            <Input id="lastName" value={lastName} onChange={handleChange} />
-          </div>
+            <Input id="lastName" value={lastName} onChange={handleChange} disabled/>
+          </div> */}
           <div className="flex flex-col">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" value={email} onChange={handleChange} />
+            <Input
+              id="email"
+              value={session?.data?.user?.name ?? ""}
+              onChange={handleChange}
+              disabled
+            />
           </div>
           <div className="flex flex-col">
             <Label htmlFor="phoneNumber">Teléfono</Label>
