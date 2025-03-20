@@ -43,7 +43,7 @@ const Page = () => {
       const response = await signUp(data.email, data.password);
 
       if (response.error) {
-        console.error(response.error);
+        console.log(response.error);
         toast.error(response.error);
       } else {
         toast.success("Usuario registrado exitosamente.");
