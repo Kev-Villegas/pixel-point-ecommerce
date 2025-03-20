@@ -68,7 +68,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
 
             <DropdownMenuItem className="cursor-pointer hover:bg-muted">
               <WalletCards className="mr-2 h-4 w-4" />
-              <span>Mis Pedidos</span>
+              <Link href="/orders">Mis Pedidos</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer hover:bg-muted">
               <BookHeart className="mr-2 h-4 w-4" />
