@@ -102,14 +102,32 @@ export async function PUT(request: NextRequest) {
     const updatedShipment = await db.shipmentData.update({
       where: { id: user.shipments[0].id }, // Actualiza el primer registro
       data: {
-        phoneNumber: body.phoneNumber || user.shipments[0].phoneNumber,
-        streetName: body.streetName || user.shipments[0].streetName,
-        streetNumber: body.streetNumber || user.shipments[0].streetNumber,
-        province: body.province || user.shipments[0].province,
-        city: body.city || user.shipments[0].city,
-        postalCode: body.postalCode || user.shipments[0].postalCode,
-        apartment: body.apartment || user.shipments[0].apartment,
-        floor: body.floor || user.shipments[0].floor,
+        phoneNumber:
+          body.phoneNumber !== undefined
+            ? body.phoneNumber
+            : user.shipments[0].phoneNumber,
+        streetName:
+          body.streetName !== undefined
+            ? body.streetName
+            : user.shipments[0].streetName,
+        streetNumber:
+          body.streetNumber !== undefined
+            ? body.streetNumber
+            : user.shipments[0].streetNumber,
+        province:
+          body.province !== undefined
+            ? body.province
+            : user.shipments[0].province,
+        city: body.city !== undefined ? body.city : user.shipments[0].city,
+        postalCode:
+          body.postalCode !== undefined
+            ? body.postalCode
+            : user.shipments[0].postalCode,
+        apartment:
+          body.apartment !== undefined
+            ? body.apartment
+            : user.shipments[0].apartment,
+        floor: body.floor !== undefined ? body.floor : user.shipments[0].floor,
         updatedAt: new Date(),
       },
     });

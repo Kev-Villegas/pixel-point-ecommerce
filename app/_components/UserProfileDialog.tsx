@@ -27,9 +27,9 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
   onOpenChange,
 }) => {
   const {
-    firstName,
-    lastName,
-    email,
+    // firstName,
+    // lastName,
+    // email,
     phoneNumber,
     streetName,
     streetNumber,
@@ -41,29 +41,12 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     updateUser,
   } = useUserInfoStore();
 
-  // here we handle the form directly with the state managed by Zustand.!
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateUser({ [e.target.id]: e.target.value });
   };
 
   const handleSave = async () => {
-    // console.log("Usuario actualizado:", {
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   phoneNumber,
-    //   streetName,
-    //   streetNumber,
-    //   province,
-    //   city,
-    //   postalCode,
-    //   apartment,
-    //   floor,
-    // });
     const userData = {
-      // firstName,
-      // lastName,
-      // email,
       phoneNumber,
       streetName,
       streetNumber,
@@ -93,7 +76,6 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
   };
 
   const session = useSession();
-  console.log(session);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -108,7 +90,6 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Formulario */}
         <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2">
           <div className="flex flex-col">
             <Label htmlFor="firstName">Nombre</Label>
@@ -119,15 +100,11 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
               disabled
             />
           </div>
-          {/* <div className="flex flex-col">
-            <Label htmlFor="lastName">Apellido</Label>
-            <Input id="lastName" value={lastName} onChange={handleChange} disabled/>
-          </div> */}
           <div className="flex flex-col">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              value={session?.data?.user?.name ?? ""}
+              value={session?.data?.user?.email ?? ""}
               onChange={handleChange}
               disabled
             />

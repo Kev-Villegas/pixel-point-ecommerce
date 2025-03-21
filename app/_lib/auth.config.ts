@@ -11,6 +11,60 @@ export default {
     updateAge: 24 * 60 * 60,
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      console.log("Datos del perfil:", profile);
+
+      if (account?.provider === "google" && profile?.sub) {
+        try {
+          if (!profile.email) {
+            throw new Error("El email del perfil es nulo o indefinido.");
+          }
+
+          // Verificar si el usuario ya existe en la base de datos
+          const existingUser = await db.user.findUnique({
+            where: { email: profile.email },
+          });
+
+          if (!existingUser) {
+            // Crear un nuevo usuario en la base de datos
+            const newUser = await db.user.create({
+              data: {
+                id: profile.sub, // Usar el ID de Google
+                name: profile.name,
+                email: profile.email,
+                image: profile.picture,
+                role: "USER", // Rol predeterminado
+                createdAt: new Date(),
+              },
+            });
+
+            // Crear un registro en la tabla ShipmentData
+            await db.shipmentData.create({
+              data: {
+                userId: newUser.id, // Vincular al usuario recién creado
+                phoneNumber: "",
+                streetName: "",
+                streetNumber: "",
+                province: "",
+                city: "",
+                postalCode: "",
+                apartment: "",
+                floor: "",
+              },
+            });
+
+            console.log("Usuario registrado:", newUser);
+          } else {
+            console.log("Usuario ya existe:", existingUser);
+          }
+        } catch (error) {
+          console.error("Error al registrar al usuario:", error);
+          return false; // Denegar el acceso si ocurre un error
+        }
+      }
+
+      return true; // Permitir el inicio de sesión
+    },
     jwt({ token, user }: { token: any; user?: any }) {
       if (user?.role) token.role = user.role;
       return token;
@@ -24,6 +78,7 @@ export default {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
       profile(profile) {
         return {
           id: profile.sub,

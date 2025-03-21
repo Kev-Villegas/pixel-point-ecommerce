@@ -37,6 +37,14 @@ export const signUp = async (email: string, password: string) => {
     await db.shipmentData.create({
       data: {
         userId: newUser.id,
+        phoneNumber: "",
+        streetName: "",
+        streetNumber: "",
+        province: "",
+        city: "",
+        postalCode: "",
+        apartment: "",
+        floor: "",
       },
     });
 
