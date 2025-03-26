@@ -1,5 +1,4 @@
 import Banner from "./_components/Banner";
-import Header from "./_components/Header";
 import ProductList from "./_components/ProductList";
 
 export default function Home() {
@@ -57,7 +56,7 @@ export default function Home() {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className="rounded-2xl px-10 pt-4">
         <Banner banners={banners} />
       </div>

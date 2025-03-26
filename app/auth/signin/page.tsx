@@ -1,64 +1,75 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import Header from "../_components/Header";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUp } from "../actions/users/signUp";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
+import { signIn, useSession } from "next-auth/react";
 import { Button } from "@/app/_components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  userRegisterSchema,
-  UserRegisterSchema,
+  userLoginSchema,
+  UserLoginSchema,
 } from "@/app/_schemas/validationSchemas";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/app/_components/ui/card";
 
-const Page = () => {
+export default function SigninPage() {
   const [loading, setLoading] = useState(false);
+  const { status } = useSession();
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserRegisterSchema>({
-    resolver: zodResolver(userRegisterSchema),
+  } = useForm<UserLoginSchema>({
+    resolver: zodResolver(userLoginSchema),
   });
 
-  const onSubmit = async (data: UserRegisterSchema) => {
+  const onSubmit = async (data: UserLoginSchema) => {
     setLoading(true);
-    try {
-      const response = await signUp(data.email, data.password);
 
-      if (response.error) {
-        console.error(response.error);
-        toast.error(response.error);
+    try {
+      const signInResponse = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+      if (signInResponse?.error) {
+        console.error(signInResponse.error);
+        toast.error(signInResponse.error);
       } else {
-        toast.success("Usuario registrado exitosamente.");
-        router.push("/signin");
+        toast.success("Inicio de sesión exitoso.");
+        router.push("/");
       }
     } catch (error) {
-      console.error("Error en el registro:", error);
-      toast.error("Ocurrió un error al registrar el usuario.");
+      console.error("Error al iniciar sesión:", error);
+      toast.error("Ocurrió un error al iniciar sesión.");
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.refresh();
+      router.push("/");
+    }
+  }, [status]);
+
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex min-h-screen items-center justify-center bg-gray-100"
@@ -66,10 +77,10 @@ const Page = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-center text-2xl font-bold">
-              Crear Cuenta
+              Iniciar Sesión
             </CardTitle>
             <CardDescription className="text-center">
-              Rellena el formulario debajo para crear tu cuenta
+              Ingrese su email y contraseña para iniciar sesión
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -94,23 +105,10 @@ const Page = () => {
                 </p>
               )}
             </div>
-            <div className="">
-              <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                {...register("confirmPassword")}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
-            </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creando cuenta..." : "Crear Cuenta"}
+              {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
             </Button>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -118,24 +116,29 @@ const Page = () => {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-white px-2 text-muted-foreground">
-                  O Continua con
+                  O Continúa con
                 </span>
               </div>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={(e) => {
+                e.preventDefault();
+                signIn("google");
+              }}
+            >
               Google
             </Button>
           </CardFooter>
           <div className="pb-4 text-center text-sm text-gray-600">
-            Ya tienes una cuenta?{" "}
-            <Link href="/signin" className="text-blue-700 hover:underline">
-              Iniciar Sesión
+            No tienes una cuenta?{" "}
+            <Link href="/auth/signup" className="text-blue-700 hover:underline">
+              Crear Cuenta
             </Link>
           </div>
         </Card>
       </form>
     </>
   );
-};
-
-export default Page;
+}

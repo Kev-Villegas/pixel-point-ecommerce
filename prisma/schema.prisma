@@ -8,23 +8,8 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String
-  brand       String
-  stock       Boolean     @default(true)
-  price       Float
-  orderId     Int?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  images      Image[]
-  order       Order?      @relation(fields: [orderId], references: [id])
-  properties  Properties?
-}
-
 model Order {
-  id            Int       @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   username      String
   email         String
   city          String
@@ -33,10 +18,34 @@ model Order {
   province      String
   phonenumber   String
   paid          Boolean
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  items         Product[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[] // Relación con la tabla intermedia
 }
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+}
+
+model Product {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  brand       String
+  stock       Boolean      @default(true)
+  price       Float
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  images      Image[]
+  properties  Properties?
+  orderItems  OrderItem[]  // Relación con la tabla intermedia
+}
+
 
 model Properties {
   id               Int      @id @default(autoincrement())
@@ -83,54 +92,91 @@ enum UserRole {
   USER
 }
 
-model Account {
-  id                 String    @id @default(cuid())
-  userId             String
-  providerType       String
-  providerId         String
-  providerAccountId  String
-  refreshToken       String?
-  accessToken        String?
-  accessTokenExpires DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id])
-
-  @@unique([providerId, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  userId       String
-  expires      DateTime
-  sessionToken String   @unique
-  accessToken  String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
-}
-
 model User {
-  id            String    @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  passwordHash  String?
-  email         String?   @unique
+  email         String          @unique
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  role          UserRole  @default(USER)
   accounts      Account[]
   sessions      Session[]
+  shipments     ShipmentData[]
+  passwordHash  String?
+  role          UserRole  @default(USER) 
+  // Optional for WebAuthn support
+  // Authenticator Authenticator[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model VerificationRequest {
-  id         String   @id @default(cuid())
+model ShipmentData {
+  id            Int      @id @default(autoincrement())
+  phoneNumber   String?
+  streetName    String?
+  streetNumber  String?
+  province      String?
+  city          String?
+  postalCode    String?
+  apartment     String?
+  floor         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+}
+
+ 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
   identifier String
-  token      String   @unique
+  token      String
   expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@unique([identifier, token])
+ 
+  @@id([identifier, token])
 }
+ 
+// Optional for WebAuthn support
+// model Authenticator {
+//   credentialID         String  @unique
+//   userId               String
+//   providerAccountId    String
+//   credentialPublicKey  String
+//   counter              Int
+//   credentialDeviceType String
+//   credentialBackedUp   Boolean
+//   transports           String?
+ 
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+//   @@id([userId, credentialID])
+// }

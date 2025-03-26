@@ -4,16 +4,34 @@ import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { userAddressValidation } from "@/app/_schemas/validationSchemas";
 import { useCartStore } from "@/store/useCartStore";
+import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as z from "zod";
 
 export function UserAddressForm() {
   const router = useRouter();
   const { cartProducts } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const session = useSession();
+  const {
+    phoneNumber,
+    streetName,
+    streetNumber,
+    province,
+    city,
+    postalCode,
+    apartment,
+    floor,
+    loading,
+    error,
+    fetchUserInfo,
+  } = useUserInfoStore();
 
   const {
     register,
@@ -22,20 +40,75 @@ export function UserAddressForm() {
     reset,
   } = useForm<z.infer<typeof userAddressValidation>>({
     resolver: zodResolver(userAddressValidation),
+    defaultValues: {
+      name: session?.data?.user?.name?.split(" ")[0] ?? "",
+      surname: session?.data?.user?.name?.split(" ")[1] ?? "",
+      street_name: streetName,
+      street_number: streetNumber,
+      email: session?.data?.user?.email ?? "",
+      area_code: "",
+      number: phoneNumber,
+      city: city,
+      province: province,
+      postalCode: postalCode,
+      floor: floor,
+      apartment: apartment,
+    },
   });
 
-  const onSubmit = (values: z.infer<typeof userAddressValidation>) => {
+  // Actualiza los valores del formulario cuando los datos del store cambien
+  useEffect(() => {
+    reset({
+      name: session?.data?.user?.name?.split(" ")[0] ?? "",
+      surname: session?.data?.user?.name?.split(" ")[1] ?? "",
+      street_name: streetName,
+      street_number: streetNumber,
+      email: session?.data?.user?.email ?? "",
+      area_code: "",
+      number: phoneNumber,
+      city: city,
+      province: province,
+      postalCode: postalCode,
+      floor: floor,
+      apartment: apartment,
+    });
+  }, [
+    session,
+    streetName,
+    streetNumber,
+    phoneNumber,
+    city,
+    province,
+    postalCode,
+    floor,
+    apartment,
+    reset,
+  ]);
+
+  const onSubmit = async (values: z.infer<typeof userAddressValidation>) => {
     setIsSubmitting(true);
     const payload = {
       cart: cartProducts,
       payer: values,
     };
 
-    console.log(payload);
-    // axios.post("/api/checkout/preferences", payload).then((response) => {
-    //   console.log(response.data);
-    //   router.push(`/checkout/payment?preference=${response.data.response.id}`);
-    // });
+    const order = await axios.post("/api/orders", payload);
+    const orderId = order.data.id.toString();
+
+    const preferencePayload = {
+      ...payload,
+      orderId,
+    };
+
+    axios
+      .post("/api/checkout/preferences", preferencePayload)
+      .then((response) => {
+        setIsSubmitting(false);
+        console.log(response.data);
+        router.push(
+          `/checkout/payment?preference=${response.data.response.id}`,
+        );
+      });
 
     // reset();
     // toast.success("Dirección guardada con exito");
@@ -48,7 +121,12 @@ export function UserAddressForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-10 py-2">
       <div className="space-y-2">
         <Label htmlFor="name">Nombre</Label>
-        <Input id="name" placeholder="Juan" {...register("name")} name="name" />
+        <Input
+          id="name"
+          placeholder="Juan"
+          {...register("name")}
+          defaultValue={session?.data?.user?.name?.split(" ")[0] ?? ""}
+        />
         {errors.name && (
           <p className="text-sm text-red-500">{errors.name.message}</p>
         )}
@@ -60,7 +138,7 @@ export function UserAddressForm() {
           id="surname"
           placeholder="Alvarez"
           {...register("surname")}
-          name="surname"
+          defaultValue={session?.data?.user?.name?.split(" ")[1] ?? ""}
         />
         {errors.surname && (
           <p className="text-sm text-red-500">{errors.surname.message}</p>
@@ -73,7 +151,7 @@ export function UserAddressForm() {
           id="street_name"
           placeholder="Av. Principal"
           {...register("street_name")}
-          name="street_name"
+          defaultValue={streetName}
         />
         {errors.street_name && (
           <p className="text-sm text-red-500">{errors.street_name.message}</p>
@@ -86,7 +164,7 @@ export function UserAddressForm() {
           id="street_number"
           placeholder="4900"
           {...register("street_number")}
-          name="street_number"
+          defaultValue={streetNumber}
         />
         {errors.street_number && (
           <p className="text-sm text-red-500">{errors.street_number.message}</p>
@@ -99,12 +177,13 @@ export function UserAddressForm() {
           id="email"
           placeholder="juan@ejemplo.com"
           {...register("email")}
-          name="email"
+          defaultValue={session?.data?.user?.email ?? ""}
         />
         {errors.email && (
           <p className="text-sm text-red-500">{errors.email.message}</p>
         )}
       </div>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="area_code">Código de área</Label>
@@ -112,7 +191,7 @@ export function UserAddressForm() {
             id="area_code"
             placeholder="351"
             {...register("area_code")}
-            name="area_code"
+            defaultValue=""
           />
           {errors.area_code && (
             <p className="text-sm text-red-500">{errors.area_code.message}</p>
@@ -125,7 +204,7 @@ export function UserAddressForm() {
             id="number"
             placeholder="757148213"
             {...register("number")}
-            name="number"
+            defaultValue={phoneNumber}
           />
           {errors.number && (
             <p className="text-sm text-red-500">{errors.number.message}</p>
@@ -140,7 +219,7 @@ export function UserAddressForm() {
             id="city"
             placeholder="Iguazú"
             {...register("city")}
-            name="city"
+            defaultValue={city}
           />
           {errors.city && (
             <p className="text-sm text-red-500">{errors.city.message}</p>
@@ -153,7 +232,7 @@ export function UserAddressForm() {
             id="province"
             placeholder="Misiones"
             {...register("province")}
-            name="province"
+            defaultValue={province}
           />
           {errors.province && (
             <p className="text-sm text-red-500">{errors.province.message}</p>
@@ -167,7 +246,7 @@ export function UserAddressForm() {
           id="postalCode"
           placeholder="28001"
           {...register("postalCode")}
-          name="postalCode"
+          defaultValue={postalCode}
         />
         {errors.postalCode && (
           <p className="text-sm text-red-500">{errors.postalCode.message}</p>
@@ -180,7 +259,7 @@ export function UserAddressForm() {
           id="floor"
           placeholder="12"
           {...register("floor")}
-          name="floor"
+          defaultValue={floor}
         />
       </div>
 
@@ -190,7 +269,7 @@ export function UserAddressForm() {
           id="apartment"
           placeholder="120A"
           {...register("apartment")}
-          name="apartment"
+          defaultValue={apartment}
         />
       </div>
 

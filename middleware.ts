@@ -1,16 +1,13 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import authConfig from "./app/_lib/auth.config";
+import NextAuth from "next-auth";
 
-// export const { auth: middleware } = NextAuth(authOptions);
+const { auth } = NextAuth(authConfig);
 
-const protectedRoutes = ["/protected/dashboard"];
-
-export default async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-  const isProtectedRoute = protectedRoutes.includes(req.nextUrl.pathname);
-
-  if (isProtectedRoute && !token) {
+export default auth(async function middleware(req: NextRequest) {
+  const session = await auth();
+  console.log(session);
+  if (session?.user?.role !== "ADMIN") {
     console.warn(
       "Acceso no autorizado a ruta protegida:",
       req.nextUrl.pathname,
@@ -18,13 +15,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
-  if (token && req.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/protected/dashboard", req.nextUrl));
-  }
-
   return NextResponse.next();
-}
+});
 
-export const config = {
-  matcher: ["/protected/:path*"],
-};
+export const config = { matcher: ["/protected/:path*"] };

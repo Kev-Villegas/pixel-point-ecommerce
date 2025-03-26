@@ -1,13 +1,15 @@
 import { db } from "@/app/_lib/prisma";
-import { Product } from "@prisma/client";
 import ProductByBrandList from "@/app/brands/_components/ProductByBrandList";
-import Header from "@/app/_components/Header";
+import { Product } from "@prisma/client";
 
-interface BrandPageProps {
-  params: { brand: string };
-}
+// interface BrandPageProps {
+//   params: { brand: string };
+// }
 
-export default async function BrandPage({ params }: BrandPageProps) {
+export default async function BrandPage(props: {
+  params: Promise<{ brand: string }>;
+}) {
+  const params = await props.params;
   const { brand } = params;
 
   const products: Product[] = await db.product.findMany({
@@ -28,7 +30,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="container mx-auto my-8">
         <h1 className="mb-4 text-3xl font-bold">
           Productos de: {capitalizeFirstLetter(brand)}

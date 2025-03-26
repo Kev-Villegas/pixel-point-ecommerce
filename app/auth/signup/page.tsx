@@ -1,45 +1,57 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import Header from "../_components/Header";
-import { Input } from "@/app/_components/ui/input";
-import { Label } from "@/app/_components/ui/label";
 import { Button } from "@/app/_components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  userLoginSchema,
-  UserLoginSchema,
-} from "@/app/_schemas/validationSchemas";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/app/_components/ui/card";
+import { Input } from "@/app/_components/ui/input";
+import { Label } from "@/app/_components/ui/label";
+import {
+  userRegisterSchema,
+  UserRegisterSchema,
+} from "@/app/_schemas/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { signUp } from "../../actions/users/signUp";
 
-export default function LoginPage() {
+const Page = () => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLoginSchema>({
-    resolver: zodResolver(userLoginSchema),
+  } = useForm<UserRegisterSchema>({
+    resolver: zodResolver(userRegisterSchema),
   });
 
-  const onSubmit = async (data: UserLoginSchema) => {
+  const onSubmit = async (data: UserRegisterSchema) => {
     setLoading(true);
+
     try {
-      console.log("Datos de inicio de sesión:", data);
-      // here we send data to the API
-      // const response = await fetch("/api/login", { method: "POST", body: JSON.stringify(data) });
+      const response = await signUp(data.email, data.password);
+
+      if (response.error) {
+        console.log(response.error);
+        toast.error(response.error);
+      } else {
+        toast.success("Usuario registrado exitosamente.");
+        router.push("/auth/signin");
+      }
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
+      console.error("Error en el registro:", error);
+      toast.error("Ocurrió un error al registrar el usuario.");
     } finally {
       setLoading(false);
     }
@@ -47,7 +59,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex min-h-screen items-center justify-center bg-gray-100"
@@ -55,10 +67,10 @@ export default function LoginPage() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-center text-2xl font-bold">
-              Iniciar Sesión
+              Crear Cuenta
             </CardTitle>
             <CardDescription className="text-center">
-              Ingrese su email y contraseña para iniciar sesión
+              Rellena el formulario debajo para crear tu cuenta
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -83,10 +95,23 @@ export default function LoginPage() {
                 </p>
               )}
             </div>
+            <div className="">
+              <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
+              {loading ? "Creando cuenta..." : "Crear Cuenta"}
             </Button>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -98,18 +123,27 @@ export default function LoginPage() {
                 </span>
               </div>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={(e) => {
+                e.preventDefault(); // Evita que el formulario se valide
+                signIn("google");
+              }}
+            >
               Google
             </Button>
           </CardFooter>
           <div className="pb-4 text-center text-sm text-gray-600">
-            No tienes una cuenta?{" "}
-            <Link href="/signup" className="text-blue-700 hover:underline">
-              Crear Cuenta
+            Ya tienes una cuenta?{" "}
+            <Link href="/auth/signin" className="text-blue-700 hover:underline">
+              Iniciar Sesión
             </Link>
           </div>
         </Card>
       </form>
     </>
   );
-}
+};
+
+export default Page;

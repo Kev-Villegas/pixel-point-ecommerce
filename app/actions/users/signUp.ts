@@ -1,12 +1,12 @@
 "use server";
-
 import bcrypt from "bcryptjs";
 import { db } from "@/app/_lib/prisma";
 import { userRegisterSchema } from "@/app/_schemas/validationSchemas";
 
 export const signUp = async (email: string, password: string) => {
   try {
-    // validate with zod before process
+    email = email.trim().toLowerCase();
+
     const result = userRegisterSchema.safeParse({
       email,
       password,
@@ -14,7 +14,7 @@ export const signUp = async (email: string, password: string) => {
     });
 
     if (!result.success) {
-      return { error: "Datos inválidos." };
+      return { error: "Datos inválidos" };
     }
 
     const existingUser = await db.user.findUnique({
@@ -22,15 +22,29 @@ export const signUp = async (email: string, password: string) => {
     });
 
     if (existingUser) {
-      return { error: "El usuario ya existe." };
+      return { error: "El usuario ya existe" };
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await db.user.create({
+    const newUser = await db.user.create({
       data: {
         email,
         passwordHash,
+      },
+    });
+
+    await db.shipmentData.create({
+      data: {
+        userId: newUser.id,
+        phoneNumber: "",
+        streetName: "",
+        streetNumber: "",
+        province: "",
+        city: "",
+        postalCode: "",
+        apartment: "",
+        floor: "",
       },
     });
 

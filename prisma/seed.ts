@@ -11,7 +11,7 @@ async function main() {
       name: "Samsung Galaxy S23 Ultra",
       description: "El último smartphone de Samsung con cámara de 200 MP.",
       brand: "Samsung",
-      price: 1199.99,
+      price: 1,
       images: {
         create: [
           {
@@ -33,7 +33,7 @@ async function main() {
       name: "iPhone 15 Pro Max",
       description: "El smartphone de Apple con el chip más avanzado, el A17.",
       brand: "Apple",
-      price: 1399.99,
+      price: 1,
       images: {
         create: [
           {
@@ -56,7 +56,7 @@ async function main() {
       description:
         "El smartphone de Google con la mejor experiencia de Android y cámara avanzada.",
       brand: "Google",
-      price: 899.99,
+      price: 1,
       images: {
         create: [
           {
@@ -78,7 +78,7 @@ async function main() {
       name: "OnePlus 11",
       description: "Un smartphone rápido y eficiente, con Snapdragon 8 Gen 2.",
       brand: "OnePlus",
-      price: 799.99,
+      price: 1,
       images: {
         create: [
           {
