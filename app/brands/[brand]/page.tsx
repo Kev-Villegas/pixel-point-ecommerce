@@ -2,11 +2,14 @@ import { db } from "@/app/_lib/prisma";
 import ProductByBrandList from "@/app/brands/_components/ProductByBrandList";
 import { Product } from "@prisma/client";
 
-interface BrandPageProps {
-  params: { brand: string };
-}
+// interface BrandPageProps {
+//   params: { brand: string };
+// }
 
-export default async function BrandPage({ params }: BrandPageProps) {
+export default async function BrandPage(props: {
+  params: Promise<{ brand: string }>;
+}) {
+  const params = await props.params;
   const { brand } = params;
 
   const products: Product[] = await db.product.findMany({

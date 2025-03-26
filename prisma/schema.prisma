@@ -8,23 +8,8 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String
-  brand       String
-  stock       Boolean     @default(true)
-  price       Float
-  orderId     Int?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  images      Image[]
-  order       Order?      @relation(fields: [orderId], references: [id])
-  properties  Properties?
-}
-
 model Order {
-  id            Int       @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   username      String
   email         String
   city          String
@@ -33,10 +18,34 @@ model Order {
   province      String
   phonenumber   String
   paid          Boolean
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  items         Product[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[] // Relación con la tabla intermedia
 }
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+}
+
+model Product {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  brand       String
+  stock       Boolean      @default(true)
+  price       Float
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  images      Image[]
+  properties  Properties?
+  orderItems  OrderItem[]  // Relación con la tabla intermedia
+}
+
 
 model Properties {
   id               Int      @id @default(autoincrement())

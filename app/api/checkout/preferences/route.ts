@@ -1,3 +1,5 @@
+import { db } from "@/app/_lib/prisma";
+import axios from "axios";
 import MercadoPagoConfig, { Preference } from "mercadopago";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,7 +8,7 @@ export async function POST(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
-  const { payer, cart } = await request.json();
+  const { payer, cart, orderId } = await request.json();
 
   const body = {
     items: cart.map((item: any) => ({
@@ -17,33 +19,22 @@ export async function POST(request: NextRequest) {
       picture_url: item.images[0].url,
       category_id: item.brand,
     })),
-    // [
-    //   {
-    //     id: "1",
-    //     unit_price: 50,
-    //     quantity: 1,
-    //     title: "Pedras",
-    //   },
-    // ],
-    metadata: {
-      text: "joder",
-    },
+    metadata: { orderId: orderId, test: "ok" },
+    // metadata: {
+    //   text: "joder",
+    // },
     payer: {
-      name: payer.fullName,
-      surname: "User",
+      name: payer.name,
+      surname: payer.surname,
       email: payer.email,
       phone: {
-        area_code: "11",
-        number: payer.phoneNumber,
+        area_code: payer.area_code,
+        number: payer.number,
       },
-      // identification: {
-      //   type: 'DNI',
-      //   number: '19119119100',
-      // },
       address: {
-        zip_code: "06233200",
-        street_name: "Street",
-        street_number: "123",
+        zip_code: payer.postalCode,
+        street_name: payer.street_name,
+        street_number: payer.street_number,
       },
       shipments: {
         mode: "me2",
@@ -59,12 +50,14 @@ export async function POST(request: NextRequest) {
         dimensions: "10x10x20,500",
         receiver_address: {
           zip_code: payer.postalCode,
-          street_number: 123,
-          street_name: payer.streetAddress,
-          floor: "12",
-          apartment: "120A",
+          street_number: payer.street_number,
+          street_name: payer.street_name,
+          floor: payer.floor,
+          apartment: payer.apartment,
         },
       },
+      notification_url:
+        "https://webhook.site/1b3b7b6b-0b7b-4b7b-8b7b-0b7b7b7b7b7b",
       statement_descriptor: "Pixel Point",
     },
   };

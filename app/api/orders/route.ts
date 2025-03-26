@@ -26,20 +26,36 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  const { payer, cart } = await request.json();
 
   try {
     const newOrder = await db.order.create({
       data: {
-        username: body.username,
-        email: body.email,
-        city: body.city,
-        postalCode: body.postalCode,
-        streetAddress: body.streetAddress,
-        province: body.province,
-        phonenumber: body.phonenumber,
-        paid: body.paid,
-        // here we include other data from the request body
+        username: payer.name + " " + payer.surname,
+        email: payer.email,
+        city: payer.city,
+        postalCode: payer.postalCode,
+        streetAddress: payer.street_name,
+        province: payer.province,
+        phonenumber: payer.area_code + payer.number,
+        paid: false,
+        items: {
+          create: cart.map((item: any) => ({
+            product: {
+              connect: {
+                id: item.id,
+              },
+            },
+            quantity: item.quantity,
+          })),
+        },
+      },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
       },
     });
     return NextResponse.json(newOrder, { status: 201 });
