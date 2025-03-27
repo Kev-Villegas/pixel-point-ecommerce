@@ -1,6 +1,6 @@
-import axios from "axios";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
+import { getProducts } from "@/app/actions/products/getProducts";
 
 interface Properties {
   id: number;
@@ -19,18 +19,19 @@ interface Product {
   properties?: Properties;
 }
 
-async function ProductList() {
-  let { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/products`);
+export default async function ProductList() {
+  // let { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/products`);
 
-  const products: Product[] = data.map((product: any) => ({
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    brand: product.brand,
-    stock: product.stock,
-    price: product.price,
-    properties: product.properties,
-  }));
+  // const products: Product[] = data.map((product: any) => ({
+  //   id: product.id,
+  //   name: product.name,
+  //   description: product.description,
+  //   brand: product.brand,
+  //   stock: product.stock,
+  //   price: product.price,
+  //   properties: product.properties,
+  // }));
+  const products = await getProducts();
 
   return (
     <table className="basic mt-2">
@@ -41,7 +42,7 @@ async function ProductList() {
         </tr>
       </thead>
       <tbody>
-        {products.map((product) => (
+        {products.map((product: Product) => (
           <tr key={product.id}>
             <td>{product.name}</td>
             <td>
@@ -73,5 +74,3 @@ async function ProductList() {
     </table>
   );
 }
-
-export default ProductList;
