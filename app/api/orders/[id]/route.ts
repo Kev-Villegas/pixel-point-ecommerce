@@ -33,7 +33,6 @@ export async function GET(request: NextRequest) {
             },
           },
         },
-        shipmentData: true,
       },
     });
 

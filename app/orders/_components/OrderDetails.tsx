@@ -27,9 +27,9 @@ export function OrderDetails({ orderId }: { orderId: string }) {
 
   console.log(order);
 
-  const total = order.total ?? 0;
+  const total = order.totalPrice ?? 0;
   const shipping = order.shipping ?? 0;
-  const subtotal = total - shipping;
+  const subtotal = total + shipping;
 
   return (
     <div className="bg-muted/40 p-6">
@@ -73,14 +73,14 @@ export function OrderDetails({ orderId }: { orderId: string }) {
             <div>
               <h4 className="font-medium">Dirección</h4>
               <p className="mt-1 text-sm text-muted-foreground">
-                {order.shippingAddress?.address ?? "Dirección no disponible"}
+                {order.province ?? "Dirección no disponible"}
                 <br />
-                {order?.shippingAddress?.city ?? "Dirección no disponible"}
+                {order?.city ?? "Dirección no disponible"}
                 <br />
-                {order?.shippingAddress?.state ?? "Dirección no disponible"}
-                {order?.shippingAddress?.zip ?? "Dirección no disponible"}
-                <br />
-                {order?.shippingAddress?.country ?? "Dirección no disponible"}
+                {order?.streetAddress ?? "Dirección no disponible"}{" "}
+                {order?.postalCode ?? "Dirección no disponible"}
+                {/* <br />
+                {order?.shippingAddress?.country ?? "Dirección no disponible"} */}
               </p>
             </div>
             <div>

@@ -42,7 +42,14 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { payer, cart } = await request.json();
+  const { payer, cart, total } = await request.json();
+
+  // console.log(payer);
+  // console.log(cart);
+  // console.log(total);
+  // console.log(typeof total);
+  // const totalFloat = parseFloat(total);
+  // console.log(typeof totalFloat);
 
   try {
     const newOrder = await db.order.create({
@@ -50,6 +57,7 @@ export async function POST(request: NextRequest) {
         username: payer.name + " " + payer.surname,
         email: payer.email,
         city: payer.city,
+        totalPrice: total,
         postalCode: payer.postalCode,
         streetAddress: payer.street_name,
         province: payer.province,
