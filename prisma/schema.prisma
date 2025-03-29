@@ -17,6 +17,7 @@ model Order {
   streetAddress String
   province      String
   phonenumber   String
+  totalPrice    Float
   paid          Boolean
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt

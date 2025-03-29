@@ -1,32 +1,55 @@
 import { db } from "@/app/_lib/prisma";
+import { auth } from "@/app/_lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  // Ejemplo: Obtener el usuario autenticado (según tu implementación)
-  // const user = await getUserFromRequest(request);
+  try {
+    const session = await auth();
 
-  // Si deseas filtrar por el usuario, por ejemplo:
-  // where: { email: user.email }
-  const orders = await db.order.findMany({
-    // where: { email: user.email },
-    include: {
-      items: {
-        include: {
-          images: true,
-          properties: true,
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    }
+
+    const orders = await db.order.findMany({
+      where: {
+        email: session.user.email,
+      },
+      include: {
+        items: {
+          include: {
+            product: {
+              include: {
+                images: true,
+                properties: true,
+              },
+            },
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-  return NextResponse.json(orders);
+    return NextResponse.json(orders);
+  } catch (error) {
+    console.error("Error obteniendo los pedidos:", error);
+    return NextResponse.json(
+      { error: "Error al obtener los pedidos" },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
-  const { payer, cart } = await request.json();
+  const { payer, cart, total } = await request.json();
+
+  // console.log(payer);
+  // console.log(cart);
+  // console.log(total);
+  // console.log(typeof total);
+  // const totalFloat = parseFloat(total);
+  // console.log(typeof totalFloat);
 
   try {
     const newOrder = await db.order.create({
@@ -34,6 +57,7 @@ export async function POST(request: NextRequest) {
         username: payer.name + " " + payer.surname,
         email: payer.email,
         city: payer.city,
+        totalPrice: total,
         postalCode: payer.postalCode,
         streetAddress: payer.street_name,
         province: payer.province,
@@ -58,11 +82,12 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
     return NextResponse.json(newOrder, { status: 201 });
   } catch (error) {
-    console.error("Error creating order:", error);
+    console.error("Error creando el pedido:", error);
     return NextResponse.json(
-      { error: "Error creating order" },
+      { error: "Error creando el pedido" },
       { status: 500 },
     );
   }

@@ -85,11 +85,21 @@ export function UserAddressForm() {
     reset,
   ]);
 
+  const getTotalOrderPrice = () => {
+    return cartProducts.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0,
+    );
+  };
+
+  const total = getTotalOrderPrice();
+
   const onSubmit = async (values: z.infer<typeof userAddressValidation>) => {
     setIsSubmitting(true);
     const payload = {
       cart: cartProducts,
       payer: values,
+      total: total,
     };
 
     const order = await axios.post("/api/orders", payload);
@@ -104,7 +114,7 @@ export function UserAddressForm() {
       .post("/api/checkout/preferences", preferencePayload)
       .then((response) => {
         setIsSubmitting(false);
-        console.log(response.data);
+        // console.log(response.data);
         router.push(
           `/checkout/payment?preference=${response.data.response.id}`,
         );

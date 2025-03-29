@@ -60,6 +60,10 @@ export default function OrdersTable() {
 const OrderRow = ({ order }: { order: any }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const total = order.items.reduce((acc: number, item: any) => {
+    return acc + item.product.price * item.quantity;
+  }, 0);
+
   return (
     <>
       <TableRow className="group">
@@ -72,7 +76,7 @@ const OrderRow = ({ order }: { order: any }) => {
         <TableCell>
           <OrderStatusBadge status={order.status} />
         </TableCell>
-        <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
+        <TableCell className="text-right">${total.toFixed(2)}</TableCell>
         <TableCell>
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
@@ -92,7 +96,7 @@ const OrderRow = ({ order }: { order: any }) => {
         <TableCell colSpan={5} className="p-0">
           <Collapsible open={isOpen}>
             <CollapsibleContent>
-              <OrderDetails order={order} />
+              <OrderDetails orderId={order.id} />
             </CollapsibleContent>
           </Collapsible>
         </TableCell>

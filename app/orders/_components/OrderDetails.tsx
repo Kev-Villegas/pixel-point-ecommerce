@@ -1,3 +1,6 @@
+"use client";
+
+import useSWR from "swr";
 import Image from "next/image";
 import { Button } from "@/app/_components/ui/button";
 import { Separator } from "@/app/_components/ui/separator";
@@ -11,28 +14,46 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 
-export function OrderDetails({ order }) {
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export function OrderDetails({ orderId }: { orderId: string }) {
+  const { data, error } = useSWR(`/api/orders/${orderId}`, fetcher);
+
+  if (error) return <div>Error al cargar los datos del pedido</div>;
+
+  if (!data) return <div>Cargando...</div>;
+
+  const order = data;
+
+  console.log(order);
+
+  const total = order.totalPrice ?? 0;
+  const shipping = order.shipping ?? 0;
+  const subtotal = total + shipping;
+
   return (
     <div className="bg-muted/40 p-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Resumen del Pedido</CardTitle>
-            <CardDescription>Pedido #{order.id.slice(0, 8)}</CardDescription>
+            <CardDescription>
+              Pedido #{String(order.id).slice(0, 8)}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal</span>
-              <span>${(order.total - order.shipping).toFixed(2)}</span>
+              <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Envío</span>
-              <span>${order.shipping.toFixed(2)}</span>
+              <span>${shipping.toFixed(2)}</span>
             </div>
             <Separator />
             <div className="flex justify-between font-medium">
               <span>Total</span>
-              <span>${order.total.toFixed(2)}</span>
+              <span>${total.toFixed(2)}</span>
             </div>
           </CardContent>
           <CardFooter>
@@ -52,12 +73,14 @@ export function OrderDetails({ order }) {
             <div>
               <h4 className="font-medium">Dirección</h4>
               <p className="mt-1 text-sm text-muted-foreground">
-                {order.shipping_address.street}
+                {order.province ?? "Dirección no disponible"}
                 <br />
-                {order.shipping_address.city}, {order.shipping_address.state}{" "}
-                {order.shipping_address.zip}
+                {order?.city ?? "Dirección no disponible"}
                 <br />
-                {order.shipping_address.country}
+                {order?.streetAddress ?? "Dirección no disponible"}{" "}
+                {order?.postalCode ?? "Dirección no disponible"}
+                {/* <br />
+                {order?.shippingAddress?.country ?? "Dirección no disponible"} */}
               </p>
             </div>
             <div>
@@ -85,6 +108,7 @@ export function OrderDetails({ order }) {
           )}
         </Card>
 
+        {/* Artículos */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Artículos</CardTitle>
@@ -94,27 +118,33 @@ export function OrderDetails({ order }) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {order.items.map((item) => (
-                <div key={item.id} className="flex items-center gap-4">
-                  <div className="relative h-16 w-16 overflow-hidden rounded-md border">
-                    <Image
-                      src={item.image || `/placeholder.svg?height=64&width=64`}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                    />
+              {order.items.map((item: any) => {
+                const product = item.product;
+                return (
+                  <div key={item.id} className="flex items-center gap-4">
+                    <div className="relative h-16 w-16 overflow-hidden rounded-md border">
+                      <Image
+                        src={
+                          product.images[0]?.url ||
+                          `/placeholder.svg?height=64&width=64`
+                        }
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <h4 className="font-medium">{product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Cantidad: {item.quantity} × ${product.price.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="font-medium">
+                      ${(item.quantity * product.price).toFixed(2)}
+                    </div>
                   </div>
-                  <div className="flex-1 space-y-1">
-                    <h4 className="font-medium">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Cantidad: {item.quantity} × ${item.price.toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="font-medium">
-                    ${(item.quantity * item.price).toFixed(2)}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
           <CardFooter>
