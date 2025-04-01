@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         },
       },
       notification_url:
-        "https://webhook.site/1b3b7b6b-0b7b-4b7b-8b7b-0b7b7b7b7b7b",
+        "https://pixel-point-ecommerce.vercel.app/api/checkout/notifications",
       statement_descriptor: "Pixel Point",
     },
   };

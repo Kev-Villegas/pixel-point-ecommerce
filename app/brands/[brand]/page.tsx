@@ -1,6 +1,6 @@
 import { db } from "@/app/_lib/prisma";
 import ProductByBrandList from "@/app/brands/_components/ProductByBrandList";
-import { Product } from "@prisma/client";
+// import { Product } from "@prisma/client";
 
 // interface BrandPageProps {
 //   params: { brand: string };
@@ -12,7 +12,7 @@ export default async function BrandPage(props: {
   const params = await props.params;
   const { brand } = params;
 
-  const products: Product[] = await db.product.findMany({
+  const products = await db.product.findMany({
     where: {
       brand: {
         equals: brand,
@@ -28,6 +28,14 @@ export default async function BrandPage(props: {
     return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
   }
 
+  const productsFormatted = products.map((product) => ({
+    ...product,
+    images: product.images.map((image) => ({
+      ...image,
+      productId: image.productId ?? 0,
+    })),
+  }));
+
   return (
     <>
       {/* <Header /> */}
@@ -36,7 +44,7 @@ export default async function BrandPage(props: {
           Productos de: {capitalizeFirstLetter(brand)}
         </h1>
 
-        <ProductByBrandList products={products} />
+        <ProductByBrandList products={productsFormatted} />
       </div>
     </>
   );

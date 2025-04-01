@@ -5,10 +5,10 @@ export interface ProductBase {
   name: string;
   brand: string;
   price: number;
-  images: images[];
+  images: image[];
 }
 
-interface images {
+interface image {
   id: number;
   url: string;
   productId: number;
