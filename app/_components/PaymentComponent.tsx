@@ -1,4 +1,3 @@
-"use client";
 import { useCartStore } from "@/store/useCartStore";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
