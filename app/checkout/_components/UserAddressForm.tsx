@@ -110,21 +110,16 @@ export function UserAddressForm() {
       orderId,
     };
 
+    localStorage.setItem("checkoutPayload", JSON.stringify(preferencePayload));
+
     axios
       .post("/api/checkout/preferences", preferencePayload)
       .then((response) => {
         setIsSubmitting(false);
-        // console.log(response.data);
         router.push(
           `/checkout/payment?preference=${response.data.response.id}`,
         );
       });
-
-    // reset();
-    // toast.success("Dirección guardada con exito");
-    // setTimeout(() => {
-    //   setIsSubmitting(false);
-    // }, 2000);
   };
 
   return (
