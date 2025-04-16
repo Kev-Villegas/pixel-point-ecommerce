@@ -40,6 +40,24 @@ export default function PaymentComponent() {
   const initialization = {
     amount: getTotalOrderPrice(),
     preferenceId: preferenceId,
+    payer: {
+      firstName: payload?.payer.name,
+      lastName: payload?.payer.surname,
+      // identification: {
+      //  "type": "<PAYER_DOC_TYPE_HERE>",
+      //  "number": "<PAYER_DOC_NUMBER_HERE>",
+      // },
+      // email: '<PAYER_EMAIL_HERE>',
+      address: {
+        zipCode: "<PAYER_ZIP_CODE_HERE>",
+        federalUnit: "<PAYER_FED_UNIT_HERE>",
+        city: "<PAYER_CITY_HERE>",
+        neighborhood: "<PAYER_NEIGHBORHOOD_HERE>",
+        streetName: "<PAYER_STREET_NAME_HERE>",
+        streetNumber: "<PAYER_STREET_NUMBER_HERE>",
+        complement: "<PAYER_COMPLEMENT_HERE>",
+      },
+    },
   };
 
   const customization: IPaymentBrickCustomization = {
@@ -52,8 +70,9 @@ export default function PaymentComponent() {
       ticket: "all",
       creditCard: "all",
       debitCard: "all",
+      prepaidCard: "all",
       mercadoPago: "all",
-    },
+    } as any,
   };
 
   const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
@@ -76,26 +95,26 @@ export default function PaymentComponent() {
           picture_url: item.images[0].url,
           category_id: item.brand,
         })),
-        payer: {
-          first_name: payload.payer.name,
-          last_name: payload.payer.surname,
-          phone: {
-            area_code: "11",
-            number: "987654321",
-          },
-          address: {
-            street_number: null,
-          },
-        },
-        shipments: {
-          receiver_address: {
-            zip_code: "12312-123",
-            state_name: "Rio de Janeiro",
-            city_name: "Buzios",
-            street_name: "Av das Nacoes Unidas",
-            street_number: 3003,
-          },
-        },
+        // payer: {
+        //   first_name: payload.payer.name,
+        //   last_name: payload.payer.surname,
+        //   phone: {
+        //     area_code: "11",
+        //     number: "987654321",
+        //   },
+        //   address: {
+        //     street_number: null,
+        //   },
+        // },
+        // shipments: {
+        //   receiver_address: {
+        //     zip_code: "12312-123",
+        //     state_name: "Rio de Janeiro",
+        //     city_name: "Buzios",
+        //     street_name: "Av das Nacoes Unidas",
+        //     street_number: 3003,
+        //   },
+        // },
       },
     };
 
