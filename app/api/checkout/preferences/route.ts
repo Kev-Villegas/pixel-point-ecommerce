@@ -53,6 +53,11 @@ export async function POST(request: NextRequest) {
     notification_url:
       "https://pixel-point-ecommerce.vercel.app/api/checkout/notifications",
     statement_descriptor: "Pixel Point",
+    back_urls: {
+      failure: "https://pixel-point-ecommerce.vercel.app",
+      pending: "https://pixel-point-ecommerce.vercel.app",
+      success: "https://pixel-point-ecommerce.vercel.app",
+    },
   };
 
   const response = await preference.create({ body });

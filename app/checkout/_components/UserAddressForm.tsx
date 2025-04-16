@@ -110,16 +110,35 @@ export function UserAddressForm() {
       orderId,
     };
 
-    localStorage.setItem("checkoutPayload", JSON.stringify(preferencePayload));
+    const response = await axios.post(
+      "/api/checkout/preferences",
+      preferencePayload,
+    );
 
-    axios
-      .post("/api/checkout/preferences", preferencePayload)
-      .then((response) => {
-        setIsSubmitting(false);
-        router.push(
-          `/checkout/payment?preference=${response.data.response.id}`,
-        );
-      });
+    setIsSubmitting(false);
+    router.push(`/checkout/payment?preference=${response.data.response.id}`);
+    // const { api_response, total_amount, ...rest } = response.data.response
+    const {
+      back_urls,
+      items,
+      metadata,
+      notification_url,
+      statement_descriptor,
+      payer,
+      shipments,
+    } = response.data.response;
+
+    const preference = {
+      back_urls,
+      items,
+      metadata,
+      notification_url,
+      statement_descriptor,
+      payer,
+      shipments,
+    };
+
+    localStorage.setItem("preference", JSON.stringify(preference));
   };
 
   return (

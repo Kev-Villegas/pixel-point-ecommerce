@@ -8,9 +8,32 @@ import { useEffect, useState } from "react";
 initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
 
 type PayloadType = {
+  statement_descriptor: string;
+  notification_url: string;
+  metadata: {
+    [key: string]: any;
+  };
   payer: {
     name: string;
     surname: string;
+    phone: {
+      area_code: string;
+      number: string;
+    };
+    address: {
+      postalCode: string;
+      street_name: string;
+      street_number: number;
+    };
+  };
+  shipments: {
+    receiver_address: {
+      postalCode: string;
+      street_name: string;
+      street_number: number;
+      floor?: string;
+      apartment?: string;
+    };
   };
 };
 
@@ -19,12 +42,12 @@ export default function PaymentComponent() {
   const [payload, setPayload] = useState<PayloadType | null>(null);
 
   useEffect(() => {
-    const data = localStorage.getItem("checkoutPayload");
+    const data = localStorage.getItem("preference");
     if (data) {
       const parsedData = JSON.parse(data);
       setPayload(parsedData);
     }
-    localStorage.removeItem("checkoutPayload");
+    localStorage.removeItem("preference");
   }, []);
 
   const getTotalOrderPrice = () => {
@@ -40,24 +63,6 @@ export default function PaymentComponent() {
   const initialization = {
     amount: getTotalOrderPrice(),
     preferenceId: preferenceId,
-    payer: {
-      firstName: payload?.payer.name,
-      lastName: payload?.payer.surname,
-      // identification: {
-      //  "type": "<PAYER_DOC_TYPE_HERE>",
-      //  "number": "<PAYER_DOC_NUMBER_HERE>",
-      // },
-      // email: '<PAYER_EMAIL_HERE>',
-      address: {
-        zipCode: "<PAYER_ZIP_CODE_HERE>",
-        federalUnit: "<PAYER_FED_UNIT_HERE>",
-        city: "<PAYER_CITY_HERE>",
-        neighborhood: "<PAYER_NEIGHBORHOOD_HERE>",
-        streetName: "<PAYER_STREET_NAME_HERE>",
-        streetNumber: "<PAYER_STREET_NUMBER_HERE>",
-        complement: "<PAYER_COMPLEMENT_HERE>",
-      },
-    },
   };
 
   const customization: IPaymentBrickCustomization = {
@@ -83,9 +88,9 @@ export default function PaymentComponent() {
 
     const formToSend = {
       ...formData,
-      statement_descriptor: "Pixel Point",
-      notification_url:
-        "https://pixel-point-ecommerce.vercel.app/api/checkout/notifications",
+      statement_descriptor: payload.statement_descriptor,
+      notification_url: payload.notification_url,
+      metadata: payload.metadata,
       additional_info: {
         items: cartProducts.map((item: any) => ({
           id: item.id,
@@ -95,26 +100,28 @@ export default function PaymentComponent() {
           picture_url: item.images[0].url,
           category_id: item.brand,
         })),
-        // payer: {
-        //   first_name: payload.payer.name,
-        //   last_name: payload.payer.surname,
-        //   phone: {
-        //     area_code: "11",
-        //     number: "987654321",
-        //   },
-        //   address: {
-        //     street_number: null,
-        //   },
-        // },
-        // shipments: {
-        //   receiver_address: {
-        //     zip_code: "12312-123",
-        //     state_name: "Rio de Janeiro",
-        //     city_name: "Buzios",
-        //     street_name: "Av das Nacoes Unidas",
-        //     street_number: 3003,
-        //   },
-        // },
+        payer: {
+          first_name: payload.payer.name,
+          last_name: payload.payer.surname,
+          phone: {
+            area_code: payload.payer.phone.area_code,
+            number: payload.payer.phone.number,
+          },
+          address: {
+            zip_code: payload.payer.address.postalCode,
+            street_name: payload.payer.address.street_name,
+            street_number: payload.payer.address.street_number,
+          },
+        },
+        shipments: {
+          receiver_address: {
+            zip_code: payload.shipments.receiver_address.postalCode,
+            street_number: payload.shipments.receiver_address.street_number,
+            street_name: payload.shipments.receiver_address.street_name,
+            floor: payload.shipments.receiver_address.floor,
+            apartment: payload.shipments.receiver_address.apartment,
+          },
+        },
       },
     };
 
