@@ -1,5 +1,4 @@
 "use client";
-
 import PaymentComponent from "@/app/_components/PaymentComponent";
 import { Suspense } from "react";
 

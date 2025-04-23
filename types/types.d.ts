@@ -1,5 +1,11 @@
 import { DefaultSession } from "next-auth";
 
+declare global {
+  interface Window {
+    MP_DEVICE_SESSION_ID?: string;
+  }
+}
+
 export interface ProductBase {
   id: number;
   name: string;
