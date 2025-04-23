@@ -13,8 +13,8 @@ export default function PaymentStatus() {
 
   const customization = {
     backUrls: {
-      error: "http://localhost:3000",
-      return: "http://localhost:3000",
+      error: process.env.NEXT_PUBLIC_URL as string,
+      return: process.env.NEXT_PUBLIC_URL as string,
     },
   };
 
