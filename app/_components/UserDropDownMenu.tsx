@@ -62,17 +62,21 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
                 setIsDropdownOpen(false);
               }}
             >
-              <User className="mr-2 h-4 w-4" />
+              <User className="h-4 w-4" />
               <span>Mi Perfil</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <WalletCards className="mr-2 h-4 w-4" />
-              <Link href="/orders">Mis Pedidos</Link>
+              <Link href="/orders" className="flex items-center">
+                <WalletCards className="mr-2 h-4 w-4" />
+                <span>Mis Pedidos</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <BookHeart className="mr-2 h-4 w-4" />
-              <span>Favoritos</span>
+              <Link href="/favorites" className="flex items-center">
+                <BookHeart className="mr-2 h-4 w-4" />
+                <span>Favoritos</span>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

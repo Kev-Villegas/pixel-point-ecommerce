@@ -1,19 +1,46 @@
 import { db } from "@/app/_lib/prisma";
+import { auth } from "@/app/_lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 type Image = {
   url: string;
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // Autenticación para saber si el usuario ha dado like a cada producto
+  const session = await auth();
+  const userEmail = session?.user?.email;
+
   try {
+    // Obtener productos, incluir imágenes, conteo total de likes y likes del usuario actual
     const products = await db.product.findMany({
       include: {
         images: true,
+        _count: { select: { likes: true } },
+        likes: userEmail
+          ? { where: { user: { email: userEmail } }, select: { id: true } }
+          : false,
       },
     });
-    return NextResponse.json(products);
+
+    // Formatear salida para añadir likeCount y likedByUser
+    const result = products.map((p) => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      brand: p.brand,
+      stock: p.stock,
+      price: p.price,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+      images: p.images,
+      likeCount: p._count.likes,
+      likedByUser: Array.isArray(p.likes) && p.likes.length > 0,
+    }));
+
+    return NextResponse.json(result);
   } catch (error) {
+    console.error("Error obteniendo productos con likes:", error);
     return NextResponse.json(
       { error: "Error al obtener productos" },
       { status: 500 },
@@ -47,10 +74,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(product, { status: 201 });
   } catch (e: any) {
-    // const match = e.message.match(/Argument `.+` is missing\./);
     const match = e.message.match(/Argument `.+` is missing\./);
     const errorMessage = match ? match[0] : e.message;
 
-    return NextResponse.json({ error: errorMessage }, { status: 400 }); // Status 400: Bad Request
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }

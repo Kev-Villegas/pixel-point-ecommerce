@@ -1,14 +1,21 @@
 "use client";
-import { Card, CardContent } from "@/app/_components/ui/card";
-import { useCartStore } from "@/store/useCartStore";
-import { ProductBase } from "@/types/types";
-import { BadgeCheck, ShoppingBag } from "lucide-react";
-import Image from "next/image";
+
+import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ProductBase } from "@/types/types";
+import { useLikes } from "@/app/_hooks/useLikes";
+import { useCartStore } from "@/store/useCartStore";
+import { BadgeCheck, ShoppingBag, Heart } from "lucide-react";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
-interface ProductCardProps extends ProductBase {}
+interface ProductCardProps extends Omit<ProductBase, "images"> {
+  images: { url: string }[];
+}
+
+type ImageType = { url: string };
 
 export default function ProductCard({
   id,
@@ -19,16 +26,37 @@ export default function ProductCard({
 }: ProductCardProps) {
   const { addProduct } = useCartStore();
   const [isAdding, setIsAdding] = useState(false);
+  const { likedProductIds, mutate } = useLikes();
+  const [likeLoading, setLikeLoading] = useState(false);
+
+  const isLiked = likedProductIds.includes(id);
 
   const handleAddToCart = () => {
     if (isAdding) return;
     setIsAdding(true);
     addProduct({ id, name, price, brand, images });
     toast.success(`Producto ${name} agregado al carrito`);
+    setTimeout(() => setIsAdding(false), 800);
+  };
 
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 800);
+  const toggleLike = async () => {
+    if (likeLoading) return;
+    setLikeLoading(true);
+    try {
+      if (isLiked) {
+        await axios.delete(`/api/likes/${id}`);
+        toast.success("Like eliminado");
+      } else {
+        await axios.post("/api/likes", { productId: id });
+        toast.success("Producto añadido a favoritos");
+      }
+      await mutate();
+    } catch (error) {
+      console.error("Error cambiando like:", error);
+      toast.error("Error al actualizar favoritos");
+    } finally {
+      setLikeLoading(false);
+    }
   };
 
   return (
@@ -66,16 +94,32 @@ export default function ProductCard({
             <span className="text-lg font-semibold text-emerald-600">
               ${price.toFixed(2)}
             </span>
-            <button
-              className={`rounded-full p-2 text-primary transition-transform duration-200 ease-in-out hover:scale-110 hover:bg-primary hover:text-primary-foreground ${
-                isAdding ? "cursor-not-allowed opacity-50" : ""
-              }`}
-              aria-label="Añadir al carrito"
-              onClick={handleAddToCart}
-              disabled={isAdding}
-            >
-              <ShoppingBag className="h-5 w-5" />
-            </button>
+            <div className="flex gap-1">
+              <button
+                onClick={toggleLike}
+                disabled={likeLoading}
+                className="rounded-full p-2 transition-transform duration-200 ease-in-out hover:scale-110"
+                aria-label={isLiked ? "Eliminar favorito" : "Añadir favorito"}
+              >
+                <Heart
+                  className={`h-5 w-5 transition ${
+                    isLiked
+                      ? "fill-red-500 text-red-500"
+                      : "fill-white text-zinc-500"
+                  }`}
+                />
+              </button>
+              <button
+                onClick={handleAddToCart}
+                disabled={isAdding}
+                className={`rounded-full p-2 text-primary transition-transform duration-200 ease-in-out hover:scale-110 hover:bg-primary hover:text-primary-foreground ${
+                  isAdding ? "cursor-not-allowed opacity-50" : ""
+                }`}
+                aria-label="Añadir al carrito"
+              >
+                <ShoppingBag className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         </div>
       </CardContent>
