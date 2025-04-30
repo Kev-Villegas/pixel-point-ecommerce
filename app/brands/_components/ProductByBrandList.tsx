@@ -4,17 +4,23 @@ import { useMemo } from "react";
 import ProductCard from "@/app/_components/ProductCard";
 import { useFilterStore } from "@/store/useFilterStore";
 import FilterProductsBy from "@/app/brands/_components/FilterProductsBy";
+import { ProductBase } from "@/types/types";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  brand: string;
-  images: { url: string }[];
-}
+// interface Product {
+//   id: number;
+//   name: string;
+//   price: number;
+//   brand: string;
+//   images: { id: number; productId: number; url: string }[];
+// }
 
+// interface ProductByBrandListProps {
+//   products: Product[];
+// }
+
+// interface ProductCardProps extends ProductBase {}
 interface ProductByBrandListProps {
-  products: Product[];
+  products: ProductBase[];
 }
 
 export default function ProductByBrandList({

@@ -1,14 +1,20 @@
 import { DefaultSession } from "next-auth";
 
+declare global {
+  interface Window {
+    MP_DEVICE_SESSION_ID?: string;
+  }
+}
+
 export interface ProductBase {
   id: number;
   name: string;
   brand: string;
   price: number;
-  images: images[];
+  images: image[];
 }
 
-interface images {
+interface image {
   id: number;
   url: string;
   productId: number;
