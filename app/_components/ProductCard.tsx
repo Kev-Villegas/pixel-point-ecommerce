@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/app/_components/ui/card";
 
 interface ProductCardProps extends Omit<ProductBase, "images"> {
   images: { url: string }[];
+  onUnfavorite?: () => void;
 }
 
 type ImageType = { url: string };
@@ -23,6 +24,7 @@ export default function ProductCard({
   name,
   price,
   brand,
+  onUnfavorite,
 }: ProductCardProps) {
   const { addProduct } = useCartStore();
   const [isAdding, setIsAdding] = useState(false);
@@ -46,11 +48,12 @@ export default function ProductCard({
       if (isLiked) {
         await axios.delete(`/api/likes/${id}`);
         toast.success("Like eliminado");
+        if (onUnfavorite) onUnfavorite(); // <- actualiza favoritos si se pasa esta prop
       } else {
         await axios.post("/api/likes", { productId: id });
         toast.success("Producto añadido a favoritos");
       }
-      await mutate();
+      await mutate(); // Esto sigue actualizando la lista general de likes
     } catch (error) {
       console.error("Error cambiando like:", error);
       toast.error("Error al actualizar favoritos");

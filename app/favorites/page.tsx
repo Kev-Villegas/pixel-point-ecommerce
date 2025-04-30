@@ -46,7 +46,13 @@ export default function FavoritesPage() {
       </h1>
       <div className="flex flex-row flex-wrap gap-4">
         {favorites.map((product) => (
-          <ProductCard key={product.id} {...product} />
+          <ProductCard
+            key={product.id}
+            {...product}
+            onUnfavorite={() => {
+              mutate((prev) => prev?.filter((p) => p.id !== product.id), false);
+            }}
+          />
         ))}
       </div>
     </section>
