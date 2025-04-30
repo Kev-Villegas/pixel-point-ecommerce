@@ -39,7 +39,7 @@ type PayloadType = {
 
 export default function PaymentComponent() {
   const router = useRouter();
-  const { cartProducts } = useCartStore();
+  const { cartProducts, clearCart } = useCartStore();
   const [payload, setPayload] = useState<PayloadType | null>(null);
   const deviceIdRef = useRef<string | null>(null);
 
@@ -121,7 +121,7 @@ export default function PaymentComponent() {
 
     const formToSend = {
       ...formData,
-      // three_d_secure_mode: 'optional',
+      three_d_secure_mode: "optional",
       statement_descriptor: payload.statement_descriptor,
       notification_url: payload.notification_url,
       metadata: payload.metadata,
@@ -168,6 +168,12 @@ export default function PaymentComponent() {
         .post("/api/checkout", formToSend, { headers })
         .then((response) => {
           console.log("Response from server:", response.data);
+
+          if (response.data.status === "approved") {
+            clearCart();
+          }
+
+          // localStorage.setItem("paymentStatusData", JSON.stringify(response.data));
           router.push(`/checkout/payment/status?id=${response.data.id}`);
         })
         .catch((error) => console.log(error));

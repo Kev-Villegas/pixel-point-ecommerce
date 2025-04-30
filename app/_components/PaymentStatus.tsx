@@ -6,9 +6,14 @@ initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
 export default function PaymentStatus() {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get("id") as string;
+  // const paymentStatusData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("paymentStatusData") || "{}") : {};
 
   const initialization = {
     paymentId: paymentId,
+    // additionalInfo: {
+    //   externalResourceURL: paymentStatusData.three_ds_info.externalResourceURL,
+    //   creq: paymentStatusData.three_ds_info.creq,
+    // },
   };
 
   const customization = {

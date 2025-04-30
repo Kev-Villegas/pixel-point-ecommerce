@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       pending: "https://pixel-point-ecommerce.vercel.app",
       success: "https://pixel-point-ecommerce.vercel.app",
     },
+    auto_return: "approved",
   };
 
   const response = await preference.create({ body });
