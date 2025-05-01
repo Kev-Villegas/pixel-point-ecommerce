@@ -1,5 +1,4 @@
 "use client";
-
 import { useFavorites } from "@/app/_hooks/useFavorites";
 import ProductCard from "@/app/_components/ProductCard";
 import { Spinner } from "@/app/_components/Spinner";

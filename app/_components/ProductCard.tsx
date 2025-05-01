@@ -1,5 +1,4 @@
 "use client";
-
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,12 +10,10 @@ import { useCartStore } from "@/store/useCartStore";
 import { BadgeCheck, ShoppingBag, Heart } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
 
-interface ProductCardProps extends Omit<ProductBase, "images"> {
-  images: { url: string }[];
+interface ProductCardProps extends ProductBase {
+  // images: { url: string }[];
   onUnfavorite?: () => void;
 }
-
-type ImageType = { url: string };
 
 export default function ProductCard({
   id,
