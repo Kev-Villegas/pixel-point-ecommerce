@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { User } from "lucide-react";
@@ -39,6 +39,7 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     apartment,
     floor,
     updateUser,
+    fetchUserInfo,
   } = useUserInfoStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,11 +72,15 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     } catch (error) {
       console.error("Hubo un error al actualizar el usuario:", error);
     }
-
-    onOpenChange(false);
   };
 
   const session = useSession();
+
+  useEffect(() => {
+    if (open) {
+      fetchUserInfo();
+    }
+  }, [open, fetchUserInfo]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

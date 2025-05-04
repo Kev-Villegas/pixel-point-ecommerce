@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(user.shipments, { status: 200 });
+    return NextResponse.json(user.shipments[0], { status: 200 });
   } catch (error) {
     console.error("Error obteniendo ShipmentData:", error);
     return NextResponse.json(
