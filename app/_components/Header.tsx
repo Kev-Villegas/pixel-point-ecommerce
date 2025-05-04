@@ -5,6 +5,7 @@ import CartInfo from "./navbar/CartInfo";
 import SearchInput from "./navbar/SearchInput";
 import UserDropDownMenu from "./UserDropDownMenu";
 import { auth } from "../_lib/auth";
+import BurgerButton from "./BurgerButton";
 
 export default async function Header() {
   const brands = [
@@ -22,14 +23,22 @@ export default async function Header() {
   return (
     <header className="bg-white px-10 shadow-md">
       <div className="mx-auto py-4">
-        <div className="mb-4 flex items-center justify-between">
-          <Link href="/" className="mr-3 text-2xl font-bold text-primary">
+        <div className="mb-4 flex items-center justify-between md:mb-0 md:justify-start">
+          <div className="md:hidden">
+            <BurgerButton brands={brands} />
+          </div>
+          <Link href="/" className="mr-4 text-2xl font-bold text-primary">
             Logo
           </Link>
+        </div>
+        <div className="mb-4 flex items-center justify-between">
+          {/* <Link href="/" className="mr-3 text-2xl font-bold text-primary">
+            Logo
+          </Link> */}
           <SearchInput />
         </div>
         <div className="flex items-center justify-between">
-          <nav className="flex space-x-4 text-sm font-medium text-gray-700">
+          <nav className="hidden space-x-4 text-sm font-medium text-gray-700 md:flex">
             {brands.map((brand) => (
               <Link
                 href={`/brands/${brand}`}
@@ -40,7 +49,7 @@ export default async function Header() {
               </Link>
             ))}
           </nav>
-          <div className="relative flex items-center space-x-4">
+          <div className="flex w-full items-center justify-between md:justify-end md:space-x-4">
             <CartInfo />
             {session && session.user?.email ? (
               <UserDropDownMenu session={session} />
