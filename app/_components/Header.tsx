@@ -21,20 +21,18 @@ export default async function Header() {
   const session = await auth();
 
   return (
-    <header className="bg-white px-10 shadow-md">
+    <header className="bg-white px-5 shadow-md md:px-10">
       <div className="mx-auto py-4">
-        <div className="mb-4 flex items-center justify-between md:mb-0 md:justify-start">
-          <div className="md:hidden">
+        <div className="mb-2 flex items-center justify-between">
+          <div className="mr-2 md:hidden">
             <BurgerButton brands={brands} />
           </div>
-          <Link href="/" className="mr-4 text-2xl font-bold text-primary">
+          <Link
+            href="/"
+            className="mx-7 hidden text-2xl font-bold text-primary md:block"
+          >
             Logo
           </Link>
-        </div>
-        <div className="mb-4 flex items-center justify-between">
-          {/* <Link href="/" className="mr-3 text-2xl font-bold text-primary">
-            Logo
-          </Link> */}
           <SearchInput />
         </div>
         <div className="flex items-center justify-between">

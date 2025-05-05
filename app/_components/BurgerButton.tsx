@@ -36,10 +36,13 @@ export default function BurgerButton({
             >
               <X className="h-6 w-6" />
             </button>
-            <div className="ml-4">
-              <h1>Logo</h1>
-              {/* <Image src={logoSrc || "/placeholder.svg"} alt="Logo" width={120} height={40} className="h-10 w-auto" /> */}
-            </div>
+            <Link
+              href="/"
+              className="mr-3 text-xl font-bold text-primary"
+              onClick={() => setIsOpen(false)}
+            >
+              Logo
+            </Link>
           </div>
 
           <div className="flex-1 overflow-y-auto p-6">

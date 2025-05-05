@@ -55,16 +55,16 @@ export default function Home() {
   ];
 
   return (
-    <div>
+    <main>
       {/* <Header /> */}
-      <div className="rounded-2xl px-10 pt-4">
+      <div className="rounded-2xl px-5 pt-4 md:px-10">
         <Banner banners={banners} />
       </div>
-      <div className="px-10">
+      <div className="px-5 md:px-10">
         <ProductList href="1" title="Mas vendidos 1" />
         <ProductList href="2" title="Mas vendidos 2" />
         <ProductList href="3" title="Mas vendidos 3" />
       </div>
-    </div>
+    </main>
   );
 }
