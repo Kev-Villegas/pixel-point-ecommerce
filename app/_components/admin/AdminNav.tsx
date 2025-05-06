@@ -18,14 +18,21 @@ export default function AdminNav({ show }: { show: boolean }) {
       }
     >
       <nav className="flex flex-col gap-2">
-        <Link href="/" className={pathname === "/" ? activeLink : inactiveLink}>
+        <Link
+          href="/protected/dashboard"
+          className={
+            pathname.includes("/dashboard") ? activeLink : inactiveLink
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className={pathname === "/" ? activeIcon : inactiveIcon}
+            className={
+              pathname.includes("/dashboard") ? activeIcon : inactiveIcon
+            }
           >
             <path
               strokeLinecap="round"
