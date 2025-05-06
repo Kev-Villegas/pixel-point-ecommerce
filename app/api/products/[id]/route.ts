@@ -41,6 +41,7 @@ export async function PUT(
       description: body.description,
       brand: body.productBrand,
       price: body.price,
+      stock: body.stock,
       properties: {
         delete: {},
         create: { ...formattedProperties },

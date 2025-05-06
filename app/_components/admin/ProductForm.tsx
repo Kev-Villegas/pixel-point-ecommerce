@@ -24,6 +24,7 @@ type ProductFormProps = {
   images?: ItemType[]; // Asumo que `images` es un array de URLs (ajústalo si es necesario)
   category?: string;
   brand?: string;
+  stock?: boolean;
   properties?: Record<string, string>; // Ajusta según la estructura de `properties`
 };
 
@@ -35,6 +36,7 @@ export default function ProductForm({
   images: existingImages,
   brand: existingBrand,
   properties: existingProperties,
+  stock: existingStock,
 }: ProductFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState(existingName || "");
@@ -42,6 +44,7 @@ export default function ProductForm({
   const [price, setPrice] = useState<number>(existingPrice ?? 159.99); // Usa `??` para evitar problemas con `null`
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
+  const [stock, setStock] = useState(existingStock);
   const [properties, setProperties] = useState<
     { name: string; values: string }[]
   >(
@@ -73,6 +76,7 @@ export default function ProductForm({
     e.preventDefault();
     const data = {
       title,
+      stock,
       description,
       price,
       images,
@@ -153,6 +157,15 @@ export default function ProductForm({
 
   return (
     <form onSubmit={saveProduct}>
+      <div className="flex w-fit flex-col items-start">
+        <label className="mb-3">Stock</label>
+        <input
+          className="mb-4"
+          type="checkbox"
+          checked={stock}
+          onChange={(e) => setStock(e.target.checked)}
+        />
+      </div>
       <label>Nombre del producto</label>
       <input
         type="text"
@@ -259,7 +272,6 @@ export default function ProductForm({
           <div>Agregar</div>
         </CldUploadButton>
       </div>
-
       <label>Descripción</label>
       <textarea
         placeholder="Descripción"

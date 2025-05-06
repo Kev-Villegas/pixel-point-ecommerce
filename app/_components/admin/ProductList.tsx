@@ -37,13 +37,17 @@ export default async function ProductList() {
     <table className="basic mt-2">
       <thead>
         <tr>
+          <td className="text-center">Stock</td>
           <td>Product Name</td>
-          <td />
+          {/* <td /> */}
         </tr>
       </thead>
       <tbody>
         {products.map((product: Product) => (
           <tr key={product.id}>
+            <td>
+              <input type="checkbox" checked={product.stock} readOnly />
+            </td>
             <td>{product.name}</td>
             <td>
               <Link
