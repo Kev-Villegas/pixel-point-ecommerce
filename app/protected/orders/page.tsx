@@ -29,25 +29,42 @@ export default function OrdersPage() {
     <table className="basic">
       <thead>
         <tr>
+          <th>Sent</th>
           <th>Date</th>
           <th>Paid</th>
           <th>Recipient</th>
           <th>Products</th>
+          <th>Total</th>
         </tr>
       </thead>
       <tbody className="text-center text-sm text-gray-600">
         {orders.length > 0 &&
           orders.map((order) => (
             <tr key={order.id} className="border-b border-gray-200">
+              <td>
+                <form method="POST" action={`/api/orders/${order.id}`}>
+                  <input type="hidden" name="_method" value="PATCH" />
+                  <input
+                    type="checkbox"
+                    name="sent"
+                    defaultChecked={order.sent}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      e.preventDefault();
+                      e.target.form?.submit();
+                    }}
+                  />
+                </form>
+              </td>
               <td>{new Date(order.createdAt).toLocaleString()}</td>
               <td className={order.paid ? "text-green-600" : "text-red-600"}>
                 {order.paid ? "YES" : "NO"}
               </td>
               <td>
-                {order.username} - {order.email}
+                {order.username}
                 <br />
-                {/* {order.country} - {order.postalCode}<br /> */}
-                {order.city} - {order.streetAddress}
+                {order.email} - {order.phonenumber}
+                <br />
+                {order.city} - {order.streetAddress} - {order.postalCode}
                 <br />
               </td>
               <td>
@@ -57,6 +74,9 @@ export default function OrdersPage() {
                     <br />
                   </div>
                 ))}
+              </td>
+              <td>
+                <strong>$ {order.totalPrice}</strong>
               </td>
             </tr>
           ))}

@@ -60,6 +60,24 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
-  return NextResponse.json({ message: "Not implemented" }, { status: 501 });
+export async function POST(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
+  const params = await props.params;
+  const formData = await request.formData();
+  const methodOverride = formData.get("_method");
+
+  if (methodOverride === "PATCH") {
+    const sent = formData.has("sent");
+
+    await db.order.update({
+      where: { id: parseInt(params.id) },
+      data: { sent },
+    });
+
+    return NextResponse.redirect(`${request.nextUrl.origin}/protected/orders`);
+  }
+
+  return new NextResponse("Método no permitido", { status: 405 });
 }

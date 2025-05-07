@@ -21,6 +21,7 @@ model Order {
   paid          Boolean
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  sent          Boolean     @default(false)
   items         OrderItem[] // Relación con la tabla intermedia
 }
 
