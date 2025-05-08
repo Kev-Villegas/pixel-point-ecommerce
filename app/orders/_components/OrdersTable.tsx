@@ -74,7 +74,7 @@ const OrderRow = ({ order }: { order: any }) => {
           {format(new Date(order.createdAt), "d MMM, yyyy")}
         </TableCell>
         <TableCell>
-          <OrderStatusBadge status={order.status} paid={order.paid} />
+          <OrderStatusBadge status={order.status} />
         </TableCell>
         <TableCell className="text-right">${total.toFixed(2)}</TableCell>
         <TableCell>
@@ -107,20 +107,24 @@ const OrderRow = ({ order }: { order: any }) => {
 
 const MemoizedOrderRow = memo(OrderRow);
 
-function OrderStatusBadge({ status, paid }: { status: string; paid: boolean }) {
+function OrderStatusBadge({ status }: { status: string }) {
   const statusMap: Record<
-    "paid" | "pending",
+    string,
     {
       label: string;
       variant: "default" | "outline" | "secondary" | "destructive";
     }
   > = {
-    paid: { label: "Pagado", variant: "default" },
-    pending: { label: "Pendiente", variant: "outline" },
+    PAGO_PENDIENTE: { label: "Pago pendiente", variant: "outline" },
+    ENVIO_PENDIENTE: { label: "Envío pendiente", variant: "secondary" },
+    ENVIADO: { label: "Enviado", variant: "default" },
+    CANCELADO: { label: "Cancelado", variant: "destructive" },
   };
 
-  const paymentStatus = paid ? "paid" : "pending";
-  const { label, variant } = statusMap[paymentStatus];
+  const statusInfo = statusMap[status] || {
+    label: "Desconocido",
+    variant: "outline",
+  };
 
-  return <Badge variant={variant}>{label}</Badge>;
+  return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
 }

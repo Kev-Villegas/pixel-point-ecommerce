@@ -69,11 +69,20 @@ export async function POST(
   const methodOverride = formData.get("_method");
 
   if (methodOverride === "PATCH") {
-    const sent = formData.has("sent");
+    const newStatus = formData.get("status") as string;
+
+    if (
+      newStatus !== "PAGO_PENDIENTE" &&
+      newStatus !== "ENVIO_PENDIENTE" &&
+      newStatus !== "ENVIADO" &&
+      newStatus !== "ENTREGADO"
+    ) {
+      return new NextResponse("Estado inválido", { status: 400 });
+    }
 
     await db.order.update({
       where: { id: parseInt(params.id) },
-      data: { sent },
+      data: { status: newStatus },
     });
 
     return NextResponse.redirect(`${request.nextUrl.origin}/protected/orders`);

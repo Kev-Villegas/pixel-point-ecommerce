@@ -8,6 +8,13 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum OrderStatus {
+  PAGO_PENDIENTE
+  ENVIO_PENDIENTE
+  ENVIADO
+  ENTREGADO
+}
+
 model Order {
   id            Int         @id @default(autoincrement())
   username      String
@@ -21,7 +28,7 @@ model Order {
   paid          Boolean
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  sent          Boolean     @default(false)
+  status        OrderStatus @default(PAGO_PENDIENTE)
   items         OrderItem[] // Relación con la tabla intermedia
 }
 

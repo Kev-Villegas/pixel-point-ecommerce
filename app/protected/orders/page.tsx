@@ -29,7 +29,7 @@ export default function OrdersPage() {
     <table className="basic">
       <thead>
         <tr>
-          <th>Sent</th>
+          <th>Status</th>
           <th>Date</th>
           <th>Paid</th>
           <th>Recipient</th>
@@ -44,15 +44,20 @@ export default function OrdersPage() {
               <td>
                 <form method="POST" action={`/api/orders/${order.id}`}>
                   <input type="hidden" name="_method" value="PATCH" />
-                  <input
-                    type="checkbox"
-                    name="sent"
-                    defaultChecked={order.sent}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  <select
+                    name="status"
+                    defaultValue={order.status}
+                    onChange={(e) => {
                       e.preventDefault();
                       e.target.form?.submit();
                     }}
-                  />
+                    className="rounded border bg-white px-2 py-1 text-sm"
+                  >
+                    <option value="PAGO_PENDIENTE">Pago Pendiente</option>
+                    <option value="ENVIO_PENDIENTE">Envio Pendiente</option>
+                    <option value="ENVIADO">Enviado</option>
+                    <option value="ENTREGADO">Entregado</option>
+                  </select>
                 </form>
               </td>
               <td>{new Date(order.createdAt).toLocaleString()}</td>

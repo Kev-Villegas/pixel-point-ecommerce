@@ -22,8 +22,14 @@ export async function POST(req: NextRequest) {
 
       if (orderId && paid) {
         await db.order.update({
-          where: { id: Number(orderId) },
-          data: { paid: true },
+          where: {
+            id: Number(orderId),
+            status: "PAGO_PENDIENTE",
+          },
+          data: {
+            paid: true,
+            status: "ENVIO_PENDIENTE",
+          },
         });
 
         console.log(`Orden ${orderId} marcada como pagada.`);
