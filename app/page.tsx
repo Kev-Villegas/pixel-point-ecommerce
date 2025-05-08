@@ -1,4 +1,5 @@
 import Banner from "./_components/Banner";
+import Footer from "./_components/Footer";
 import ProductList from "./_components/ProductList";
 
 export default function Home() {
@@ -55,16 +56,19 @@ export default function Home() {
   ];
 
   return (
-    <main>
-      {/* <Header /> */}
-      <div className="rounded-2xl px-5 pt-4 md:px-10">
-        <Banner banners={banners} />
-      </div>
-      <div className="px-5 md:px-10">
-        <ProductList href="1" title="Mas vendidos 1" />
-        <ProductList href="2" title="Mas vendidos 2" />
-        <ProductList href="3" title="Mas vendidos 3" />
-      </div>
-    </main>
+    <>
+      <main>
+        {/* <Header /> */}
+        <div className="rounded-2xl px-5 pt-4 md:px-10">
+          <Banner banners={banners} />
+        </div>
+        <div className="px-5 md:px-10">
+          <ProductList href="1" title="Mas vendidos 1" />
+          <ProductList href="2" title="Mas vendidos 2" />
+          <ProductList href="3" title="Mas vendidos 3" />
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }
