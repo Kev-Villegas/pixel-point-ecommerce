@@ -46,6 +46,7 @@ export default function ProductList({ title, href }: ProductListProps) {
                 brand={product.brand}
                 price={product.price}
                 images={product.images}
+                stock={product.stock}
               />
             ))}
           </div>
