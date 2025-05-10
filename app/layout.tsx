@@ -19,8 +19,38 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Pixel Point",
-  description: "Pixel Point E-Commerce",
+  title: "Pixel Point - Celulares Originales al Mejor Precio",
+  description:
+    "Pixel Point: tienda online familiar dedicada a la venta de celulares originales con garantía y a precios accesibles.",
+  keywords: [
+    "Pixel Point",
+    "celulares originales",
+    "tienda de celulares",
+    "celulares Argentina",
+    "Pixel Point Argentina",
+    "celulares con garantía",
+  ],
+  authors: [
+    {
+      name: "Nahuel Villegas",
+      url: "https://www.linkedin.com/in/villegasnahuel/",
+    },
+    {
+      name: "Kevin Villegas",
+      url: "https://www.linkedin.com/in/kevin--villegas/",
+    },
+  ],
+  creator: "Pixel Point",
+  robots: "index, follow",
+  openGraph: {
+    title: "Pixel Point - Celulares Originales al Mejor Precio",
+    description:
+      "Comprá celulares originales de forma segura en Pixel Point, un emprendimiento familiar con garantía y confianza.",
+    url: "https://www.pixel-point.com.ar/",
+    siteName: "Pixel Point",
+    locale: "es_AR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
