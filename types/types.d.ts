@@ -6,18 +6,24 @@ declare global {
   }
 }
 
-export interface ProductBase {
-  id: number;
-  name: string;
-  brand: string;
-  price: number;
-  images: image[];
-}
-
-export interface image {
+export interface Image {
   id: number;
   url: string;
   productId: number;
+}
+
+export interface ProductBase {
+  id: number;
+  name: string;
+  description: string;
+  brand: string;
+  price: number;
+  stock: boolean;
+  images: Image[];
+  likeCount: number;
+  likedByUser: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CartProduct extends ProductBase {
