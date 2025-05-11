@@ -20,10 +20,10 @@ export interface ProductBase {
   price: number;
   stock: boolean;
   images: Image[];
-  likeCount: number;
-  likedByUser: boolean;
-  createdAt: string;
-  updatedAt: string;
+  // likeCount: number;
+  // likedByUser: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CartProduct extends ProductBase {

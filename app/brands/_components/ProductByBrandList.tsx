@@ -4,7 +4,8 @@ import { useMemo } from "react";
 import ProductCard from "@/app/_components/ProductCard";
 import { useFilterStore } from "@/store/useFilterStore";
 import FilterProductsBy from "@/app/brands/_components/FilterProductsBy";
-import { ProductBase } from "@/types/types";
+import { Image, ProductBase } from "@/types/types";
+import { Product } from "@prisma/client";
 
 // interface Product {
 //   id: number;
@@ -19,8 +20,12 @@ import { ProductBase } from "@/types/types";
 // }
 
 // interface ProductCardProps extends ProductBase {}
+
+type ProductWithImages = Product & {
+  images: Image[];
+};
 interface ProductByBrandListProps {
-  products: ProductBase[];
+  products: ProductWithImages[];
 }
 
 export default function ProductByBrandList({
@@ -55,6 +60,10 @@ export default function ProductByBrandList({
               price={product.price}
               brand={product.brand}
               images={product.images}
+              stock={product.stock}
+              description={product.description}
+              createdAt={product.createdAt}
+              updatedAt={product.updatedAt}
             />
           ))
         )}

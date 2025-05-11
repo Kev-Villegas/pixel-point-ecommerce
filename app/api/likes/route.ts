@@ -49,14 +49,14 @@ export async function POST(req: Request) {
       { status: 404 },
     );
   }
-
-  const { productId } = await req.json();
+  const body = await req.json();
+  const { FavoriteProduct } = body;
 
   try {
     const like = await db.like.create({
       data: {
         userId: user.id,
-        productId: productId,
+        productId: FavoriteProduct,
       },
     });
 

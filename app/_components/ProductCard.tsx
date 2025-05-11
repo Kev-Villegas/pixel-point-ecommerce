@@ -48,7 +48,7 @@ export default function ProductCard({
         toast.success("Like eliminado");
         onUnfavorite?.();
       } else {
-        await axios.post("/api/likes", { productId: id });
+        await axios.post("/api/likes", { FavoriteProduct: id });
         toast.success("Producto añadido a favoritos");
       }
       await mutate();
