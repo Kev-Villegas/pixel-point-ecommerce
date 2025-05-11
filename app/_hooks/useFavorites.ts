@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import axios from "axios";
-import { image } from "@/types/types";
+import { Image } from "@/types/types";
 
 type FavoriteProduct = {
   id: number;
@@ -11,7 +11,7 @@ type FavoriteProduct = {
   price: number;
   createdAt: string;
   updatedAt: string;
-  images: image[];
+  images: Image[];
   likeCount: number;
   likedByUser: boolean;
 };
