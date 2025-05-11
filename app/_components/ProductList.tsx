@@ -1,10 +1,10 @@
 "use client";
 
-import ProductCard from "@/app/_components/ProductCard";
-import { ProductBase } from "@/types/types";
 import axios from "axios";
 import Link from "next/link";
+import { ProductBase } from "@/types/types";
 import { useEffect, useState } from "react";
+import ProductCard from "@/app/_components/ProductCard";
 import { useInView } from "react-intersection-observer";
 
 interface ProductListProps {
@@ -21,7 +21,9 @@ export default function ProductList({ title, href }: ProductListProps) {
 
   useEffect(() => {
     // https://pixel-point-ecommerce.vercel.app/api/products
-    axios.get("/api/products").then((response) => setProducts(response.data));
+    axios
+      .get<ProductBase[]>("/api/products")
+      .then((res) => setProducts(res.data));
   }, []);
 
   return (
@@ -41,12 +43,10 @@ export default function ProductList({ title, href }: ProductListProps) {
             {products.map((product) => (
               <ProductCard
                 key={product.id}
-                id={product.id}
-                name={product.name}
-                brand={product.brand}
-                price={product.price}
-                images={product.images}
-                stock={product.stock}
+                {...product}
+                onUnfavorite={() => {
+                  /* here we will handle unfavorite */
+                }}
               />
             ))}
           </div>
