@@ -9,8 +9,8 @@ type FavoriteProduct = {
   brand: string;
   stock: boolean;
   price: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   images: Image[];
   likeCount: number;
   likedByUser: boolean;
