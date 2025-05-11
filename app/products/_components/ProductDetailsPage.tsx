@@ -65,8 +65,17 @@ const ProductDetailsPage = () => {
     return null;
   }
 
-  const { name, description, price, images, properties, stock, brand } =
-    product;
+  const {
+    name,
+    description,
+    price,
+    images,
+    properties,
+    stock,
+    brand,
+    createdAt,
+    updatedAt,
+  } = product;
 
   const handleAddToCart = () => {
     if (isAdding || !stock) return;
@@ -82,6 +91,10 @@ const ProductDetailsPage = () => {
         url: image.url,
         productId: image.productId ?? 0,
       })),
+      stock,
+      description,
+      createdAt,
+      updatedAt,
     });
     toast.success(`Se agregó ${name} al carrito`);
 
