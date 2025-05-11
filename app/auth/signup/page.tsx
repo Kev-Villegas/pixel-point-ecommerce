@@ -1,6 +1,17 @@
 "use client";
 
+import Link from "next/link";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/app/_components/ui/input";
+import { Label } from "@/app/_components/ui/label";
 import { Button } from "@/app/_components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUp } from "../../actions/users/signUp";
 import {
   Card,
   CardContent,
@@ -9,23 +20,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { Input } from "@/app/_components/ui/input";
-import { Label } from "@/app/_components/ui/label";
 import {
   userRegisterSchema,
   UserRegisterSchema,
 } from "@/app/_schemas/validationSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { signUp } from "../../actions/users/signUp";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const router = useRouter();
 
   const {
@@ -59,7 +63,6 @@ const Page = () => {
 
   return (
     <>
-      {/* <Header /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex min-h-screen items-center justify-center bg-gray-100"
@@ -74,7 +77,7 @@ const Page = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="">
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -86,22 +89,54 @@ const Page = () => {
                 <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
             </div>
-            <div className="">
+
+            <div>
               <Label htmlFor="password">Contraseña</Label>
-              <Input id="password" type="password" {...register("password")} />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-sm text-red-500">
                   {errors.password.message}
                 </p>
               )}
             </div>
-            <div className="">
+
+            <div>
               <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                {...register("confirmPassword")}
-              />
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  {...register("confirmPassword")}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
+                </button>
+              </div>
               {errors.confirmPassword && (
                 <p className="text-sm text-red-500">
                   {errors.confirmPassword.message}
@@ -127,7 +162,7 @@ const Page = () => {
               variant="outline"
               className="w-full"
               onClick={(e) => {
-                e.preventDefault(); // Evita que el formulario se valide
+                e.preventDefault();
                 signIn("google");
               }}
             >

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/app/_components/ui/input";
@@ -25,6 +26,7 @@ import {
 
 export default function SigninPage() {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { status } = useSession();
   const router = useRouter();
 
@@ -54,7 +56,7 @@ export default function SigninPage() {
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
-      toast.error("Ocurrió un error al iniciar sesión.");
+      toast.error("Ocurrió un error al iniciar sesión.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,6 @@ export default function SigninPage() {
 
   return (
     <>
-      {/* <Header /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex min-h-screen items-center justify-center bg-gray-100"
@@ -84,7 +85,7 @@ export default function SigninPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="">
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -96,9 +97,24 @@ export default function SigninPage() {
                 <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
             </div>
-            <div className="">
+            <div>
               <Label htmlFor="password">Contraseña</Label>
-              <Input id="password" type="password" {...register("password")} />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-sm text-red-500">
                   {errors.password.message}
