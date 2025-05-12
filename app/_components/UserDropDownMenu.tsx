@@ -25,6 +25,9 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const userName = session.user?.name || session.user?.email?.split("@")[0];
+  const userInitial = userName ? userName[0].toUpperCase() : "U";
+
   return (
     <>
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
@@ -36,9 +39,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
                 referrerPolicy="no-referrer"
                 alt={session.user?.name || "Usuario"}
               />
-              <AvatarFallback>
-                {session.user?.name?.[0]?.toUpperCase() || "U"}
-              </AvatarFallback>
+              <AvatarFallback>{userInitial}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
