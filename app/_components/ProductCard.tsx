@@ -42,6 +42,12 @@ export default function ProductCard({
   const toggleLike = async () => {
     if (likeLoading) return;
     setLikeLoading(true);
+
+    const optimisticLikes = isLiked
+      ? likedProductIds.filter((pid) => pid !== id)
+      : [...likedProductIds, id];
+    mutate(optimisticLikes, false);
+
     try {
       if (isLiked) {
         await axios.delete(`/api/likes/${id}`);
@@ -51,10 +57,10 @@ export default function ProductCard({
         await axios.post("/api/likes", { FavoriteProduct: id });
         toast.success("Producto añadido a favoritos");
       }
-      await mutate();
+      mutate();
     } catch (error) {
-      console.error("Error cambiando like:", error);
       toast.error("Error al actualizar favoritos");
+      mutate();
     } finally {
       setLikeLoading(false);
     }
@@ -100,18 +106,23 @@ export default function ProductCard({
               <button
                 onClick={toggleLike}
                 disabled={likeLoading}
+                title={
+                  isLiked ? "Eliminar de favoritos" : "Agregar a favoritos"
+                }
+                aria-label={
+                  isLiked ? "Eliminar de favoritos" : "Agregar a favoritos"
+                }
+                aria-pressed={isLiked}
                 className="rounded-full p-2 transition-transform duration-200 ease-in-out hover:scale-110"
-                aria-label={isLiked ? "Eliminar favorito" : "Añadir favorito"}
               >
                 <Heart
-                  className={`h-5 w-5 transition ${
+                  className={`h-5 w-5 transform transition-all duration-300 ease-in-out ${
                     isLiked
-                      ? "fill-red-500 text-red-500"
-                      : "fill-white text-zinc-500"
+                      ? "scale-110 fill-red-500 text-red-500"
+                      : "scale-100 fill-white text-zinc-500"
                   }`}
                 />
               </button>
-
               {stock ? (
                 <button
                   onClick={handleAddToCart}
