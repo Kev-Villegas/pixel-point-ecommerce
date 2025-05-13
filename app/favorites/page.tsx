@@ -1,17 +1,24 @@
 "use client";
-import { useFavorites } from "@/app/_hooks/useFavorites";
+
 import ProductCard from "@/app/_components/ProductCard";
-import { Spinner } from "@/app/_components/Spinner";
+import { useFavorites } from "@/app/_hooks/useFavorites";
+import { SkeletonCard } from "@/app/_components/SkeletonCard";
 
 export default function FavoritesPage() {
   const { favorites, isLoading, error, mutate } = useFavorites();
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center p-8">
-        <Spinner />
-        <span className="ml-2">Cargando favoritos…</span>
-      </div>
+      <section className="px-6">
+        <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
+          Mis Favoritos
+        </h1>
+        <div className="flex flex-row flex-wrap gap-4">
+          {Array.from({ length: favorites?.length || 6 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
+      </section>
     );
   }
 
