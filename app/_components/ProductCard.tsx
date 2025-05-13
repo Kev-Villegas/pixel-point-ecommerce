@@ -42,11 +42,11 @@ export default function ProductCard({
   const toggleLike = async () => {
     if (likeLoading) return;
     setLikeLoading(true);
-
-    const optimisticLikes = isLiked
-      ? likedProductIds.filter((pid) => pid !== id)
+    const prevLikedIds = [...likedProductIds];
+    const newLikedIds = isLiked
+      ? likedProductIds.filter((productId) => productId !== id)
       : [...likedProductIds, id];
-    mutate(optimisticLikes, false);
+    mutate(newLikedIds, false);
 
     try {
       if (isLiked) {
@@ -60,7 +60,7 @@ export default function ProductCard({
       mutate();
     } catch (error) {
       toast.error("Error al actualizar favoritos");
-      mutate();
+      mutate(prevLikedIds, false);
     } finally {
       setLikeLoading(false);
     }

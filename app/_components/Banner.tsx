@@ -9,10 +9,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 type BannerProps = {
   banners: {
     imageUrl: string;
-    link: string;
     altText: string;
-    title: string;
-    description: string;
+    // link: string;
+    // title: string;
+    // description: string;
   }[];
 };
 
@@ -50,7 +50,7 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
         />
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-black bg-opacity-50">
+      {/* <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-black bg-opacity-50">
         <div className="px-4 text-center text-white sm:px-8">
           <h2 className="mb-2 text-3xl font-bold sm:text-4xl">
             {banners[currentIndex].title}
@@ -62,7 +62,7 @@ const Banner: React.FC<BannerProps> = ({ banners }) => {
             </Button>
           </Link>
         </div>
-      </div>
+      </div> */}
 
       <button
         onClick={prevBanner}
