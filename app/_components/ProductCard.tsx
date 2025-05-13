@@ -42,6 +42,18 @@ export default function ProductCard({
   const toggleLike = async () => {
     if (likeLoading) return;
     setLikeLoading(true);
+
+    // Estado previo por si necesitamos revertir
+    const prevLikedIds = [...likedProductIds];
+
+    // Optimistic update
+    const newLikedIds = isLiked
+      ? likedProductIds.filter((productId) => productId !== id)
+      : [...likedProductIds, id];
+
+    // Mutamos el cache de manera local (esto depende de cómo lo manejás en `useLikes`)
+    mutate(newLikedIds, false); // false = no revalidar aún
+
     try {
       if (isLiked) {
         await axios.delete(`/api/likes/${id}`);
@@ -51,10 +63,15 @@ export default function ProductCard({
         await axios.post("/api/likes", { FavoriteProduct: id });
         toast.success("Producto añadido a favoritos");
       }
+
+      // Finalmente revalidamos para obtener el estado actualizado desde la API
       await mutate();
     } catch (error) {
       console.error("Error cambiando like:", error);
       toast.error("Error al actualizar favoritos");
+
+      // Revertimos a estado anterior
+      mutate(prevLikedIds, false);
     } finally {
       setLikeLoading(false);
     }
