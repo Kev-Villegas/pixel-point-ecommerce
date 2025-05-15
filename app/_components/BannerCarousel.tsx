@@ -69,12 +69,14 @@ const banners = [
 ];
 
 export default function BannerCarousel() {
-  const [currentBanner, setCurrentBanner] = useState(0);
+  const [current, setCurrent] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout>();
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const startAutoSlide = () => {
     intervalRef.current = setInterval(() => {
-      setCurrentBanner((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+      setCurrent((c) => (c === banners.length - 1 ? 0 : c + 1));
     }, 5000);
   };
 
@@ -83,13 +85,12 @@ export default function BannerCarousel() {
     startAutoSlide();
   };
 
-  const nextBanner = () => {
-    setCurrentBanner((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+  const next = () => {
+    setCurrent((c) => (c === banners.length - 1 ? 0 : c + 1));
     resetAutoSlide();
   };
-
-  const prevBanner = () => {
-    setCurrentBanner((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+  const prev = () => {
+    setCurrent((c) => (c === 0 ? banners.length - 1 : c - 1));
     resetAutoSlide();
   };
 
@@ -100,53 +101,77 @@ export default function BannerCarousel() {
     };
   }, []);
 
-  const banner = banners[currentBanner];
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+    if (touchStartX.current !== null && touchEndX.current !== null) {
+      const dx = touchStartX.current - touchEndX.current;
+      if (Math.abs(dx) > 50) {
+        if (dx > 0) next();
+        else prev();
+      }
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
+  const b = banners[current];
 
   return (
     <div className="relative w-full">
+      {/* Flechas (solo lg+) */}
       <button
-        onClick={prevBanner}
-        className="absolute left-4 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm transition-all hover:scale-110 hover:bg-black/70"
+        onClick={prev}
+        className="absolute left-4 top-1/2 z-50 hidden -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm hover:scale-110 hover:bg-black/70 lg:flex"
         aria-label="Banner anterior"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
-        onClick={nextBanner}
-        className="absolute right-4 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm transition-all hover:scale-110 hover:bg-black/70"
+        onClick={next}
+        className="absolute right-4 top-1/2 z-50 hidden -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm hover:scale-110 hover:bg-black/70 lg:flex"
         aria-label="Siguiente banner"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
+
+      {/* Contenedor con touch handlers */}
       <div
-        className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${banner.bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${b.bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
       >
+        {/* Decoración (no captura clics) */}
         <div className="pointer-events-none absolute inset-0 z-0">
           <div className="absolute left-[10%] top-[20%] h-32 w-32 rounded-full bg-gray-800/50 blur-3xl" />
           <div className="absolute bottom-[20%] right-[10%] h-40 w-40 rounded-full bg-gray-800/50 blur-3xl" />
           <div
-            className={`absolute bottom-[10%] left-[30%] h-24 w-24 rounded-full ${banner.accentColor}/10 blur-2xl`}
+            className={`absolute bottom-[10%] left-[30%] h-24 w-24 rounded-full ${b.accentColor}/10 blur-2xl`}
           />
           <div
-            className={`absolute right-[20%] top-[30%] h-20 w-20 rounded-full ${banner.accentColor}/10 blur-2xl`}
+            className={`absolute right-[20%] top-[30%] h-20 w-20 rounded-full ${b.accentColor}/10 blur-2xl`}
           />
         </div>
+
+        {/* Imagen */}
         <div className="relative flex w-full items-center justify-center md:w-1/2 md:justify-end">
           <div className="relative z-10 my-6 flex items-center md:mr-12">
             <div
-              className={`absolute -left-4 top-1/2 h-40 w-1 -translate-y-1/2 ${banner.accentColor} blur-sm`}
+              className={`absolute -left-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
             />
             <div
-              className={`absolute -right-4 top-1/2 h-40 w-1 -translate-y-1/2 ${banner.accentColor} blur-sm`}
+              className={`absolute -right-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
             />
             <div className="group relative">
               <div
-                className={`absolute -inset-0.5 rounded-2xl ${banner.accentColor}/20 blur-sm transition duration-300 group-hover:${banner.accentColor}/30`}
+                className={`absolute -inset-0.5 rounded-2xl ${b.accentColor}/20 blur-sm transition duration-300 group-hover:${b.accentColor}/30`}
               />
               <div className="relative rounded-2xl bg-gray-900 p-1">
                 <Image
-                  src={banner.imagePath}
-                  alt={banner.imageAlt}
+                  src={b.imagePath}
+                  alt={b.imageAlt}
                   width={300}
                   height={500}
                   className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
@@ -156,80 +181,58 @@ export default function BannerCarousel() {
             </div>
           </div>
         </div>
+
+        {/* Texto y CTA */}
         <div className="z-10 flex w-full flex-col items-center text-center md:w-1/2 md:items-start md:pl-8 md:text-left">
-          <div
-            className={`inline-block rounded-full ${banner.accentColor}/20 px-4 py-1 text-sm font-medium ${banner.textColor}`}
+          <span
+            className={`inline-block rounded-full ${b.accentColor}/20 px-4 py-1 text-sm font-medium ${b.textColor}`}
           >
-            {banner.subtitle}
-          </div>
-
-          <h1 className="mt-4 text-5xl font-bold tracking-tight text-white md:text-6xl">
-            {banner.title.split("").map((char, i) => (
-              <span
-                key={i}
-                className={i % 2 === 0 ? banner.textColor : "text-white"}
-              >
-                {char}
-              </span>
-            ))}
+            {b.subtitle}
+          </span>
+          <h1 className="mt-4 text-5xl font-bold text-white md:text-6xl">
+            {b.title}
           </h1>
-
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <div
-              className={`flex items-center gap-2 rounded-lg ${banner.accentColor}/10 px-6 py-3`}
+              className={`flex items-center gap-2 rounded-lg ${b.accentColor}/10 px-6 py-3`}
             >
-              <span className={`text-3xl font-bold ${banner.textColor}`}>
-                {banner.discount}
+              <span className={`text-3xl font-bold ${b.textColor}`}>
+                {b.discount}
               </span>
-              <div className="flex flex-col items-start">
-                <span className="text-xs text-gray-400">HASTA</span>
-                <span className="text-lg font-semibold text-white">
-                  DE DESCUENTO
-                </span>
-              </div>
+              <span className="text-lg font-semibold text-white">
+                DE DESCUENTO
+              </span>
             </div>
             <div className="flex items-center gap-2 rounded-lg bg-gray-800/50 px-6 py-3 backdrop-blur-sm">
               <span className="text-3xl font-bold text-white">
-                {banner.installments}
+                {b.installments}
               </span>
-              <div className="flex flex-col items-start">
-                <span className="text-xs text-gray-400">CUOTAS SIN</span>
-                <span className="text-lg font-semibold text-white">
-                  INTERÉS
-                </span>
-              </div>
+              <span className="text-lg font-semibold text-white">CUOTAS</span>
             </div>
           </div>
-
           <p className="mt-4 text-sm text-gray-400">
-            Oferta por tiempo limitado. Finaliza el 30 de Julio de 2025.
+            Oferta por tiempo limitado
           </p>
-
-          {banner.type === "hot-sale" || banner.type === "flash-sale" ? (
-            <CountdownTimer accentColor={banner.textColor} />
+          {["hot-sale", "flash-sale"].includes(b.type) ? (
+            <CountdownTimer accentColor={b.textColor} />
           ) : (
-            <Button
-              className={`mt-6 rounded-lg ${banner.buttonColor} px-8 py-3 font-medium text-white transition-all hover:scale-105`}
-            >
+            <Button className={`${b.buttonColor} mt-6 px-8 py-3`}>
               Comprar Ahora
             </Button>
           )}
         </div>
       </div>
+
+      {/* Indicadores */}
       <div className="flex justify-center gap-2 bg-transparent py-4">
         {banners.map((_, i) => (
           <button
             key={i}
             onClick={() => {
-              setCurrentBanner(i);
+              setCurrent(i);
               resetAutoSlide();
             }}
-            className={`h-1 rounded-full transition-all ${
-              i === currentBanner
-                ? `w-8 ${banners[i].accentColor}`
-                : "w-2 bg-gray-700 hover:bg-gray-600"
-            }`}
-            aria-label={`Ir al banner ${i + 1}`}
+            className={`h-1 rounded-full transition-all ${i === current ? `w-8 ${b.accentColor}` : "w-2 bg-gray-700"} `}
           />
         ))}
       </div>
