@@ -10,10 +10,7 @@ type Props = {
   logoSrc?: string;
 };
 
-export default function BurgerButton({
-  brands,
-  logoSrc = "/placeholder.svg?height=40&width=120",
-}: Props) {
+export default function BurgerButton({ brands }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -38,10 +35,10 @@ export default function BurgerButton({
             </button>
             <Link
               href="/"
-              className="mr-3 text-xl font-bold text-primary"
+              className="mr-1 text-xl font-bold text-primary"
               onClick={() => setIsOpen(false)}
             >
-              Logo
+              <Image src={"/logo.svg"} alt="logo" width={80} height={80} />
             </Link>
           </div>
 
@@ -61,7 +58,7 @@ export default function BurgerButton({
           </div>
 
           <div className="border-t p-6">
-            <button
+            {/* <button
               className="w-full rounded-md bg-black px-4 py-3 text-white transition-colors hover:bg-gray-800"
               onClick={() => {
                 // Add login logic here
@@ -69,7 +66,7 @@ export default function BurgerButton({
               }}
             >
               Iniciar Sesión
-            </button>
+            </button> */}
           </div>
         </div>
       )}

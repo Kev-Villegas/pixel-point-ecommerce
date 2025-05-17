@@ -67,13 +67,21 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <Link href="/orders" className="flex items-center">
+              <Link
+                href="/orders"
+                className="flex items-center"
+                onClick={() => setIsDropdownOpen(false)}
+              >
                 <WalletCards className="mr-2 h-4 w-4" />
                 <span>Mis Pedidos</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <Link href="/favorites" className="flex items-center">
+              <Link
+                href="/favorites"
+                className="flex items-center"
+                onClick={() => setIsDropdownOpen(false)}
+              >
                 <BookHeart className="mr-2 h-4 w-4" />
                 <span>Favoritos</span>
               </Link>
