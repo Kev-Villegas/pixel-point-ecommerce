@@ -6,6 +6,7 @@ import SearchInput from "./navbar/SearchInput";
 import UserDropDownMenu from "./UserDropDownMenu";
 import { auth } from "../_lib/auth";
 import BurgerButton from "./BurgerButton";
+import Image from "next/image";
 
 export default async function Header() {
   const brands = [
@@ -31,7 +32,7 @@ export default async function Header() {
             href="/"
             className="mx-7 hidden text-2xl font-bold text-primary md:block"
           >
-            Logo
+            <Image src={"/logo.svg"} alt="logo" width={90} height={90} />
           </Link>
           <SearchInput />
         </div>
