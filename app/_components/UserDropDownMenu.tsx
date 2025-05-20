@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import React, { useState } from "react";
 import UserProfileDialog from "./UserProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { BookHeart, LogOut, User, WalletCards } from "lucide-react";
+import { BookHeart, LogOut, Shield, User, WalletCards } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,18 +67,29 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
               <span>Mi Perfil</span>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+            <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
               <Link href="/orders" className="flex items-center">
                 <WalletCards className="mr-2 h-4 w-4" />
                 <span>Mis Pedidos</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+            <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
               <Link href="/favorites" className="flex items-center">
                 <BookHeart className="mr-2 h-4 w-4" />
                 <span>Favoritos</span>
               </Link>
             </DropdownMenuItem>
+            {session.user?.role === "ADMIN" && (
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/protected/dashboard" className="flex items-center">
+                  <Shield className="mr-2 h-4 w-4" />
+                  <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="group cursor-pointer hover:bg-muted-foreground">
