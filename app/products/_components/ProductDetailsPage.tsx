@@ -106,8 +106,28 @@ const ProductDetailsPage = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="flex space-x-4">
-          <div className="flex flex-col space-y-2">
+        <div className="flex flex-col">
+          <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedImage}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={selectedImage || "/placeholder.png"}
+                  alt={name}
+                  fill
+                  className="object-contain"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="mt-4 flex flex-wrap justify-start gap-2">
             {images.map((image: PrismaImage, index: number) => (
               <Image
                 key={index}
@@ -123,28 +143,6 @@ const ProductDetailsPage = () => {
                 onClick={() => setSelectedImage(image.url)}
               />
             ))}
-          </div>
-
-          <div className="flex-1">
-            <div className="relative h-[500px] w-[500px] overflow-hidden rounded-lg bg-gray-100 shadow-md">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedImage}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={selectedImage || "/placeholder.png"}
-                    alt={name}
-                    fill
-                    className="object-contain"
-                  />
-                </motion.div>
-              </AnimatePresence>
-            </div>
           </div>
         </div>
 
