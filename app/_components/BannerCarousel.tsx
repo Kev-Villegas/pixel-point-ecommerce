@@ -2,15 +2,8 @@
 
 import Image from "next/image";
 import { Button } from "./ui/button";
-import samsungs3 from "@/public/samsungs3.png";
-import accessories from "@/public/accessories.png";
 import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import CountdownTimer from "@/app/_components/CountdownTimer";
-import mp from "@/public/mp-blue.png";
-import a36 from "@/public/a36.png";
-import iphone from "@/public/iphone.png";
-import s25 from "@/public/s25.png";
 
 const banners = [
   {
@@ -23,7 +16,7 @@ const banners = [
     accentColor: "bg-violet-500",
     textColor: "text-violet-500",
     buttonColor: "bg-violet-500 hover:bg-violet-600",
-    imagePath: iphone,
+    imagePath: "/iphone.png",
     imageAlt: "Samsung S3 Ultra gama alta",
   },
   {
@@ -36,7 +29,7 @@ const banners = [
     accentColor: "bg-cyan-500",
     textColor: "text-cyan-500",
     buttonColor: "bg-cyan-500 hover:bg-cyan-600",
-    imagePath: s25,
+    imagePath: "/s25.png",
     imageAlt: "Nuevos modelos Samsung en lanzamiento",
   },
   {
@@ -50,7 +43,7 @@ const banners = [
     accentColor: "bg-amber-500",
     textColor: "text-amber-500",
     buttonColor: "bg-amber-500 hover:bg-amber-600",
-    imagePath: a36,
+    imagePath: "/a36.png",
     imageAlt: "Xiaomi POCO en oferta flash",
   },
   {
@@ -63,7 +56,7 @@ const banners = [
     accentColor: "bg-emerald-500",
     textColor: "text-emerald-500",
     buttonColor: "bg-emerald-500 hover:bg-emerald-600",
-    imagePath: accessories,
+    imagePath: "/accessories.png",
     imageAlt: "Accesorios para smartphone disponibles pronto",
   },
 ];
@@ -196,7 +189,7 @@ export default function BannerCarousel() {
               className={`flex items-center gap-2 rounded-lg ${b.accentColor}/10 px-6 py-3`}
             >
               <Image
-                src={mp}
+                src="/mp-blue.png"
                 alt="Mercado Pago Logo"
                 width={200}
                 height={500}
