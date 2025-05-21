@@ -16,7 +16,7 @@ export default async function EditPage({
   delete data.properties.productId;
 
   return (
-    <div>
+    <div className="m-5">
       <h1>Edit Product</h1>
       {data && <ProductForm {...data} />}
     </div>

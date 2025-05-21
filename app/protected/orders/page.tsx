@@ -26,7 +26,7 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="m-5 space-y-4">
       {orders.length > 0 &&
         orders.map((order) => (
           <div

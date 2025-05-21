@@ -43,7 +43,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent className="w-48" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
@@ -68,33 +68,48 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
             </DropdownMenuItem>
 
             <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
-              <Link
-                href="/orders"
-                className="flex items-center"
-                onClick={() => setIsDropdownOpen(false)}
-              >
-                <WalletCards className="mr-2 h-4 w-4" />
+              <Link href="/orders" className="flex items-center">
+                <WalletCards className="h-4 w-4" />
                 <span>Mis Pedidos</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <Link
-                href="/favorites"
-                className="flex items-center"
-                onClick={() => setIsDropdownOpen(false)}
-              >
-                <BookHeart className="mr-2 h-4 w-4" />
+            <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
+              <Link href="/favorites" className="flex items-center">
+                <BookHeart className="h-4 w-4" />
                 <span>Favoritos</span>
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
             {session.user?.role === "ADMIN" && (
               <DropdownMenuItem
                 asChild
                 className="cursor-pointer hover:bg-muted"
               >
                 <Link href="/protected/dashboard" className="flex items-center">
-                  <Shield className="mr-2 h-4 w-4" />
+                  <Shield className="h-4 w-4" />
                   <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
+            {session.user?.role === "ADMIN" && (
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/protected/products" className="flex items-center">
+                  <Shield className="h-4 w-4" />
+                  <span>Products Panel</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
+            {session.user?.role === "ADMIN" && (
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/protected/orders" className="flex items-center">
+                  <Shield className="h-4 w-4" />
+                  <span>Orders Panel</span>
                 </Link>
               </DropdownMenuItem>
             )}

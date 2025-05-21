@@ -88,7 +88,7 @@ export default function BannerCarousel() {
   };
 
   useEffect(() => {
-    // startAutoSlide();
+    startAutoSlide();
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
