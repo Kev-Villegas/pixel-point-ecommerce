@@ -50,7 +50,7 @@ export default function FavoritesPage() {
       <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
         Mis Favoritos
       </h1>
-      <div className="flex flex-row flex-wrap gap-4">
+      <div className="grid grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 sm:justify-items-stretch md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7">
         {favorites.map((product) => (
           <ProductCard
             key={product.id}
