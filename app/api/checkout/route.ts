@@ -5,6 +5,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   console.log("Body for Mercado Pago!!!!!!!!!!!!");
   console.log(body);
+  console.log(body.additional_info.payer.phone);
 
   const client = new MercadoPagoConfig({
     accessToken: process.env.ACCESS_TOKEN as string,

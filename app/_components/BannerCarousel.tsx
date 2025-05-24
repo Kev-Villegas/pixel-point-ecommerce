@@ -154,7 +154,7 @@ export default function BannerCarousel() {
           </div>
 
           <div className="relative flex w-full items-center justify-center md:w-1/2 md:justify-end">
-            <div className="relative z-10 my-6 flex items-center md:mr-12">
+            <div className="relative z-10 flex items-center md:mr-12">
               <div
                 className={`absolute -left-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
               />
@@ -182,7 +182,7 @@ export default function BannerCarousel() {
           {/* Texto y CTA */}
           <div className="z-10 flex w-full flex-col items-center text-center md:w-1/2 md:items-start md:pl-8 md:text-left">
             <span
-              className={`inline-block rounded-full ${b.accentColor}/20 px-4 py-1 text-sm font-medium ${b.textColor}`}
+              className={`inline-block rounded-full ${b.accentColor}/20 py-1 text-sm font-medium ${b.textColor}`}
             >
               {b.subtitle}
             </span>

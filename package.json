@@ -38,6 +38,7 @@
     "framer-motion": "^11.13.1",
     "git-commit-msg-linter": "5.0.8",
     "jsonwebtoken": "^9.0.2",
+    "libphonenumber-js": "^1.12.8",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "0.462.0",
     "mercadopago": "^2.1.0",
