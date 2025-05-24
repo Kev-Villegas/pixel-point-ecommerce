@@ -20,9 +20,9 @@ export default function DeleteButton({ id }: Props) {
 
   return (
     <AlertDialogDemo
-      button="Delete"
-      confirmation="Are you sure?"
-      description="The product will be permanently removed from the database"
+      button="Borrar"
+      confirmation="Estas seguro?"
+      description="El producto se eliminara permanentemente"
       handleAction={() => handleDelete(id)}
       icon={<Trash2 />}
     />
