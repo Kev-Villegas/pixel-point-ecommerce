@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           id: 1,
         },
       ],
-      cost: 10,
+      // cost: 10,
       free_shipping: false,
       dimensions: "10x10x20,500",
       receiver_address: {
@@ -51,12 +51,12 @@ export async function POST(request: NextRequest) {
       },
     },
     notification_url:
-      "https://pixel-point-ecommerce.vercel.app/api/checkout/notifications",
+      "https://www.pixel-point.com.ar/api/checkout/notifications",
     statement_descriptor: "Pixel Point",
     back_urls: {
-      failure: "https://pixel-point-ecommerce.vercel.app",
-      pending: "https://pixel-point-ecommerce.vercel.app",
-      success: "https://pixel-point-ecommerce.vercel.app",
+      failure: "https://www.pixel-point.com.ar",
+      pending: "https://www.pixel-point.com.ar",
+      success: "https://www.pixel-point.com.ar",
     },
     auto_return: "approved",
   };

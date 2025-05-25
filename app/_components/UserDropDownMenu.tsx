@@ -98,7 +98,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
               >
                 <Link href="/protected/products" className="flex items-center">
                   <Shield className="h-4 w-4" />
-                  <span>Products Panel</span>
+                  <span>Productos</span>
                 </Link>
               </DropdownMenuItem>
             )}
@@ -109,7 +109,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
               >
                 <Link href="/protected/orders" className="flex items-center">
                   <Shield className="h-4 w-4" />
-                  <span>Orders Panel</span>
+                  <span>Ordenes</span>
                 </Link>
               </DropdownMenuItem>
             )}

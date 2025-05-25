@@ -279,13 +279,13 @@ export default function ProductForm({
         onChange={(event) => setDescription(event.target.value)}
       />
       <div className="mb-2">
-        <label className="block">Propiedades</label>
+        <label className="block">Especificaciones</label>
         <button
           className="btn-default mb-2 text-sm"
           type="button"
           onClick={addProperty}
         >
-          Add property
+          Agregar
         </button>
         {properties.length > 0 &&
           properties.map((property, index) => (
@@ -313,7 +313,7 @@ export default function ProductForm({
                 onClick={() => removeProperty(index)}
                 className="btn-red"
               >
-                Remove
+                Eliminar
               </button>
             </div>
           ))}
