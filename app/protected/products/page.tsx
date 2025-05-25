@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function ProductsPage() {
   return (
-    <div>
-      <Link className="btn-primary" href="/protected/products/new">
-        Add Products
+    <div className="m-5">
+      <Link className="btn-primary ml-5" href="/protected/products/new">
+        Agregar Productos
       </Link>
       <ProductList />
     </div>

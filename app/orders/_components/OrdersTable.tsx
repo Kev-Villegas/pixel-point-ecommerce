@@ -60,6 +60,10 @@ export default function OrdersTable() {
 const OrderRow = ({ order }: { order: any }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const total = order.items.reduce((acc: number, item: any) => {
+    return acc + item.product.price * item.quantity;
+  }, 0);
+
   return (
     <>
       <TableRow className="group">
@@ -72,7 +76,7 @@ const OrderRow = ({ order }: { order: any }) => {
         <TableCell>
           <OrderStatusBadge status={order.status} />
         </TableCell>
-        <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
+        <TableCell className="text-right">${total.toFixed(2)}</TableCell>
         <TableCell>
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
@@ -92,7 +96,7 @@ const OrderRow = ({ order }: { order: any }) => {
         <TableCell colSpan={5} className="p-0">
           <Collapsible open={isOpen}>
             <CollapsibleContent>
-              <OrderDetails order={order} />
+              <OrderDetails orderId={order.id} />
             </CollapsibleContent>
           </Collapsible>
         </TableCell>
@@ -104,15 +108,23 @@ const OrderRow = ({ order }: { order: any }) => {
 const MemoizedOrderRow = memo(OrderRow);
 
 function OrderStatusBadge({ status }: { status: string }) {
-  const statusMap = {
-    processing: { label: "En proceso", variant: "outline" },
-    shipped: { label: "Enviado", variant: "secondary" },
-    delivered: { label: "Entregado", variant: "default" },
-    cancelled: { label: "Cancelado", variant: "destructive" },
-  } as const;
+  const statusMap: Record<
+    string,
+    {
+      label: string;
+      variant: "default" | "outline" | "secondary" | "destructive";
+    }
+  > = {
+    PAGO_PENDIENTE: { label: "Pago pendiente", variant: "outline" },
+    ENVIO_PENDIENTE: { label: "Envío pendiente", variant: "secondary" },
+    ENVIADO: { label: "Enviado", variant: "default" },
+    CANCELADO: { label: "Cancelado", variant: "destructive" },
+  };
 
-  const { label, variant } =
-    statusMap[status as keyof typeof statusMap] || statusMap.processing;
+  const statusInfo = statusMap[status] || {
+    label: "Desconocido",
+    variant: "outline",
+  };
 
-  return <Badge variant={variant}>{label}</Badge>;
+  return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
 }

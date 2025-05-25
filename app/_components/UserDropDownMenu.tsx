@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import React, { useState } from "react";
 import UserProfileDialog from "./UserProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { BookHeart, LogOut, User, WalletCards } from "lucide-react";
+import { BookHeart, LogOut, Shield, User, WalletCards } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +25,9 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const userName = session.user?.name || session.user?.email?.split("@")[0];
+  const userInitial = userName ? userName[0].toUpperCase() : "U";
+
   return (
     <>
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
@@ -36,13 +39,11 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
                 referrerPolicy="no-referrer"
                 alt={session.user?.name || "Usuario"}
               />
-              <AvatarFallback>
-                {session.user?.name?.[0]?.toUpperCase() || "U"}
-              </AvatarFallback>
+              <AvatarFallback>{userInitial}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent className="w-48" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
@@ -62,18 +63,56 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
                 setIsDropdownOpen(false);
               }}
             >
-              <User className="mr-2 h-4 w-4" />
+              <User className="h-4 w-4" />
               <span>Mi Perfil</span>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <WalletCards className="mr-2 h-4 w-4" />
-              <Link href="/orders">Mis Pedidos</Link>
+            <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
+              <Link href="/orders" className="flex items-center">
+                <WalletCards className="h-4 w-4" />
+                <span>Mis Pedidos</span>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-              <BookHeart className="mr-2 h-4 w-4" />
-              <span>Favoritos</span>
+            <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
+              <Link href="/favorites" className="flex items-center">
+                <BookHeart className="h-4 w-4" />
+                <span>Favoritos</span>
+              </Link>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {session.user?.role === "ADMIN" && (
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/protected/dashboard" className="flex items-center">
+                  <Shield className="h-4 w-4" />
+                  <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
+            {session.user?.role === "ADMIN" && (
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/protected/products" className="flex items-center">
+                  <Shield className="h-4 w-4" />
+                  <span>Productos</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
+            {session.user?.role === "ADMIN" && (
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/protected/orders" className="flex items-center">
+                  <Shield className="h-4 w-4" />
+                  <span>Ordenes</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="group cursor-pointer hover:bg-muted-foreground">

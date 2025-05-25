@@ -41,7 +41,6 @@ export const useUserInfoStore = create<UserInfo>()(
             throw new Error("Error al obtener los datos del usuario");
           }
           const data = await response.json();
-
           // Actualiza el estado con los datos obtenidos
           set({
             phoneNumber: data.phoneNumber || "",

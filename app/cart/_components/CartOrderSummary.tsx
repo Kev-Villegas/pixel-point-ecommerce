@@ -21,12 +21,6 @@ export function CartOrderSummary({
 }: CartOrderSummaryProps) {
   const subtotal = getTotalOrderPrice();
 
-  const toPayment = async () => {
-    await axios
-      .post("/api/checkout", cartProducts)
-      .then((response) => console.log(response));
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}

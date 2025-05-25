@@ -3,19 +3,27 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  console.log("body:", body);
+  console.log("Body for Mercado Pago!!!!!!!!!!!!");
+  console.log(body);
+  console.log(body.additional_info.payer.phone);
 
-  // const { name, email, city, postalCode, streetAddress, cartProducts } = body;
-
-  // console.log(cartProducts);
   const client = new MercadoPagoConfig({
     accessToken: process.env.ACCESS_TOKEN as string,
   });
-  const payment = new Payment(client);
-  payment.create({ body: body });
-  // .then((res) => console.log(res))
-  // .catch((e) => console.log(e));
 
-  return NextResponse.json({ payment });
-  // return NextResponse.json(cartProducts, { status: 201 });
+  const payment = new Payment(client);
+
+  try {
+    const response = await payment.create({ body });
+    console.log("Response from Mercado Pago!!!!!!!!!!!!");
+    console.log(response);
+    console.log(response.status_detail);
+    return NextResponse.json(response, { status: 201 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Error al procesar el pago" },
+      { status: 500 },
+    );
+  }
 }

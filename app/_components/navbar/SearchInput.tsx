@@ -27,8 +27,8 @@ export default function SearchInput() {
   };
 
   return (
-    <>
-      <div className="relative flex-grow">
+    <div className="flex w-full items-stretch">
+      <div className="relative flex-1">
         <Input
           type="text"
           placeholder="Search products..."
@@ -36,9 +36,8 @@ export default function SearchInput() {
           onChange={handleInputChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          className="w-full"
+          className="h-10 w-full"
         />
-
         {showSuggestions && searchResults.length > 0 && (
           <div className="absolute z-10 max-h-60 w-full overflow-y-auto rounded-lg bg-white shadow-lg">
             {searchResults.map((product) => (
@@ -49,7 +48,7 @@ export default function SearchInput() {
               >
                 {product.images.length > 0 && (
                   <Image
-                    src={product.images[0].url}
+                    src={product.images[0].url || "/placeholder.svg"}
                     width={40}
                     height={40}
                     alt={product.name}
@@ -62,12 +61,10 @@ export default function SearchInput() {
           </div>
         )}
       </div>
-      <div className="ml-[8px]">
-        <Button size="icon">
-          <Search className="h-4 w-4" />
-          <span className="sr-only">Search</span>
-        </Button>
-      </div>
-    </>
+      <Button size="icon" className="ml-2 h-10">
+        <Search className="h-4 w-4" />
+        <span className="sr-only">Search</span>
+      </Button>
+    </div>
   );
 }
