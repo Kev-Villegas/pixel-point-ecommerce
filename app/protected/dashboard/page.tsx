@@ -85,7 +85,7 @@ const PRODUCT_COLORS: Record<string, string> = {
 };
 
 const INITIAL_DATE_RANGE: DateRange = {
-  from: new Date(new Date().setDate(new Date().getDate() - 30)),
+  from: new Date(new Date().setDate(new Date().getDate() - 7)),
   to: new Date(),
 };
 
@@ -322,7 +322,9 @@ const PieChartLegend: React.FC<PieChartLegendProps> = ({ data, isLoading }) => {
   );
 };
 const DashboardPage: React.FC = () => {
+  const [tempRange, setTempRange] = useState<DateRange>(INITIAL_DATE_RANGE);
   const [dateRange, setDateRange] = useState<DateRange>(INITIAL_DATE_RANGE);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { currentDateISO, previousDateISO } = useMemo(() => {
     const fromISO = dateRange.from.toISOString();
@@ -420,20 +422,20 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 overflow-auto pt-4 dark:bg-gray-950">
+    <div className="flex-1 overflow-auto p-5 pt-4 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Dashboard
-            </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Analítica y métricas de tu tienda
-            </p>
-          </div>
+          {/* Tabs */}
+          <Tabs defaultValue="overview">
+            <TabsList className="no-scrollbar inline-flex h-10 items-center justify-center overflow-x-auto rounded-md bg-gray-100 p-1 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+              <TabsTrigger value="overview">Ventas</TabsTrigger>
+              <TabsTrigger value="sales">Órdenes</TabsTrigger>
+              <TabsTrigger value="products">Productos</TabsTrigger>
+            </TabsList>
+          </Tabs>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Popover>
+            <Popover open={isOpen} onOpenChange={setIsOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
@@ -444,10 +446,22 @@ const DashboardPage: React.FC = () => {
                   Filtrar por fecha
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
+              <PopoverContent className="w-auto p-2" align="end">
                 <DatePickerWithRange
-                  dateRange={dateRange}
-                  setDateRange={setDateRange}
+                  dateRange={tempRange}
+                  setDateRange={(range) => {
+                    // Ensure 'from' and 'to' are always Date (not undefined)
+                    if (range.from && range.to) {
+                      setTempRange({
+                        from: new Date(range.from),
+                        to: new Date(range.to),
+                      });
+                    }
+                  }}
+                  onApply={() => {
+                    setDateRange(tempRange); // aplicar de verdad
+                    setIsOpen(false); // cerrar el calendario
+                  }}
                 />
               </PopoverContent>
             </Popover>
@@ -477,14 +491,13 @@ const DashboardPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Tabs */}
-        <Tabs defaultValue="overview" className="mb-6">
+        {/* <Tabs defaultValue="overview" className="mb-6">
           <TabsList className="no-scrollbar inline-flex h-10 items-center justify-center overflow-x-auto rounded-md bg-gray-100 p-1 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
             <TabsTrigger value="overview">Ventas</TabsTrigger>
             <TabsTrigger value="sales">Órdenes</TabsTrigger>
             <TabsTrigger value="products">Productos</TabsTrigger>
           </TabsList>
-        </Tabs>
+        </Tabs> */}
 
         {/* Metric Cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

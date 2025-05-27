@@ -8,12 +8,14 @@ import { Calendar } from "@/app/_components/ui/calendar";
 interface DatePickerWithRangeProps {
   dateRange: DateRange;
   setDateRange: (dateRange: DateRange) => void;
+  onApply?: () => void;
   className?: string;
 }
 
 export function DatePickerWithRange({
   dateRange,
   setDateRange,
+  onApply,
   className,
 }: DatePickerWithRangeProps) {
   return (
@@ -56,10 +58,7 @@ export function DatePickerWithRange({
         <Button
           className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           size="sm"
-          onClick={() => {
-            // Aquí iría la lógica para aplicar el filtro de fechas
-            console.log("Aplicando filtro de fechas:", dateRange);
-          }}
+          onClick={onApply}
         >
           Aplicar
         </Button>
