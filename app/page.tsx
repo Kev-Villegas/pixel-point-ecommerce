@@ -1,14 +1,12 @@
+import BannerWrapper from "./_components/BannerWrapper";
 import Footer from "./_components/Footer";
 import ProductList from "./_components/ProductList";
-import BannerCarousel from "./_components/BannerCarousel";
 
 export default function Home() {
   return (
     <>
       <main>
-        <div className="rounded-2xl px-5 pt-4 md:px-10">
-          <BannerCarousel />
-        </div>
+        <BannerWrapper />
         <div className="px-5 md:px-10">
           <ProductList href="1" title="Mas vendidos 1" />
           <ProductList href="2" title="Mas vendidos 2" />
