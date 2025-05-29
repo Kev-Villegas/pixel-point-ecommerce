@@ -1,11 +1,14 @@
 "use client";
-import PaymentComponent from "@/app/_components/PaymentComponent";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const PaymentComponent = dynamic(
+  () => import("@/app/_components/PaymentComponent"),
+  {
+    ssr: false,
+    loading: () => <div>Cargando métodos de pago...</div>,
+  },
+);
 
 export default function PaymentPage() {
-  return (
-    <Suspense fallback={<div>Cargando metodos de pago...</div>}>
-      <PaymentComponent />
-    </Suspense>
-  );
+  return <PaymentComponent />;
 }

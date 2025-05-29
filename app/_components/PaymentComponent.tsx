@@ -3,9 +3,8 @@ import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-
-initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
+import { useEffect, useMemo, useRef, useState } from "react";
+import useDeviceId from "../_hooks/useDeviceId";
 
 type PayloadType = {
   statement_descriptor: string;
@@ -41,60 +40,33 @@ export default function PaymentComponent() {
   const router = useRouter();
   const { cartProducts, clearCart } = useCartStore();
   const [payload, setPayload] = useState<PayloadType | null>(null);
-  const deviceIdRef = useRef<string | null>(null);
+  const deviceId = useDeviceId();
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
+    }
+
     const data = localStorage.getItem("preference");
     if (data) {
       const parsedData = JSON.parse(data);
       setPayload(parsedData);
     }
     localStorage.removeItem("preference");
-
-    // ------------------------------------------------------------
-    // <script src="https://www.mercadopago.com/v2/security.js" view="checkout"></script>
-    const script = document.createElement("script");
-    script.src = "https://www.mercadopago.com/v2/security.js";
-    script.setAttribute("view", "checkout");
-    script.async = true;
-
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      const checkDeviceId = () => {
-        const id = (window as any).MP_DEVICE_SESSION_ID;
-        if (id) {
-          console.log("✅ Device ID listo:", id);
-          // setDeviceId(id);
-          deviceIdRef.current = id;
-          console.log("Usando deviceId:", deviceIdRef.current);
-        } else {
-          console.log("⏳ Esperando Device ID...");
-          setTimeout(checkDeviceId, 100);
-        }
-      };
-      checkDeviceId();
-    };
-
-    // Limpieza por si salís de la página
-    return () => {
-      document.body.removeChild(script);
-    };
-    // ------------------------------------------------------------
   }, []);
 
-  const getTotalOrderPrice = () => {
+  const totalAmount = useMemo(() => {
     return cartProducts.reduce(
       (total, product) => total + product.price * product.quantity,
       0,
     );
-  };
+  }, [cartProducts]);
 
   const searchParams = useSearchParams();
   const preferenceId = searchParams.get("preference") as string;
 
   const initialization = {
-    amount: getTotalOrderPrice(),
+    amount: totalAmount,
     preferenceId: preferenceId,
   };
 
@@ -159,9 +131,7 @@ export default function PaymentComponent() {
       },
     };
 
-    const headers = {
-      "X-meli-session-id": deviceIdRef.current, // Incluimos el device ID
-    };
+    const headers = { "X-meli-session-id": deviceId };
 
     return new Promise((resolve, reject) => {
       axios
@@ -186,6 +156,7 @@ export default function PaymentComponent() {
 
   const onReady = async () => {
     console.log("Payment Brick is ready");
+    console.log(deviceId);
   };
 
   return (
