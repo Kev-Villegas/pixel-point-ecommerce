@@ -1,10 +1,10 @@
 import { useCartStore } from "@/store/useCartStore";
+import useDeviceStore from "@/store/useDeviceIdStore";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import useDeviceId from "../_hooks/useDeviceId";
 
 type PayloadType = {
   statement_descriptor: string;
@@ -40,7 +40,7 @@ export default function PaymentComponent() {
   const router = useRouter();
   const { cartProducts, clearCart } = useCartStore();
   const [payload, setPayload] = useState<PayloadType | null>(null);
-  const deviceId = useDeviceId();
+  const deviceId = useDeviceStore((state) => state.deviceId);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

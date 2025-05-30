@@ -2,6 +2,7 @@
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
+import useDeviceId from "@/app/_hooks/useDeviceId";
 import { userAddressValidation } from "@/app/_schemas/validationSchemas";
 import { useCartStore } from "@/store/useCartStore";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
 export function UserAddressForm() {
+  useDeviceId();
   const router = useRouter();
   const { cartProducts } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
