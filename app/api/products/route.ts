@@ -7,12 +7,10 @@ type Image = {
 };
 
 export async function GET(req: NextRequest) {
-  // Autenticación para saber si el usuario ha dado like a cada producto
   const session = await auth();
   const userEmail = session?.user?.email;
 
   try {
-    // Obtener productos, incluir imágenes, conteo total de likes y likes del usuario actual
     const products = await db.product.findMany({
       include: {
         images: true,
@@ -23,7 +21,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    // Formatear salida para añadir likeCount y likedByUser
     const result = products.map((p) => ({
       id: p.id,
       name: p.name,
@@ -49,6 +46,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const session = await auth();
+
+  if (!session?.user?.email || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   const body = await request.json();
   const formattedProperties = body.properties.reduce((acc: any, prop: any) => {
     const key = prop.name.toLowerCase();
@@ -63,6 +66,7 @@ export async function POST(request: NextRequest) {
         description: body.description,
         brand: body.productBrand,
         price: body.price,
+        stock: body.stock ?? false,
         properties: { create: { ...formattedProperties } },
         images: {
           create: body.images.map((image: Image) => ({

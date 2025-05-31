@@ -3,13 +3,13 @@ import { auth } from "@/app/_lib/auth";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
+  const session = await auth();
+
+  if (!session || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   try {
-    const session = await auth();
-
-    if (!session?.user?.email || session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "No autorizado" }, { status: 403 });
-    }
-
     const { searchParams } = new URL(request.url);
     const from = searchParams.get("from");
     const to = searchParams.get("to");

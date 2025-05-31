@@ -4,7 +4,7 @@ import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type PayloadType = {
   statement_descriptor: string;
@@ -156,7 +156,6 @@ export default function PaymentComponent() {
 
   const onReady = async () => {
     console.log("Payment Brick is ready");
-    console.log(deviceId);
   };
 
   return (
