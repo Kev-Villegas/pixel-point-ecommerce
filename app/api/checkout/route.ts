@@ -3,9 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  console.log("Body for Mercado Pago!!!!!!!!!!!!");
-  console.log(body);
-  console.log(body.additional_info.payer.phone);
 
   const client = new MercadoPagoConfig({
     accessToken: process.env.ACCESS_TOKEN as string,
@@ -15,9 +12,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await payment.create({ body });
-    console.log("Response from Mercado Pago!!!!!!!!!!!!");
-    console.log(response);
-    console.log(response.status_detail);
     return NextResponse.json(response, { status: 201 });
   } catch (error) {
     console.error(error);

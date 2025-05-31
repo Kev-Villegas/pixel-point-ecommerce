@@ -132,11 +132,12 @@ export default function BannerCarousel() {
       {/* Contenedor con touch handlers */}
       <AnimatePresence mode="wait">
         <motion.div
+          aria-live="polite"
           key={banners[current].id}
           initial={{ opacity: 0.5, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0.5, x: -30 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${banners[current].bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
@@ -172,7 +173,11 @@ export default function BannerCarousel() {
                     width={300}
                     height={500}
                     className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
-                    priority
+                    // priority
+
+                    priority={current === 0}
+                    loading={current === 0 ? "eager" : "lazy"}
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
               </div>
@@ -186,7 +191,7 @@ export default function BannerCarousel() {
             >
               {b.subtitle}
             </span>
-            <h1 className="mt-4 text-4xl font-bold text-white md:text-6xl">
+            <h1 className="mt-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
               {b.title}
             </h1>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">

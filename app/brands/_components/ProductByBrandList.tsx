@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import ProductCard from "@/app/_components/ProductCard";
 import { useFilterStore } from "@/store/useFilterStore";
 import FilterProductsBy from "@/app/brands/_components/FilterProductsBy";
-import { Image, ProductBase } from "@/types/types";
+import { Image } from "@/types/types";
 import { Product } from "@prisma/client";
 
 // interface Product {

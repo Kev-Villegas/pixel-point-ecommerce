@@ -1,7 +1,6 @@
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
-import axios from "axios";
 import { motion } from "framer-motion";
 import Link from "next/link";
 

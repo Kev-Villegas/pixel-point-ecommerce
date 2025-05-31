@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { format } from "date-fns";
+import format from "date-fns/format";
 import { useState, memo } from "react";
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
