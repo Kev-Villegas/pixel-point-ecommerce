@@ -8,9 +8,9 @@ export default function Home() {
       <main>
         <BannerWrapper />
         <div className="px-5 md:px-10">
-          <ProductList href="1" title="Mas vendidos 1" />
-          <ProductList href="2" title="Mas vendidos 2" />
-          <ProductList href="3" title="Mas vendidos 3" />
+          <ProductList href="1" title="Novedades" />
+          <ProductList href="2" title="Los más vendidos" />
+          <ProductList href="3" title="Los más likeados" />
         </div>
       </main>
       <Footer />

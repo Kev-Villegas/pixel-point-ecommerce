@@ -21,11 +21,11 @@ type ProductFormProps = {
   name?: string;
   description?: string;
   price?: number;
-  images?: ItemType[]; // Asumo que `images` es un array de URLs (ajústalo si es necesario)
+  images?: ItemType[];
   category?: string;
   brand?: string;
   stock?: boolean;
-  properties?: Record<string, string>; // Ajusta según la estructura de `properties`
+  properties?: Record<string, string>;
 };
 
 export default function ProductForm({
@@ -44,7 +44,7 @@ export default function ProductForm({
   const [price, setPrice] = useState<number>(existingPrice ?? 159.99); // Usa `??` para evitar problemas con `null`
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
-  const [stock, setStock] = useState(existingStock);
+  const [stock, setStock] = useState(existingStock || false);
   const [properties, setProperties] = useState<
     { name: string; values: string }[]
   >(
