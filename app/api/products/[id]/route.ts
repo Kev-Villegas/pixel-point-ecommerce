@@ -1,4 +1,5 @@
 import { db } from "@/app/_lib/prisma";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -67,19 +68,27 @@ export async function DELETE(
   props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params;
-  // const { searchParams } = new URL(request.url);
-  // const id = searchParams.get("id");
-
-  // if (!id) {
-  //   return NextResponse.json({ success: false, message: "ID not found" });
-  // }
 
   const product = await db.product.findUnique({
     where: { id: parseInt(params.id) },
+    include: { images: true },
   });
 
   if (!product) {
-    NextResponse.json({ error: "Product not found" }, { status: 404 });
+    return NextResponse.json({ error: "Product not found" }, { status: 404 });
+  }
+
+  for (const image of product.images) {
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/images`, {
+        params: { url: image.url },
+      });
+    } catch (error) {
+      console.error(
+        `Error deleting image from Cloudinary: ${image.url}`,
+        error,
+      );
+    }
   }
 
   await db.product.delete({
