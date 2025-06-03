@@ -10,12 +10,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    console.log("Webhook recibido:", body);
 
     if (body.type === "payment") {
       const paymentId = body.data.id;
       const data = await payment.get({ id: paymentId });
-      console.log("Datos de pago:", data);
 
       const orderId = data.metadata?.order_id;
       const paid = data.status === "approved";

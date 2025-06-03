@@ -1,3 +1,4 @@
+import { auth } from "@/app/_lib/auth";
 import { db } from "@/app/_lib/prisma";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,6 +27,12 @@ export async function PUT(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
+  const session = await auth();
+
+  if (!session?.user?.email || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   const params = await props.params;
   const body = await request.json();
 
@@ -67,6 +74,12 @@ export async function DELETE(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
+  const session = await auth();
+
+  if (!session?.user?.email || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   const params = await props.params;
 
   const product = await db.product.findUnique({

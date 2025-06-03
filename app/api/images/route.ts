@@ -1,3 +1,4 @@
+import { auth } from "@/app/_lib/auth";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import sha1 from "sha1";
@@ -9,6 +10,12 @@ const getPublicIdFromUrl = (url: string) => {
 };
 
 export async function DELETE(req: NextRequest) {
+  const session = await auth();
+
+  if (!session?.user?.email || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   const { searchParams } = new URL(req.url);
   const url = searchParams.get("url");
 

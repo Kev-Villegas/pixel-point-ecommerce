@@ -6,7 +6,7 @@ export async function GET() {
   const session = await auth();
   const email = session?.user?.email;
   if (!email) {
-    return NextResponse.json([], { status: 200 });
+    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
   const likes = await db.like.findMany({

@@ -20,28 +20,25 @@ export default {
             throw new Error("El email del perfil es nulo o indefinido.");
           }
 
-          // Verificar si el usuario ya existe en la base de datos
           const existingUser = await db.user.findUnique({
             where: { email: profile.email },
           });
 
           if (!existingUser) {
-            // Crear un nuevo usuario en la base de datos
             const newUser = await db.user.create({
               data: {
                 id: profile.sub, // Usar el ID de Google
                 name: profile.name,
                 email: profile.email,
                 image: profile.picture,
-                role: "USER", // Rol predeterminado
+                role: "USER",
                 createdAt: new Date(),
               },
             });
 
-            // Crear un registro en la tabla ShipmentData
             await db.shipmentData.create({
               data: {
-                userId: newUser.id, // Vincular al usuario recién creado
+                userId: newUser.id,
                 phoneNumber: "",
                 streetName: "",
                 streetNumber: "",
@@ -85,7 +82,7 @@ export default {
           name: `${profile.given_name} ${profile.family_name}`,
           email: profile.email,
           image: profile.picture,
-          role: profile.role || "USER",
+          role: "USER",
         };
       },
     }),
