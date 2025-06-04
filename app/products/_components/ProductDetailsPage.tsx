@@ -8,6 +8,8 @@ import { useCartStore } from "@/store/useCartStore";
 import { Button } from "@/app/_components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Skeleton } from "@/app/_components/ui/skeleton";
+import { Separator } from "@/app/_components/ui/separator";
 import {
   Product as PrismaProduct,
   Image as PrismaImage,
@@ -22,7 +24,6 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import RelatedProductsCarousel from "./RelatedProductsCarousel";
-import { Separator } from "@/app/_components/ui/separator";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -58,7 +59,73 @@ const ProductDetailsPage = () => {
   }, [id, router]);
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return (
+      <div className="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="flex flex-col">
+            <div className="relative h-[400px] w-full overflow-hidden rounded-lg bg-gray-100">
+              <Skeleton className="h-full w-full" />
+            </div>
+            <div className="mt-4 flex flex-wrap justify-start gap-2">
+              {[...Array(4)].map((_, idx) => (
+                <Skeleton key={idx} className="h-20 w-20 rounded bg-gray-100" />
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-3/5 bg-gray-100" />
+
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-5 w-20 bg-gray-100" />
+              <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
+            </div>
+
+            <Skeleton className="h-4 w-full bg-gray-100" />
+            <Skeleton className="h-4 w-5/6 bg-gray-100" />
+            <Skeleton className="h-4 w-4/6 bg-gray-100" />
+
+            <Skeleton className="h-6 w-1/4 bg-gray-100" />
+
+            <Skeleton className="h-5 w-1/6 bg-gray-100" />
+
+            <Skeleton className="mt-2 h-10 w-2/5 rounded-md bg-gray-100" />
+          </div>
+        </div>
+        <div className="mb-2 pt-4">
+          <Skeleton className="h-px w-full bg-gray-200" />
+        </div>
+
+        <div className="mt-10 space-y-4">
+          <Skeleton className="h-6 w-1/3 bg-gray-100" />
+          <Card className="mt-4 px-4 py-4">
+            <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <li className="flex items-center space-x-2">
+                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
+                <Skeleton className="h-4 w-1/3 bg-gray-100" />
+                <Skeleton className="h-4 w-1/4 bg-gray-100" />
+              </li>
+              <li className="flex items-center space-x-2">
+                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
+                <Skeleton className="h-4 w-1/3 bg-gray-100" />
+                <Skeleton className="h-4 w-1/4 bg-gray-100" />
+              </li>
+              <li className="flex items-center space-x-2">
+                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
+                <Skeleton className="h-4 w-1/3 bg-gray-100" />
+                <Skeleton className="h-4 w-1/4 bg-gray-100" />
+              </li>
+              <li className="flex items-center space-x-2">
+                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
+                <Skeleton className="h-4 w-1/3 bg-gray-100" />
+                <Skeleton className="h-4 w-1/4 bg-gray-100" />
+              </li>
+            </ul>
+          </Card>
+        </div>
+        <Skeleton className="h-40 w-full rounded-md bg-gray-100" />
+      </div>
+    );
   }
 
   if (!product) {
@@ -154,7 +221,7 @@ const ProductDetailsPage = () => {
           </p>
           <p className="text-lg text-gray-600">{description}</p>
           <div className="text-2xl font-bold text-primary">
-            $ {price.toLocaleString("es-AR")}
+            ${price.toFixed(2)}
           </div>
           <p
             className={`text-lg font-medium ${
@@ -180,6 +247,10 @@ const ProductDetailsPage = () => {
             )}
           </Button>
         </div>
+      </div>
+
+      <div className="mb-2 pt-4">
+        <Separator className="my-5" />
       </div>
 
       <div className="mt-10">
@@ -220,7 +291,7 @@ const ProductDetailsPage = () => {
           </ul>
         </Card>
       </div>
-      <Separator className="my-5" />
+
       <div className="">
         <RelatedProductsCarousel brand={brand} currentProductId={Number(id)} />
       </div>
