@@ -154,7 +154,7 @@ const ProductDetailsPage = () => {
           </p>
           <p className="text-lg text-gray-600">{description}</p>
           <div className="text-2xl font-bold text-primary">
-            ${price.toFixed(2)}
+            $ {price.toLocaleString("es-AR")}
           </div>
           <p
             className={`text-lg font-medium ${
