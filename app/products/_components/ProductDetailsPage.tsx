@@ -21,9 +21,10 @@ import {
   Cpu,
   MemoryStick,
   Palette,
-  ShoppingBag,
+  ShoppingCart,
 } from "lucide-react";
 import RelatedProductsCarousel from "./RelatedProductsCarousel";
+import ProductDescription from "./ProductDescription";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -61,69 +62,38 @@ const ProductDetailsPage = () => {
   if (loading) {
     return (
       <div className="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 lg:px-8">
+        {/* Contenedor principal: imagen + detalles */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* Imagen principal y miniaturas */}
           <div className="flex flex-col">
             <div className="relative h-[400px] w-full overflow-hidden rounded-lg bg-gray-100">
               <Skeleton className="h-full w-full" />
             </div>
             <div className="mt-4 flex flex-wrap justify-start gap-2">
               {[...Array(4)].map((_, idx) => (
-                <Skeleton key={idx} className="h-20 w-20 rounded bg-gray-100" />
+                <Skeleton key={idx} className="h-20 w-20 rounded bg-gray-200" />
               ))}
             </div>
           </div>
 
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-3/5 bg-gray-100" />
-
+          {/* Detalles del producto */}
+          <div className="space-y-2">
+            <Skeleton className="h-10 w-3/5 bg-gray-200" /> {/* Nombre */}
             <div className="flex items-center gap-2">
-              <Skeleton className="h-5 w-20 bg-gray-100" />
-              <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
+              <Skeleton className="h-5 w-20 bg-gray-200" /> {/* Marca */}
+              <Skeleton className="h-5 w-5 rounded-full bg-gray-200" />
             </div>
-
-            <Skeleton className="h-4 w-full bg-gray-100" />
-            <Skeleton className="h-4 w-5/6 bg-gray-100" />
-            <Skeleton className="h-4 w-4/6 bg-gray-100" />
-
-            <Skeleton className="h-6 w-1/4 bg-gray-100" />
-
-            <Skeleton className="h-5 w-1/6 bg-gray-100" />
-
-            <Skeleton className="mt-2 h-10 w-2/5 rounded-md bg-gray-100" />
+            <Skeleton className="h-20 w-full bg-gray-200" /> {/* Descripción */}
+            <Skeleton className="h-10 w-1/4 bg-gray-200" /> {/* Precio */}
+            <Skeleton className="h-6 w-1/6 bg-gray-200" /> {/* Stock */}
+            <div className="mt-4 flex gap-3">
+              <Skeleton className="h-12 w-1/2 rounded-md bg-gray-200" />{" "}
+              {/* Comprar ahora */}
+              <Skeleton className="h-12 w-1/2 rounded-md bg-gray-200" />{" "}
+              {/* Añadir al carrito */}
+            </div>
           </div>
         </div>
-        <div className="mb-2 pt-4">
-          <Skeleton className="h-px w-full bg-gray-200" />
-        </div>
-
-        <div className="mt-10 space-y-4">
-          <Skeleton className="h-6 w-1/3 bg-gray-100" />
-          <Card className="mt-4 px-4 py-4">
-            <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <li className="flex items-center space-x-2">
-                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
-                <Skeleton className="h-4 w-1/3 bg-gray-100" />
-                <Skeleton className="h-4 w-1/4 bg-gray-100" />
-              </li>
-              <li className="flex items-center space-x-2">
-                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
-                <Skeleton className="h-4 w-1/3 bg-gray-100" />
-                <Skeleton className="h-4 w-1/4 bg-gray-100" />
-              </li>
-              <li className="flex items-center space-x-2">
-                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
-                <Skeleton className="h-4 w-1/3 bg-gray-100" />
-                <Skeleton className="h-4 w-1/4 bg-gray-100" />
-              </li>
-              <li className="flex items-center space-x-2">
-                <Skeleton className="h-5 w-5 rounded-full bg-gray-100" />
-                <Skeleton className="h-4 w-1/3 bg-gray-100" />
-                <Skeleton className="h-4 w-1/4 bg-gray-100" />
-              </li>
-            </ul>
-          </Card>
-        </div>
-        <Skeleton className="h-40 w-full rounded-md bg-gray-100" />
       </div>
     );
   }
@@ -144,7 +114,7 @@ const ProductDetailsPage = () => {
     updatedAt,
   } = product;
 
-  const handleAddToCart = () => {
+  const addProductToCart = () => {
     if (isAdding || !stock) return;
 
     setIsAdding(true);
@@ -163,11 +133,16 @@ const ProductDetailsPage = () => {
       createdAt,
       updatedAt,
     });
-    toast.success(`Se agregó ${name} al carrito`);
+  };
 
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 800);
+  const handleAddToCart = () => {
+    addProductToCart();
+    toast.success(`Se agregó ${name} al carrito`);
+  };
+
+  const handleBuyNow = () => {
+    addProductToCart();
+    router.push("/cart");
   };
 
   return (
@@ -219,9 +194,10 @@ const ProductDetailsPage = () => {
             {brand}
             <BadgeCheck className="mt-[1px] h-4 w-4 font-bold text-blue-700" />
           </p>
-          <p className="text-lg text-gray-600">{description}</p>
-          <div className="text-2xl font-bold text-primary">
-            ${price.toFixed(2)}
+          {/* <p className="text-lg text-gray-600">{description}</p> */}
+          <ProductDescription description={description} />
+          <div className="text-3xl font-bold text-primary">
+            $ {price.toLocaleString("es-AR")}
           </div>
           <p
             className={`text-lg font-medium ${
@@ -230,22 +206,34 @@ const ProductDetailsPage = () => {
           >
             {stock ? "En stock" : "Agotado"}
           </p>
-          <Button
-            variant="default"
-            className={`mt-4 flex items-center gap-2 px-6 py-3 text-lg ${
-              isAdding || !stock ? "cursor-not-allowed opacity-50" : ""
-            }`}
-            onClick={handleAddToCart}
-            disabled={isAdding || !stock}
-          >
-            {stock ? (
-              <>
-                <ShoppingBag className="h-5 w-5" /> Añadir al carrito
-              </>
-            ) : (
-              "Notificarme"
+          <div className="mt-4 flex gap-3">
+            {/* Botón "Añadir al carrito" */}
+            {stock && (
+              <Button
+                variant="default"
+                className="flex-1 items-center gap-2 px-6 py-3 text-lg"
+                onClick={handleBuyNow}
+              >
+                Comprar ahora
+              </Button>
             )}
-          </Button>
+            <Button
+              variant={stock ? "secondary" : "default"}
+              className={`flex-1 items-center gap-2 px-6 py-3 text-lg ${
+                isAdding || !stock ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              onClick={handleAddToCart}
+              disabled={isAdding || !stock}
+            >
+              {stock ? (
+                <>
+                  <ShoppingCart className="h-5 w-5" /> Añadir al carrito
+                </>
+              ) : (
+                "Notificarme"
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 

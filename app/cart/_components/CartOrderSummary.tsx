@@ -50,14 +50,14 @@ export function CartOrderSummary({
           <div className="flex justify-between">
             <span className="text-xl font-semibold">Subtotal:</span>
             <span className="text-xl font-semibold">
-              ${subtotal.toFixed(2)}
+              ${subtotal.toLocaleString("es-AR")}
             </span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between">
             <span className="text-xl font-semibold">Total:</span>
             <span className="text-xl font-semibold">
-              ${subtotal.toFixed(2)}
+              ${subtotal.toLocaleString("es-AR")}
             </span>
           </div>
         </div>

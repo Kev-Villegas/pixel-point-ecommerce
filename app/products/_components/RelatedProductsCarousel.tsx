@@ -106,7 +106,7 @@ const RelatedProductsCarousel = ({
                 {product.name}
               </h3>
               <p className="text-lg font-bold text-primary">
-                ${product.price.toFixed(2)}
+                $ {product.price.toLocaleString("es-AR")}
               </p>
             </motion.div>
           ))}

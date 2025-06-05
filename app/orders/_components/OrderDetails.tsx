@@ -136,11 +136,12 @@ export function OrderDetails({ orderId }: { orderId: string }) {
                     <div className="flex-1 space-y-1">
                       <h4 className="font-medium">{product.name}</h4>
                       <p className="text-sm text-muted-foreground">
-                        Cantidad: {item.quantity} × ${product.price.toFixed(2)}
+                        Cantidad: {item.quantity} × $
+                        {product.price.toLocaleString("es-AR")}
                       </p>
                     </div>
                     <div className="font-medium">
-                      ${(item.quantity * product.price).toFixed(2)}
+                      ${(item.quantity * product.price).toLocaleString("es-AR")}
                     </div>
                   </div>
                 );

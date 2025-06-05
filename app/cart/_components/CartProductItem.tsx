@@ -46,7 +46,9 @@ export function CartProductItem({
         />
         <div>
           <p className="font-medium text-gray-800">{product.name}</p>
-          <p className="text-sm text-gray-600">${product.price.toFixed(2)}</p>
+          <p className="text-sm text-gray-600">
+            ${product.price.toLocaleString("es-AR")}
+          </p>
         </div>
       </div>
       <div className="flex items-center justify-between gap-2">
