@@ -112,7 +112,7 @@ export default function BannerCarousel() {
   const b = banners[current];
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full overflow-x-hidden">
       {/* Flechas (solo lg+) */}
       <button
         onClick={prev}
@@ -134,10 +134,10 @@ export default function BannerCarousel() {
         <motion.div
           aria-live="polite"
           key={banners[current].id}
-          initial={{ opacity: 0.5, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0.5, x: -30 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          initial={{ opacity: 0, x: 100, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -100, scale: 0.95 }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }} // easing tipo cubic-bezier suave
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${banners[current].bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
@@ -166,15 +166,18 @@ export default function BannerCarousel() {
                 <div
                   className={`absolute -inset-0.5 rounded-2xl ${b.accentColor}/20 blur-sm transition duration-300 group-hover:${b.accentColor}/30`}
                 />
-                <div className="relative rounded-2xl p-1">
+                <div
+                  className="relative rounded-2xl p-1"
+                  style={{ width: 300, height: 500 }}
+                >
                   <Image
                     src={b.imagePath}
                     alt={b.imageAlt}
-                    width={300}
-                    height={500}
+                    fill
+                    style={{ objectFit: "contain" }}
+                    // width={300}
+                    // height={500}
                     className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
-                    // priority
-
                     priority={current === 0}
                     loading={current === 0 ? "eager" : "lazy"}
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -238,7 +241,6 @@ export default function BannerCarousel() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Indicadores */}
       <div className="flex justify-center gap-2 bg-transparent py-4">
         {banners.map((_, i) => (
           <button
