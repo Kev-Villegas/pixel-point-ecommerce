@@ -7,13 +7,21 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/banner/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.pexels.com",
-        pathname: "/**",
-      },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",

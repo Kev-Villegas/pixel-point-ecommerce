@@ -15,7 +15,7 @@ const banners = [
     accentColor: "bg-violet-500",
     textColor: "text-violet-500",
     buttonColor: "bg-violet-500 hover:bg-violet-600",
-    imagePath: "/iphone.webp",
+    imagePath: "/banner/iphone.webp",
     imageAlt: "Samsung S3 Ultra gama alta",
   },
   {
@@ -28,7 +28,7 @@ const banners = [
     accentColor: "bg-cyan-500",
     textColor: "text-cyan-500",
     buttonColor: "bg-cyan-500 hover:bg-cyan-600",
-    imagePath: "/s25.webp",
+    imagePath: "/banner/s25.webp",
     imageAlt: "Nuevos modelos Samsung en lanzamiento",
   },
   {
@@ -42,7 +42,7 @@ const banners = [
     accentColor: "bg-amber-500",
     textColor: "text-amber-500",
     buttonColor: "bg-amber-500 hover:bg-amber-600",
-    imagePath: "/a36.webp",
+    imagePath: "/banner/a36.webp",
     imageAlt: "Xiaomi POCO en oferta flash",
   },
   {
@@ -55,7 +55,7 @@ const banners = [
     accentColor: "bg-emerald-500",
     textColor: "text-emerald-500",
     buttonColor: "bg-emerald-500 hover:bg-emerald-600",
-    imagePath: "/accessories.webp",
+    imagePath: "/banner/accessories.webp",
     imageAlt: "Accesorios para smartphone disponibles pronto",
   },
 ];
@@ -199,7 +199,7 @@ export default function BannerCarousel() {
                 className={`flex items-center gap-2 rounded-lg ${b.accentColor}/10 px-6 py-3`}
               >
                 <Image
-                  src="/mp-blue.webp"
+                  src="/banner/mp-blue.webp"
                   alt="Mercado Pago Logo"
                   width={200}
                   height={500}
