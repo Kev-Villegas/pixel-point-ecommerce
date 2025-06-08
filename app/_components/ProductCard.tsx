@@ -35,7 +35,6 @@ export default function ProductCard({
     };
 
     addProduct(itemToAdd);
-    toast.success(`Producto ${name} agregado al carrito`);
     setTimeout(() => setIsAdding(false), 800);
   };
 
@@ -51,15 +50,12 @@ export default function ProductCard({
     try {
       if (isLiked) {
         await axios.delete(`/api/likes/${id}`);
-        toast.success("Like eliminado");
         onUnfavorite?.();
       } else {
         await axios.post("/api/likes", { FavoriteProduct: id });
-        toast.success("Producto añadido a favoritos");
       }
       mutate();
     } catch (error) {
-      toast.error("Error al actualizar favoritos");
       mutate(prevLikedIds, false);
     } finally {
       setLikeLoading(false);

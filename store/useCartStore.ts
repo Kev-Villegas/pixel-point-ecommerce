@@ -28,7 +28,9 @@ export const useCartStore = create<CartState>()(
             ? existingProduct.quantity
             : 0;
           if (currentQuantity + 1 > product.stock) {
-            toast.error("No hay más stock disponible para este producto");
+            toast.error("No hay más stock disponible para este producto", {
+              id: "stock-limit",
+            });
             return;
           }
 
@@ -42,6 +44,9 @@ export const useCartStore = create<CartState>()(
           }
 
           set({ cartProducts: updatedCart });
+          toast.success(
+            `${updatedCart[updatedCart.length - 1].name} agregado al carrito`,
+          );
         }
       },
 
@@ -57,6 +62,13 @@ export const useCartStore = create<CartState>()(
               const newQuantity = increment
                 ? product.quantity + 1
                 : product.quantity - 1;
+
+              if (increment && newQuantity > product.stock) {
+                toast.error("No hay más stock disponible para este producto", {
+                  id: "stock-limit",
+                });
+                return product;
+              }
               if (newQuantity > 0) return { ...product, quantity: newQuantity };
               return null;
             }

@@ -39,7 +39,9 @@ export function CartOrderSummary({
               <h2 className="text-base">
                 {product.name} (x{product.quantity})
               </h2>
-              <p>${(product.price * product.quantity).toFixed(2)}</p>
+              <p>
+                ${(product.price * product.quantity).toLocaleString("es-AR")}
+              </p>
             </div>
           </CardDescription>
         ))}
