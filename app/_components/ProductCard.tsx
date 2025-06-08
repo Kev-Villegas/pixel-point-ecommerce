@@ -27,7 +27,7 @@ export default function ProductCard({
   const isLiked = likedProductIds.includes(id);
 
   const handleAddToCart = () => {
-    if (isAdding || !stock) return;
+    if (isAdding || stock < 1) return;
     setIsAdding(true);
     const itemToAdd: CartProduct = {
       ...productProps,
@@ -70,7 +70,7 @@ export default function ProductCard({
     <Card
       className="w-full max-w-[225px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
       tabIndex={0}
-      style={stock ? {} : { opacity: 0.5 }}
+      style={stock > 0 ? {} : { opacity: 0.5 }}
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
         <Link href={`/products/${id}`}>
@@ -123,7 +123,7 @@ export default function ProductCard({
                   }`}
                 />
               </button>
-              {stock ? (
+              {stock > 0 ? (
                 <button
                   onClick={handleAddToCart}
                   disabled={isAdding}

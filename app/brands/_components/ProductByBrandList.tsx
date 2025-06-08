@@ -7,20 +7,6 @@ import FilterProductsBy from "@/app/brands/_components/FilterProductsBy";
 import { Image } from "@/types/types";
 import { Product } from "@prisma/client";
 
-// interface Product {
-//   id: number;
-//   name: string;
-//   price: number;
-//   brand: string;
-//   images: { id: number; productId: number; url: string }[];
-// }
-
-// interface ProductByBrandListProps {
-//   products: Product[];
-// }
-
-// interface ProductCardProps extends ProductBase {}
-
 type ProductWithImages = Product & {
   images: Image[];
 };

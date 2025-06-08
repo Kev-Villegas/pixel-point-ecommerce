@@ -24,7 +24,7 @@ type ProductFormProps = {
   images?: ItemType[];
   category?: string;
   brand?: string;
-  stock?: boolean;
+  stock?: number;
   properties?: Record<string, string>;
 };
 
@@ -44,7 +44,7 @@ export default function ProductForm({
   const [price, setPrice] = useState<number>(existingPrice ?? 159.99); // Usa `??` para evitar problemas con `null`
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
   const [productBrand, setProductBrand] = useState(existingBrand || "");
-  const [stock, setStock] = useState(existingStock || false);
+  const [stock, setStock] = useState<number>(existingStock || 0);
   const [properties, setProperties] = useState<
     { name: string; values: string }[]
   >(
@@ -70,7 +70,7 @@ export default function ProductForm({
         .filter((prop) => prop.values !== null);
       setProperties([...formattedProperties]);
     }
-  }, []);
+  }, [existingProperties]);
 
   const saveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -161,9 +161,10 @@ export default function ProductForm({
         <label className="mb-3">Stock</label>
         <input
           className="mb-4"
-          type="checkbox"
-          checked={stock}
-          onChange={(e) => setStock(e.target.checked)}
+          type="number"
+          min={0}
+          value={stock}
+          onChange={(e) => setStock(Number(e.target.value))}
         />
       </div>
       <label>Nombre del producto</label>
@@ -246,7 +247,7 @@ export default function ProductForm({
               return [
                 ...oldImages,
                 {
-                  id: oldImages.length,
+                  id: Date.now(),
                   url: info.secure_url,
                 },
               ];
@@ -322,7 +323,8 @@ export default function ProductForm({
       <input
         type="number"
         placeholder="Precio"
-        value={price || 0} // Asegúrate de que nunca sea `null` o `undefined`
+        value={price || 0}
+        min={0}
         onChange={(event) => setPrice(+event.target.value)}
       />
       <button className="btn-primary" type="submit">

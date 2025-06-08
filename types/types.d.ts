@@ -18,7 +18,7 @@ export interface ProductBase {
   description: string;
   brand: string;
   price: number;
-  stock: boolean;
+  stock: number;
   images: Image[];
   // likeCount: number;
   // likedByUser: boolean;

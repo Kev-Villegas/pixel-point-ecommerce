@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         description: body.description,
         brand: body.productBrand,
         price: body.price,
-        stock: body.stock ?? false,
+        stock: body.stock,
         properties: { create: { ...formattedProperties } },
         images: {
           create: body.images.map((image: Image) => ({

@@ -1,4 +1,5 @@
 import { CartProduct, ProductBase } from "@/types/types";
+import toast from "react-hot-toast";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -22,6 +23,14 @@ export const useCartStore = create<CartState>()(
           const existingProduct = get().cartProducts.find(
             (p) => p.id === product.id,
           );
+
+          const currentQuantity = existingProduct
+            ? existingProduct.quantity
+            : 0;
+          if (currentQuantity + 1 > product.stock) {
+            toast.error("No hay más stock disponible para este producto");
+            return;
+          }
 
           let updatedCart;
           if (existingProduct) {
