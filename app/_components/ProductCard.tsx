@@ -96,7 +96,7 @@ export default function ProductCard({
           )}
           <div className="flex items-center justify-between pt-2">
             <span className="text-lg font-semibold text-emerald-600">
-              $ {price.toLocaleString("es-AR")}
+              {stock > 0 && `$${price.toLocaleString("es-AR")}`}
             </span>
             <div className="flex items-center gap-1">
               <button

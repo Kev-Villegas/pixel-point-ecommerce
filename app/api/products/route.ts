@@ -9,17 +9,27 @@ type Image = {
 export async function GET(req: NextRequest) {
   const session = await auth();
   const userEmail = session?.user?.email;
+  const sort = req.nextUrl.searchParams.get("sort");
 
   try {
     const products = await db.product.findMany({
       include: {
         images: true,
+        orderItems: true,
         _count: { select: { likes: true } },
         likes: userEmail
           ? { where: { user: { email: userEmail } }, select: { id: true } }
           : false,
       },
     });
+
+    if (sort === "createdAt") {
+      products.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    } else if (sort === "mostSold") {
+      products.sort((a, b) => b.orderItems.length - a.orderItems.length);
+    } else if (sort === "mostLiked") {
+      products.sort((a, b) => b._count.likes - a._count.likes);
+    }
 
     const result = products.map((p) => ({
       id: p.id,

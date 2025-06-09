@@ -3,34 +3,46 @@
 import axios from "axios";
 import Link from "next/link";
 import { ProductBase } from "@/types/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductCard from "@/app/_components/ProductCard";
 import { useInView } from "react-intersection-observer";
 import { SkeletonCard } from "./SkeletonCard";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProductListProps {
   title: string;
   href: string;
+  sort?: "createdAt" | "mostSold" | "mostLiked";
 }
 
-export default function ProductList({ title, href }: ProductListProps) {
+export default function ProductList({ title, href, sort }: ProductListProps) {
   const [products, setProducts] = useState<ProductBase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { ref, inView } = useInView({
+  const { ref: viewRef, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = scrollRef.current.offsetWidth * 0.8;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
-    // https://pixel-point-ecommerce.vercel.app/api/products
     axios
-      .get<ProductBase[]>("/api/products")
+      .get<ProductBase[]>(`/api/products?sort=${sort || ""}`)
       .then((res) => setProducts(res.data))
       .finally(() => setIsLoading(false));
   }, []);
 
   return (
-    <div className="mx-auto px-4 py-8" ref={ref}>
+    <div className="relative mx-auto px-4 py-8" ref={viewRef}>
       {inView && (
         <>
           <div className="mb-6 flex items-center justify-between">
@@ -42,20 +54,39 @@ export default function ProductList({ title, href }: ProductListProps) {
               Ver todos
             </Link>
           </div>
-          <div className="grid grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 sm:justify-items-stretch md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7">
-            {isLoading
-              ? Array.from({ length: 4 }).map((_, i) => (
-                  <SkeletonCard key={i} />
-                ))
-              : products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    {...product}
-                    onUnfavorite={() => {
-                      /* here we will handle unfavorite */
-                    }}
-                  />
-                ))}
+
+          <div className="relative">
+            <button
+              className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
+              onClick={() => scroll("left")}
+            >
+              <ChevronLeft />
+            </button>
+
+            <div
+              ref={scrollRef}
+              className="scrollbar-hide hide-scrollbar flex gap-4 overflow-x-auto scroll-smooth px-2"
+            >
+              {isLoading
+                ? Array.from({ length: 4 }).map((_, i) => (
+                    <SkeletonCard key={i} />
+                  ))
+                : products.map((product, index) => (
+                    <div
+                      key={product.id}
+                      className="min-w-[200px] max-w-[220px]"
+                    >
+                      <ProductCard {...product} onUnfavorite={() => {}} />
+                    </div>
+                  ))}
+            </div>
+
+            <button
+              className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
+              onClick={() => scroll("right")}
+            >
+              <ChevronRight />
+            </button>
           </div>
         </>
       )}
