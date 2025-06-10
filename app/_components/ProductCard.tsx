@@ -69,7 +69,7 @@ export default function ProductCard({
       style={stock > 0 ? {} : { opacity: 0.5 }}
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
-        <Link href={`/products/${id}`}>
+        <Link href={`/productos/${id}`}>
           <Image
             src={images[0]?.url ?? "/placeholder.png"}
             alt={name}
@@ -83,7 +83,7 @@ export default function ProductCard({
       </div>
       <CardContent className="p-2">
         <div className="flex flex-col space-y-1">
-          <Link href={`/products/${id}`}>
+          <Link href={`/productos/${id}`}>
             <h3 className="cursor-pointer truncate text-base font-medium leading-tight hover:text-primary">
               {name}
             </h3>

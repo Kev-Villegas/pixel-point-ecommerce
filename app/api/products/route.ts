@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   const sort = req.nextUrl.searchParams.get("sort");
 
   try {
-    const products = await db.product.findMany({
+    let products = await db.product.findMany({
       include: {
         images: true,
         orderItems: true,
@@ -30,6 +30,10 @@ export async function GET(req: NextRequest) {
     } else if (sort === "mostLiked") {
       products.sort((a, b) => b._count.likes - a._count.likes);
     }
+
+    const withStock = products.filter((p) => p.stock > 0);
+    const withoutStock = products.filter((p) => p.stock === 0);
+    products = [...withStock, ...withoutStock];
 
     const result = products.map((p) => ({
       id: p.id,

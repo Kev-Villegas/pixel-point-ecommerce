@@ -43,7 +43,7 @@ export default function SearchInput() {
             {searchResults.map((product) => (
               <Link
                 key={product.id}
-                href={`/products/${product.id}`}
+                href={`/productos/${product.id}`}
                 className="flex items-center space-x-4 px-4 py-2 hover:bg-gray-100"
               >
                 {product.images.length > 0 && (

@@ -93,7 +93,7 @@ const RelatedProductsCarousel = ({
               className="min-w-[200px] max-w-[200px] rounded-lg border border-gray-300 p-4 shadow-md hover:cursor-pointer"
               whileHover={{ scale: 1.01 }}
               transition={{ duration: 0.3 }}
-              onClick={() => router.push(`/products/${product.id}`)}
+              onClick={() => router.push(`/productos/${product.id}`)}
             >
               <Image
                 src={product.images[0]?.url || "/placeholder.png"}
