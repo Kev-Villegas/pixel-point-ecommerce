@@ -131,11 +131,11 @@ const ProductDetailsPage = () => {
       createdAt,
       updatedAt,
     });
+    setTimeout(() => setIsAdding(false), 800);
   };
 
   const handleAddToCart = () => {
     addProductToCart();
-    toast.success(`Se agregó ${name} al carrito`);
   };
 
   const handleBuyNow = () => {
