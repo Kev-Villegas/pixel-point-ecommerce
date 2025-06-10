@@ -88,9 +88,7 @@ const ProductDetailsPage = () => {
             <Skeleton className="h-6 w-1/6 bg-gray-200" /> {/* Stock */}
             <div className="mt-4 flex gap-3">
               <Skeleton className="h-12 w-1/2 rounded-md bg-gray-200" />{" "}
-              {/* Comprar ahora */}
               <Skeleton className="h-12 w-1/2 rounded-md bg-gray-200" />{" "}
-              {/* Añadir al carrito */}
             </div>
           </div>
         </div>
@@ -195,9 +193,11 @@ const ProductDetailsPage = () => {
             <BadgeCheck className="mt-[1px] h-4 w-4 font-bold text-blue-700" />
           </p>
           <ProductDescription description={description} />
-          <div className="text-3xl font-bold text-primary">
-            $ {price.toLocaleString("es-AR")}
-          </div>
+          {stock > 0 && (
+            <div className="text-3xl font-bold text-primary">
+              $ {price.toLocaleString("es-AR")}
+            </div>
+          )}
           <p
             className={`text-lg font-medium ${
               stock > 0 ? "text-green-600" : "text-red-600"
