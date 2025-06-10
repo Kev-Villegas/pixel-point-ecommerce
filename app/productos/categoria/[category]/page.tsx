@@ -36,24 +36,35 @@ export default function ProductCategoryPage() {
       .finally(() => setIsLoading(false));
   }, [sort]);
 
+  if (isLoading) {
+    return (
+      <section className="px-6">
+        <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
+          {mappedCategory}
+        </h1>
+        <div className="flex flex-row flex-wrap gap-4">
+          {Array.from({ length: products?.length || 6 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   if (!sort) {
     return <div className="p-10">Categoría no encontrada</div>;
   }
 
   return (
-    <div className="p-5 md:p-10">
-      <h1 className="mb-6 text-3xl font-bold capitalize">{mappedCategory}</h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {isLoading
-          ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-          : products.map((product) => (
-              <ProductCard
-                key={product.id}
-                {...product}
-                onUnfavorite={() => {}}
-              />
-            ))}
+    <section className="p-6">
+      <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
+        {mappedCategory}
+      </h1>
+      <div className="grid grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 sm:justify-items-stretch md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7">
+        {products.map((product) => (
+          <ProductCard key={product.id} {...product} onUnfavorite={() => {}} />
+        ))}
       </div>
-    </div>
+    </section>
   );
 }

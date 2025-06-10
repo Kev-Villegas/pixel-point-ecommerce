@@ -58,7 +58,16 @@ export default function ProductForm({
 
   const [isUploading, setIsUploading] = useState(false);
 
-  const brands = ["Apple", "Samsung", "Xiaomi", "Motorola"];
+  const brands = [
+    "Apple",
+    "Samsung",
+    "Xiaomi",
+    "Realme",
+    "Honor",
+    "Oneplus",
+    "Oppo",
+    "Motorola",
+  ];
 
   useEffect(() => {
     if (existingProperties) {
