@@ -47,9 +47,8 @@ export default function SigninPage() {
         password: data.password,
         redirect: false,
       });
-      if (signInResponse?.error) {
-        console.error(signInResponse.error);
-        toast.error(signInResponse.error);
+      if (signInResponse?.error === "CredentialsSignin") {
+        toast.error("Correo electrónico o contraseña incorrecta");
       } else {
         toast.success("Inicio de sesión exitoso.");
         router.push("/");
