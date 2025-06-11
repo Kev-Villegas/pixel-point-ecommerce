@@ -105,9 +105,11 @@ const RelatedProductsCarousel = ({
               <h3 className="mt-2 text-lg font-semibold text-gray-700">
                 {product.name}
               </h3>
-              <p className="text-lg font-bold text-primary">
-                $ {product.price.toLocaleString("es-AR")}
-              </p>
+              {product.stock > 0 && (
+                <p className="text-lg font-bold text-primary">
+                  $ {product.price.toLocaleString("es-AR")}
+                </p>
+              )}
             </motion.div>
           ))}
         </motion.div>
