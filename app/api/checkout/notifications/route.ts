@@ -30,7 +30,30 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        console.log(`Orden ${orderId} marcada como pagada.`);
+        const orderItems = await db.orderItem.findMany({
+          where: { orderId: Number(orderId) },
+          select: {
+            productId: true,
+            quantity: true,
+          },
+        });
+
+        await Promise.all(
+          orderItems.map((item) =>
+            db.product.update({
+              where: { id: item.productId },
+              data: {
+                stock: {
+                  decrement: item.quantity,
+                },
+              },
+            }),
+          ),
+        );
+
+        console.log(
+          `Orden ${orderId} marcada como pagada y stock actualizado.`,
+        );
       } else {
         throw new Error("No se encontró el order_id en metadata");
       }

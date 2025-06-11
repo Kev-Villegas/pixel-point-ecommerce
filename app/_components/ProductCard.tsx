@@ -27,7 +27,7 @@ export default function ProductCard({
   const isLiked = likedProductIds.includes(id);
 
   const handleAddToCart = () => {
-    if (isAdding || !stock) return;
+    if (isAdding || stock < 1) return;
     setIsAdding(true);
     const itemToAdd: CartProduct = {
       ...productProps,
@@ -35,7 +35,6 @@ export default function ProductCard({
     };
 
     addProduct(itemToAdd);
-    toast.success(`Producto ${name} agregado al carrito`);
     setTimeout(() => setIsAdding(false), 800);
   };
 
@@ -51,15 +50,12 @@ export default function ProductCard({
     try {
       if (isLiked) {
         await axios.delete(`/api/likes/${id}`);
-        toast.success("Like eliminado");
         onUnfavorite?.();
       } else {
         await axios.post("/api/likes", { FavoriteProduct: id });
-        toast.success("Producto añadido a favoritos");
       }
       mutate();
     } catch (error) {
-      toast.error("Error al actualizar favoritos");
       mutate(prevLikedIds, false);
     } finally {
       setLikeLoading(false);
@@ -70,10 +66,10 @@ export default function ProductCard({
     <Card
       className="w-full max-w-[225px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
       tabIndex={0}
-      style={stock ? {} : { opacity: 0.5 }}
+      style={stock > 0 ? {} : { opacity: 0.5 }}
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
-        <Link href={`/products/${id}`}>
+        <Link href={`/productos/${id}`}>
           <Image
             src={images[0]?.url ?? "/placeholder.png"}
             alt={name}
@@ -87,7 +83,7 @@ export default function ProductCard({
       </div>
       <CardContent className="p-2">
         <div className="flex flex-col space-y-1">
-          <Link href={`/products/${id}`}>
+          <Link href={`/productos/${id}`}>
             <h3 className="cursor-pointer truncate text-base font-medium leading-tight hover:text-primary">
               {name}
             </h3>
@@ -100,7 +96,7 @@ export default function ProductCard({
           )}
           <div className="flex items-center justify-between pt-2">
             <span className="text-lg font-semibold text-emerald-600">
-              $ {price.toLocaleString("es-AR")}
+              {stock > 0 && `$${price.toLocaleString("es-AR")}`}
             </span>
             <div className="flex items-center gap-1">
               <button
@@ -123,7 +119,7 @@ export default function ProductCard({
                   }`}
                 />
               </button>
-              {stock ? (
+              {stock > 0 ? (
                 <button
                   onClick={handleAddToCart}
                   disabled={isAdding}

@@ -7,7 +7,7 @@ type FavoriteProduct = {
   name: string;
   description: string;
   brand: string;
-  stock: boolean;
+  stock: number;
   price: number;
   createdAt: Date;
   updatedAt: Date;

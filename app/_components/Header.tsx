@@ -17,6 +17,7 @@ export default async function Header() {
     "Honor",
     "Oneplus",
     "Oppo",
+    "Motorola",
   ];
 
   const session = await auth();

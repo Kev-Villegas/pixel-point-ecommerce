@@ -37,15 +37,11 @@ export default async function BrandPage(props: {
   }));
 
   return (
-    <>
-      {/* <Header /> */}
-      <div className="container my-8 px-5 md:px-10">
-        <h1 className="mb-4 text-3xl font-bold">
-          {capitalizeFirstLetter(brand)}
-        </h1>
-
-        <ProductByBrandList products={productsFormatted} />
-      </div>
-    </>
+    <div className="container my-8 px-5 md:px-10">
+      <h1 className="mb-4 text-3xl font-bold">
+        {capitalizeFirstLetter(brand)}
+      </h1>
+      <ProductByBrandList products={productsFormatted} />
+    </div>
   );
 }

@@ -14,23 +14,12 @@ interface Product {
   name: string;
   description: string;
   brand: string;
-  stock: boolean;
+  stock: number;
   price: number;
   properties?: Properties;
 }
 
 export default async function ProductList() {
-  // let { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/products`);
-
-  // const products: Product[] = data.map((product: any) => ({
-  //   id: product.id,
-  //   name: product.name,
-  //   description: product.description,
-  //   brand: product.brand,
-  //   stock: product.stock,
-  //   price: product.price,
-  //   properties: product.properties,
-  // }));
   const products = await getProducts();
 
   return (
@@ -46,9 +35,7 @@ export default async function ProductList() {
         <tbody>
           {products.map((product: Product) => (
             <tr key={product.id} className="border-t">
-              <td className="px-4 py-2 text-center">
-                <input type="checkbox" checked={product.stock} readOnly />
-              </td>
+              <td className="px-4 py-2 text-center">{product.stock}</td>
               <td className="px-4 py-2">{product.name}</td>
               <td className="flex items-center gap-2 px-4 py-2">
                 <Link

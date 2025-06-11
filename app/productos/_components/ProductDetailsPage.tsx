@@ -105,9 +105,7 @@ const ProductDetailsPage = () => {
             <Skeleton className="h-6 w-1/6 bg-gray-200" /> {/* Stock */}
             <div className="mt-4 flex gap-3">
               <Skeleton className="h-12 w-1/2 rounded-md bg-gray-200" />{" "}
-              {/* Comprar ahora */}
               <Skeleton className="h-12 w-1/2 rounded-md bg-gray-200" />{" "}
-              {/* Añadir al carrito */}
             </div>
           </div>
         </div>
@@ -132,7 +130,7 @@ const ProductDetailsPage = () => {
   } = product;
 
   const addProductToCart = () => {
-    if (isAdding || !stock) return;
+    if (isAdding || stock < 1) return;
 
     setIsAdding(true);
     addProduct({
@@ -150,11 +148,11 @@ const ProductDetailsPage = () => {
       createdAt,
       updatedAt,
     });
+    setTimeout(() => setIsAdding(false), 800);
   };
 
   const handleAddToCart = () => {
     addProductToCart();
-    toast.success(`Se agregó ${name} al carrito`);
   };
 
   const handleBuyNow = () => {
@@ -194,7 +192,7 @@ const ProductDetailsPage = () => {
                 alt={`Imagen ${index + 1} de ${name}`}
                 width={80}
                 height={80}
-                className={`cursor-pointer rounded border object-cover transition-all duration-100 ${
+                className={`cursor-pointer rounded border object-cover transition-all duration-100 hover:scale-105 hover:shadow ${
                   selectedImage === image.url
                     ? "border-primary"
                     : "border-gray-300"
@@ -211,21 +209,21 @@ const ProductDetailsPage = () => {
             {brand}
             <BadgeCheck className="mt-[1px] h-4 w-4 font-bold text-blue-700" />
           </p>
-          {/* <p className="text-lg text-gray-600">{description}</p> */}
           <ProductDescription description={description} />
-          <div className="text-3xl font-bold text-primary">
-            $ {price.toLocaleString("es-AR")}
-          </div>
+          {stock > 0 && (
+            <div className="text-3xl font-bold text-primary">
+              $ {price.toLocaleString("es-AR")}
+            </div>
+          )}
           <p
             className={`text-lg font-medium ${
-              stock ? "font-medium text-green-600" : "font-medium text-red-600"
+              stock > 0 ? "text-green-600" : "text-red-600"
             }`}
           >
-            {stock ? "En stock" : "Agotado"}
+            {stock > 0 ? "En stock" : "Agotado"}
           </p>
           <div className="mt-4 flex gap-3">
-            {/* Botón "Añadir al carrito" */}
-            {stock && (
+            {stock > 0 && (
               <Button
                 variant="default"
                 className="flex-1 items-center gap-2 px-6 py-3 text-lg"
@@ -235,14 +233,14 @@ const ProductDetailsPage = () => {
               </Button>
             )}
             <Button
-              variant={stock ? "secondary" : "default"}
+              variant={stock > 0 ? "secondary" : "default"}
               className={`flex-1 items-center gap-2 px-6 py-3 text-lg ${
-                isAdding || !stock ? "cursor-not-allowed opacity-50" : ""
+                isAdding || stock < 1 ? "cursor-not-allowed opacity-50" : ""
               }`}
               onClick={handleAddToCart}
-              disabled={isAdding || !stock}
+              disabled={isAdding || stock < 1}
             >
-              {stock ? (
+              {stock > 0 ? (
                 <>
                   <ShoppingCart className="h-5 w-5" /> Añadir al carrito
                 </>
