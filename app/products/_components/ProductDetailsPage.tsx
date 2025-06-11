@@ -6,25 +6,42 @@ import { useState, useEffect } from "react";
 import { Card } from "@/app/_components/ui/card";
 import { useCartStore } from "@/store/useCartStore";
 import { Button } from "@/app/_components/ui/button";
+import ProductDescription from "./ProductDescription";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Separator } from "@/app/_components/ui/separator";
+import RelatedProductsCarousel from "./RelatedProductsCarousel";
 import {
   Product as PrismaProduct,
   Image as PrismaImage,
   Properties as PrismaProperties,
 } from "@prisma/client";
 import {
-  BadgeCheck,
   Battery,
   Cpu,
   MemoryStick,
   Palette,
   ShoppingCart,
+  BadgeCheck,
+  HardDrive,
+  MonitorSmartphone,
+  Microchip,
+  Wifi,
+  Map,
+  Volume2,
+  ActivitySquare,
+  ListChecks,
+  Zap,
+  Camera,
+  Monitor,
+  Smartphone,
+  Tv,
+  Server,
+  CreditCard,
+  Signal,
+  Ruler,
 } from "lucide-react";
-import RelatedProductsCarousel from "./RelatedProductsCarousel";
-import ProductDescription from "./ProductDescription";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -246,41 +263,197 @@ const ProductDetailsPage = () => {
           Especificaciones Técnicas
         </h2>
         <Card className="mt-4 px-4 py-4">
-          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-4 text-gray-600 md:grid-cols-2">
             {properties.battery && (
-              <li className="flex items-center space-x-2 text-gray-600">
+              <li className="flex space-x-2">
                 <Battery className="text-green-500" />
-                <span className="font-medium capitalize">Batería:</span>
+                <span className="font-medium">Batería:</span>
                 <span>{properties.battery}</span>
               </li>
             )}
             {properties.processor && (
-              <li className="flex items-center space-x-2 text-gray-600">
-                <Cpu className="text-gray-800" />
-                <span className="font-medium capitalize">Procesador:</span>
+              <li className="flex space-x-2">
+                <Cpu />
+                <span className="font-medium">Procesador:</span>
                 <span>{properties.processor}</span>
               </li>
             )}
-
-            {properties.color && (
-              <li className="flex items-center space-x-2 text-gray-600">
-                <Palette className="text-gray-800" />
-                <span className="font-medium capitalize">Color:</span>
-                <span>{properties.color}</span>
+            {properties.graphics && (
+              <li className="flex space-x-2">
+                <MonitorSmartphone />
+                <span className="font-medium">Gráficos:</span>
+                <span>{properties.graphics}</span>
               </li>
             )}
             {properties.ram && (
-              <li className="flex items-center space-x-2 text-gray-600">
+              <li className="flex space-x-2">
                 <MemoryStick className="text-primary" />
-                <span className="font-medium capitalize">RAM:</span>
+                <span className="font-medium">RAM:</span>
                 <span>{properties.ram}</span>
+              </li>
+            )}
+            {properties.capacity && (
+              <li className="flex space-x-2">
+                <HardDrive />
+                <span className="font-medium">Capacidad:</span>
+                <span>{properties.capacity}</span>
+              </li>
+            )}
+            {properties.model && (
+              <li className="flex space-x-2">
+                <BadgeCheck />
+                <span className="font-medium">Modelo:</span>
+                <span>{properties.model}</span>
+              </li>
+            )}
+            {properties.color && (
+              <li className="flex space-x-2">
+                <Palette />
+                <span className="font-medium">Color:</span>
+                <span>{properties.color}</span>
+              </li>
+            )}
+            {properties.chipset && (
+              <li className="flex space-x-2">
+                <Microchip />
+                <span className="font-medium">Chipset:</span>
+                <span>{properties.chipset}</span>
+              </li>
+            )}
+            {properties.connectivity && (
+              <li className="flex space-x-2">
+                <Wifi />
+                <span className="font-medium">Conectividad:</span>
+                <span>{properties.connectivity}</span>
+              </li>
+            )}
+            {properties.navigation && (
+              <li className="flex space-x-2">
+                <Map />
+                <span className="font-medium">Navegación:</span>
+                <span>{properties.navigation}</span>
+              </li>
+            )}
+            {properties.audio && (
+              <li className="flex space-x-2">
+                <Volume2 />
+                <span className="font-medium">Audio:</span>
+                <span>{properties.audio}</span>
+              </li>
+            )}
+            {properties.sensors && (
+              <li className="flex space-x-2">
+                <ActivitySquare />
+                <span className="font-medium">Sensores:</span>
+                <span>{properties.sensors}</span>
+              </li>
+            )}
+            {properties.features && (
+              <li className="flex space-x-2">
+                <ListChecks />
+                <span className="font-medium">Características:</span>
+                <span>{properties.features}</span>
+              </li>
+            )}
+            {properties.weight && (
+              <li className="flex space-x-2">
+                <span className="font-medium">Peso:</span>
+                <span>{properties.weight}</span>
+              </li>
+            )}
+            {properties.dimensions && (
+              <li className="flex space-x-2">
+                <Ruler />
+                <span className="font-medium">Dimensiones:</span>
+                <span>{properties.dimensions}</span>
+              </li>
+            )}
+            {properties.fastcharging !== null && (
+              <li className="flex space-x-2">
+                <Zap />
+                <span className="font-medium">Carga Rápida:</span>
+                <span>{properties.fastcharging ? "Sí" : "No"}</span>
+              </li>
+            )}
+            {properties.frontcamera && (
+              <li className="flex space-x-2">
+                <Camera />
+                <span className="font-medium">Cámara Frontal:</span>
+                <span>{properties.frontcamera}</span>
+              </li>
+            )}
+            {properties.rearcamera && (
+              <li className="flex space-x-2">
+                <Camera />
+                <span className="font-medium">Cámara Trasera:</span>
+                <span>{properties.rearcamera}</span>
+              </li>
+            )}
+            {properties.screenresolution && (
+              <li className="flex space-x-2">
+                <Monitor />
+                <span className="font-medium">Resolución:</span>
+                <span>{properties.screenresolution}</span>
+              </li>
+            )}
+            {properties.screensize && (
+              <li className="flex space-x-2">
+                <Smartphone />
+                <span className="font-medium">Tamaño de Pantalla:</span>
+                <span>{properties.screensize}</span>
+              </li>
+            )}
+            {properties.screentype && (
+              <li className="flex space-x-2">
+                <Tv />
+                <span className="font-medium">Tipo de Pantalla:</span>
+                <span>{properties.screentype}</span>
+              </li>
+            )}
+            {properties.operatingsystem && (
+              <li className="flex space-x-2">
+                <Server />
+                <span className="font-medium">Sistema Operativo:</span>
+                <span>{properties.operatingsystem}</span>
+              </li>
+            )}
+            {properties.simcard && (
+              <li className="flex space-x-2">
+                <CreditCard />
+                <span className="font-medium">SIM:</span>
+                <span>{properties.simcard}</span>
+              </li>
+            )}
+            {(properties.network2g ||
+              properties.network3g ||
+              properties.network4g ||
+              properties.network5g) && (
+              <li className="flex flex-col space-y-1">
+                <div className="flex items-center space-x-2">
+                  <Signal />
+                  <span className="font-medium">Redes:</span>
+                </div>
+                <div className="pl-6 text-sm">
+                  {properties.network2g && (
+                    <div>2G: {properties.network2g}</div>
+                  )}
+                  {properties.network3g && (
+                    <div>3G: {properties.network3g}</div>
+                  )}
+                  {properties.network4g && (
+                    <div>4G: {properties.network4g}</div>
+                  )}
+                  {properties.network5g && (
+                    <div>5G: {properties.network5g}</div>
+                  )}
+                </div>
               </li>
             )}
           </ul>
         </Card>
       </div>
 
-      <div className="">
+      <div className="pt-4">
         <RelatedProductsCarousel brand={brand} currentProductId={Number(id)} />
       </div>
     </div>
