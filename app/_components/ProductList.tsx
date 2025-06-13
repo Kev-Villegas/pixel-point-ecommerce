@@ -69,12 +69,17 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
             >
               {isLoading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <SkeletonCard key={i} />
+                    <div
+                      key={i}
+                      className="h-[300px] min-w-[200px] max-w-[220px]"
+                    >
+                      <SkeletonCard />
+                    </div>
                   ))
                 : products.map((product, index) => (
                     <div
                       key={product.id}
-                      className="min-w-[200px] max-w-[220px]"
+                      className="h-[300px] min-w-[200px] max-w-[220px]"
                     >
                       <ProductCard {...product} onUnfavorite={() => {}} />
                     </div>
