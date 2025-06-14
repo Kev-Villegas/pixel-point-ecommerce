@@ -31,7 +31,7 @@ export default function SearchInput() {
       <div className="relative flex-1">
         <Input
           type="text"
-          placeholder="Search products..."
+          placeholder="Buscar productos..."
           value={searchTerm}
           onChange={handleInputChange}
           onFocus={handleFocus}

@@ -7,7 +7,7 @@ export async function GET() {
   const session = await auth();
 
   if (!session?.user?.email) {
-    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    return NextResponse.json({ likedProductIds: [] }, { status: 200 });
   }
 
   const user = await db.user.findUnique({

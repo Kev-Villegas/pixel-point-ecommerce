@@ -65,7 +65,7 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
 
             <div
               ref={scrollRef}
-              className="scrollbar-hide hide-scrollbar flex gap-4 overflow-x-auto scroll-smooth px-2"
+              className="scrollbar-hide hide-scrollbar flex gap-4 overflow-x-auto scroll-smooth px-2 pb-5"
             >
               {isLoading
                 ? Array.from({ length: 4 }).map((_, i) => (

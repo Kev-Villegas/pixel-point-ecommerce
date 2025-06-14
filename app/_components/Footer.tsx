@@ -22,10 +22,26 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/productos"
+                  href="/productos/categoria/novedades"
                   className="transition-colors hover:text-gray-900"
                 >
-                  Productos
+                  Novedades
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/productos/categoria/masvendidos"
+                  className="transition-colors hover:text-gray-900"
+                >
+                  Más vendidos
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/productos/categoria/masgustados"
+                  className="transition-colors hover:text-gray-900"
+                >
+                  Más gustados
                 </Link>
               </li>
             </ul>
