@@ -6,6 +6,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from "@/app/_components/ui/tabs";
+import { OrderDashboard } from "../_components/OrderDashboard";
 
 const DashboardPage = () => {
   return (
@@ -32,10 +33,11 @@ const DashboardPage = () => {
 
             <TabsContent value="ordenes" className="mt-6">
               {/* Aquí irá tu componente de órdenes */}
-              <div className="py-12 text-center">
+              {/* <div className="py-12 text-center">
                 <h2 className="text-2xl font-semibold">Órdenes Content</h2>
                 <p className="mt-2 text-gray-600">Próximamente...</p>
-              </div>
+              </div> */}
+              <OrderDashboard />
             </TabsContent>
 
             <TabsContent value="productos" className="mt-6">
