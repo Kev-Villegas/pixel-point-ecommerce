@@ -60,7 +60,7 @@ const PieTooltip = ({ active, payload }: any) => {
 };
 
 export function OrderDashboard() {
-  const { orders } = useRecentOrders();
+  const { orders, refreshOrders } = useRecentOrders();
   const [searchTerm, setSearchTerm] = useState("");
   const { trendData, isLoading } = useMonthlyTrends();
   const [statusFilter, setStatusFilter] = useState("TODOS");
@@ -123,7 +123,6 @@ export function OrderDashboard() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
@@ -151,15 +150,14 @@ export function OrderDashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div>
         <OrderStatsGrid stats={stats} />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Recent Orders Table */}
         <div className="lg:col-span-2">
           <RecentOrdersTable
+            refreshOrders={refreshOrders}
             filteredOrders={filteredOrders}
             paginatedOrders={paginatedOrders}
             statusFilter={statusFilter}

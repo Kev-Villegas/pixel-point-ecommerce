@@ -27,6 +27,7 @@ export async function GET() {
       const item = order.items[0];
 
       return {
+        rawId: order.id, // <-- ID numérico sin formato
         id: `ORD-${order.id.toString().padStart(3, "0")}`,
         cliente: order.username,
         producto: item?.product.name ?? "Producto eliminado",

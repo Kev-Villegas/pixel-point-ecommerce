@@ -3,6 +3,7 @@ import useSWR from "swr";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export interface Order {
+  rawId: number;
   id: string;
   cliente: string;
   producto: string;
@@ -15,7 +16,7 @@ export interface Order {
 }
 
 export function useRecentOrders() {
-  const { data, error, isLoading } = useSWR<Order[]>(
+  const { data, error, isLoading, mutate } = useSWR<Order[]>(
     "/api/dashboard/recent-orders",
     fetcher,
   );
@@ -24,5 +25,6 @@ export function useRecentOrders() {
     orders: data ?? [],
     isLoading,
     isError: error,
+    refreshOrders: mutate,
   };
 }
