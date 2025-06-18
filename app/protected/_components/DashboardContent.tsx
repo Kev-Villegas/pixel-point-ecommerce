@@ -146,7 +146,7 @@ export const DashboardContent: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl">
+    <div className="w-full">
       {/* Header Controls */}
       <DashboardControls
         isCalendarOpen={isCalendarOpen}
