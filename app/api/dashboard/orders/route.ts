@@ -34,6 +34,7 @@ export async function GET(request: Request) {
           gte: fromDate,
           lt: toDate,
         },
+        paid: true,
       },
       include: {
         items: {
