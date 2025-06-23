@@ -1,12 +1,13 @@
 import React from "react";
 import DashboardContent from "../_components/DashboardContent";
+import { OrderDashboard } from "../_components/OrderDashboard";
+import ProductDashboard from "../_components/ProductDashboard";
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
 } from "@/app/_components/ui/tabs";
-import { OrderDashboard } from "../_components/OrderDashboard";
 
 const DashboardPage = () => {
   return (
@@ -26,26 +27,16 @@ const DashboardPage = () => {
               <TabsTrigger value="productos">Productos</TabsTrigger>
             </TabsList>
 
-            {/* Contenido de cada Tab */}
             <TabsContent value="ventas" className="mt-6">
               <DashboardContent />
             </TabsContent>
 
             <TabsContent value="ordenes" className="mt-6">
-              {/* Aquí irá tu componente de órdenes */}
-              {/* <div className="py-12 text-center">
-                <h2 className="text-2xl font-semibold">Órdenes Content</h2>
-                <p className="mt-2 text-gray-600">Próximamente...</p>
-              </div> */}
               <OrderDashboard />
             </TabsContent>
 
             <TabsContent value="productos" className="mt-6">
-              {/* Aquí irá tu componente de productos */}
-              <div className="py-12 text-center">
-                <h2 className="text-2xl font-semibold">Productos Content</h2>
-                <p className="mt-2 text-gray-600">Próximamente...</p>
-              </div>
+              <ProductDashboard />
             </TabsContent>
           </Tabs>
         </header>
