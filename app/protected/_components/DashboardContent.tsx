@@ -146,20 +146,32 @@ export const DashboardContent: React.FC = () => {
   }
 
   return (
-    <div className="w-full">
-      {/* Header Controls */}
-      <DashboardControls
-        isCalendarOpen={isCalendarOpen}
-        setIsCalendarOpen={setIsCalendarOpen}
-        tempRange={tempRange}
-        handleDateRangeChange={handleDateRangeChange}
-        handleApplyDateRange={handleApplyDateRange}
-        handleExportCSV={handleExportCSV}
-        handleRefresh={handleRefresh}
-        isLoading={isLoading}
-        error={error}
-        hasOrders={!!orders?.length}
-      />
+    <div className="w-full space-y-6 py-4">
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Análisis de Ventas
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Visualiza y analiza el rendimiento de tus ventas
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <DashboardControls
+            isCalendarOpen={isCalendarOpen}
+            setIsCalendarOpen={setIsCalendarOpen}
+            tempRange={tempRange}
+            handleDateRangeChange={handleDateRangeChange}
+            handleApplyDateRange={handleApplyDateRange}
+            handleExportCSV={handleExportCSV}
+            handleRefresh={handleRefresh}
+            isLoading={isLoading}
+            error={error}
+            hasOrders={!!orders?.length}
+          />
+        </div>
+      </div>
 
       <MetricsSummary metrics={metrics} isLoading={isLoading} />
 
