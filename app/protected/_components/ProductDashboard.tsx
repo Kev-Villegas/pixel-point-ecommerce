@@ -1,9 +1,16 @@
 "use client";
 
-import { useDashboardProducts } from "@/app/_hooks/useDashboardProducts";
-import { Button } from "@/app/_components/ui/button";
-import { Input } from "@/app/_components/ui/input";
+import { KPIs } from "./Kpis";
+import { Product } from "@prisma/client";
+import { KPIsSkeleton } from "./KPIsSkeletons";
 import { Badge } from "@/app/_components/ui/badge";
+import { Input } from "@/app/_components/ui/input";
+import { Button } from "@/app/_components/ui/button";
+import { Checkbox } from "@/app/_components/ui/checkbox";
+import { Skeleton } from "@/app/_components/ui/skeleton";
+import { useDashboardKPIs } from "@/app/_hooks/useDashboardKPIs";
+import { useDashboardProducts } from "@/app/_hooks/useDashboardProducts";
+import { ProductsChartsDashboard } from "@/app/protected/_components/ProductsChartsDashboard";
 import {
   Card,
   CardContent,
@@ -11,7 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { Checkbox } from "@/app/_components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -39,10 +45,8 @@ import {
   MoreHorizontal,
   ChevronLeft,
   ChevronRight,
+  Download,
 } from "lucide-react";
-import { ProductsChartsDashboard } from "@/app/protected/_components/ProductsChartsDashboard";
-import { KPIs } from "./Kpis";
-import { useDashboardKPIs } from "@/app/_hooks/useDashboardKPIs";
 
 export default function Dashboard() {
   const { products, isLoading } = useDashboardProducts();
@@ -50,9 +54,37 @@ export default function Dashboard() {
   const { kpis, isLoading: kpisLoading, isError } = useDashboardKPIs();
 
   if (isError) return <div>Error al cargar KPIs</div>;
-  if (kpisLoading) return <div>Cargando KPIs...</div>;
+  if (kpisLoading) return <KPIsSkeleton />;
 
   const total = products.length;
+
+  const handleExportCSV = () => {
+    if (!products.length) return;
+
+    const header = ["ID", "Nombre", "Marca", "Precio", "Stock", "Estado"];
+    const rows = products.map((p: Product) => [
+      p.id,
+      p.name,
+      p.brand,
+      p.price.toFixed(2),
+      p.stock,
+      p.stock > 10 ? "En stock" : p.stock > 0 ? "Pocas unidades" : "Agotado",
+    ]);
+
+    const csvContent = [header, ...rows]
+      .map((row) => row.map(String).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.setAttribute("download", "productos.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="w-full space-y-6 py-4">
@@ -66,6 +98,10 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" onClick={handleExportCSV}>
+            <Download className="mr-2 h-4 w-4" />
+            Exportar CSV
+          </Button>
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Añadir Producto
@@ -146,65 +182,86 @@ export default function Dashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="text-center">
-                    Cargando productos...
-                  </TableCell>
-                </TableRow>
-              ) : (
-                products.map((product) => {
-                  const status =
-                    product.stock > 10
-                      ? "En stock"
-                      : product.stock > 0
-                        ? "Pocas unidades"
-                        : "Agotado";
-
-                  const badgeVariant =
-                    status === "En stock"
-                      ? "default"
-                      : status === "Pocas unidades"
-                        ? "secondary"
-                        : "destructive";
-
-                  return (
-                    <TableRow key={product.id}>
+              {isLoading
+                ? Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={`skeleton-${i}`}>
                       <TableCell>
-                        <Checkbox />
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {product.id}
-                      </TableCell>
-                      <TableCell className="cursor-pointer text-blue-600 hover:underline">
-                        {product.name}
-                      </TableCell>
-                      <TableCell>{product.brand}</TableCell>
-                      <TableCell>${product.price.toFixed(2)}</TableCell>
-                      <TableCell>{product.stock}</TableCell>
-                      <TableCell>
-                        <Badge variant={badgeVariant}>{status}</Badge>
+                        <Skeleton className="h-4 w-4 rounded-sm" />
                       </TableCell>
                       <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>Editar</DropdownMenuItem>
-                            <DropdownMenuItem>Duplicar</DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              Eliminar
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Skeleton className="h-4 w-16" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-24" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-14" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-10" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-20 rounded-full" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-8" />
                       </TableCell>
                     </TableRow>
-                  );
-                })
-              )}
+                  ))
+                : products.map((product: Product) => {
+                    const status =
+                      product.stock > 10
+                        ? "En stock"
+                        : product.stock > 0
+                          ? "Pocas unidades"
+                          : "Agotado";
+
+                    const badgeVariant =
+                      status === "En stock"
+                        ? "default"
+                        : status === "Pocas unidades"
+                          ? "secondary"
+                          : "destructive";
+
+                    return (
+                      <TableRow key={product.id}>
+                        <TableCell>
+                          <Checkbox />
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {product.id}
+                        </TableCell>
+                        <TableCell className="cursor-pointer text-blue-600 hover:underline">
+                          {product.name}
+                        </TableCell>
+                        <TableCell>{product.brand}</TableCell>
+                        <TableCell>${product.price.toFixed(2)}</TableCell>
+                        <TableCell>{product.stock}</TableCell>
+                        <TableCell>
+                          <Badge variant={badgeVariant}>{status}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>Editar</DropdownMenuItem>
+                              <DropdownMenuItem>Duplicar</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive">
+                                Eliminar
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
             </TableBody>
           </Table>
 
