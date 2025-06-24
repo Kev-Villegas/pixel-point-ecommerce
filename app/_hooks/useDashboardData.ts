@@ -22,13 +22,13 @@ export const useDashboardData = (
     isLoading,
     mutate,
   } = useSWR<Order[]>(
-    `/api/dashboard/orders?from=${currentDateISO.from}&to=${currentDateISO.to}`,
+    `/api/dashboard/sales-summary?from=${currentDateISO.from}&to=${currentDateISO.to}`,
     fetcher,
     SWR_CONFIG,
   );
 
   const { data: previousOrders } = useSWR<Order[]>(
-    `/api/dashboard/orders?from=${previousDateISO.from}&to=${previousDateISO.to}`,
+    `/api/dashboard/sales-summary?from=${previousDateISO.from}&to=${previousDateISO.to}`,
     fetcher,
     SWR_CONFIG,
   );
