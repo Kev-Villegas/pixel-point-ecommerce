@@ -17,7 +17,7 @@ export interface Order {
 
 export function useRecentOrders() {
   const { data, error, isLoading, mutate } = useSWR<Order[]>(
-    "/api/dashboard/recent-orders",
+    "/api/dashboard/orders",
     fetcher,
   );
 

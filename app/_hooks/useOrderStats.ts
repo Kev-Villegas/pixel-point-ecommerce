@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Order } from "@/app/_hooks/useRecentOrders";
+import { Order } from "@/app/_hooks/useOrders";
 
 export const useOrderStats = (orders: Order[]) => {
   const stats = useMemo(() => {

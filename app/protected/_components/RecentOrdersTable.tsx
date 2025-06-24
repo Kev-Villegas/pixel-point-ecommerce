@@ -4,7 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Input } from "@/app/_components/ui/input";
 import { Button } from "@/app/_components/ui/button";
-import { Order } from "@/app/_hooks/useRecentOrders";
+import { Order } from "@/app/_hooks/useOrders";
 import { OrderStatusBadge } from "./OrderStatusBadge";
 import {
   Eye,
@@ -93,7 +93,7 @@ export function RecentOrdersTable({
     try {
       setDeletingOrderId(orderToDelete.rawId);
       const response = await fetch(
-        `/api/dashboard/recent-orders/${orderToDelete.rawId}`,
+        `/api/dashboard/orders/${orderToDelete.rawId}`,
         {
           method: "DELETE",
         },

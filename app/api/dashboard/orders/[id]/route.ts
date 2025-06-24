@@ -57,7 +57,7 @@ export async function DELETE(request: Request, { params }: Params) {
       { status: 200 },
     );
   } catch (error) {
-    console.error("[DELETE /api/dashboard/recent-orders/[id]] Error:", error);
+    console.error("[DELETE /api/dashboard/orders/[id]] Error:", error);
     return NextResponse.json(
       { error: "Error al eliminar la orden" },
       { status: 500 },

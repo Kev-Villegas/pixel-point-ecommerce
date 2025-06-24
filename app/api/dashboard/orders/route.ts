@@ -2,16 +2,38 @@ import { db } from "@/app/_lib/prisma";
 import { auth } from "@/app/_lib/auth";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const session = await auth();
     if (!session?.user?.email || session.user.role !== "ADMIN") {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 
-    const limit = 8;
+    const { searchParams } = new URL(request.url);
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+
+    const whereClause: any = {};
+
+    if (from && to) {
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+
+      if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+        return NextResponse.json(
+          { error: "Fechas inválidas" },
+          { status: 400 },
+        );
+      }
+
+      whereClause.createdAt = {
+        gte: fromDate,
+        lt: toDate,
+      };
+    }
+
     const orders = await db.order.findMany({
-      take: limit,
+      where: whereClause,
       orderBy: { createdAt: "desc" },
       include: {
         items: {
@@ -27,7 +49,7 @@ export async function GET() {
       const item = order.items[0];
 
       return {
-        rawId: order.id, // <-- ID numérico sin formato
+        rawId: order.id,
         id: `ORD-${order.id.toString().padStart(3, "0")}`,
         cliente: order.username,
         producto: item?.product.name ?? "Producto eliminado",
@@ -42,7 +64,7 @@ export async function GET() {
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error("[GET /api/dashboard/recent-orders] Error:", error);
+    console.error("[GET /api/dashboard/orders] Error:", error);
     return NextResponse.json(
       { error: "Error al obtener órdenes recientes" },
       { status: 500 },

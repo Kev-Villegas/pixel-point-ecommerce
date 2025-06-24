@@ -1,5 +1,5 @@
 import { Label } from "@/app/_components/ui/label";
-import { Order } from "@/app/_hooks/useRecentOrders";
+import { Order } from "@/app/_hooks/useOrders";
 import { OrderStatusBadge } from "@/app/protected/_components/OrderStatusBadge";
 import {
   Dialog,

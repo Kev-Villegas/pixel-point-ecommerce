@@ -3,16 +3,14 @@
 import toast from "react-hot-toast";
 import { useState, useMemo } from "react";
 import { OrderStatsGrid } from "./OrderStatsGrid";
-import { Calendar, Download } from "lucide-react";
-import { Input } from "@/app/_components/ui/input";
-import { Button } from "@/app/_components/ui/button";
+import OrdersControls from "./OrdersControls";
 import { OrderDetailDialog } from "./OrderDetailDialog";
 import { RecentOrdersTable } from "./RecentOrdersTable";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useOrderStats } from "@/app/_hooks/useOrderStats";
 import { exportToCSV } from "@/app/_utils/exportOrdersCSV";
 import { useMonthlyTrends } from "@/app/_hooks/useMonthlyTrends";
-import { Order, useRecentOrders } from "@/app/_hooks/useRecentOrders";
+import { Order, useRecentOrders } from "@/app/_hooks/useOrders";
 import {
   Card,
   CardContent,
@@ -31,6 +29,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { DateRange } from "../types/dashboard";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -61,14 +60,25 @@ const PieTooltip = ({ active, payload }: any) => {
 
 export function OrderDashboard() {
   const { orders, refreshOrders } = useRecentOrders();
-  const [searchTerm, setSearchTerm] = useState("");
   const { trendData, isLoading } = useMonthlyTrends();
+  const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("TODOS");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [dateFilter, setDateFilter] = useState("");
+
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: new Date(new Date().setDate(new Date().getDate() - 7)),
+    to: new Date(),
+  });
+  const [tempRange, setTempRange] = useState<DateRange>(dateRange);
+
+  const handleApplyDateRange = () => {
+    setDateRange(tempRange);
+    setIsCalendarOpen(false);
+  };
 
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -81,11 +91,14 @@ export function OrderDashboard() {
         statusFilter === "TODOS" ||
         order.estado.toLowerCase() === statusFilter.toLowerCase();
 
-      const matchesDate = !dateFilter || order.fecha.includes(dateFilter);
+      const matchesDate =
+        !dateRange.from ||
+        (new Date(order.fecha) >= new Date(dateRange.from) &&
+          new Date(order.fecha) <= new Date(dateRange.to));
 
       return matchesSearch && matchesStatus && matchesDate;
     });
-  }, [orders, searchTerm, statusFilter, dateFilter]);
+  }, [orders, searchTerm, statusFilter, dateRange]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -117,7 +130,10 @@ export function OrderDashboard() {
   const clearFilters = () => {
     setSearchTerm("");
     setStatusFilter("TODOS");
-    setDateFilter("");
+    setDateRange({
+      from: new Date(new Date().setDate(new Date().getDate() - 7)),
+      to: new Date(),
+    });
     setCurrentPage(1);
   };
 
@@ -133,22 +149,25 @@ export function OrderDashboard() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Input
-            type="date"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-            className="w-40"
-          />
-          <Button variant="outline" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            Filtrar por fecha
-          </Button>
-          <Button onClick={handleExport} className="flex items-center gap-2">
-            <Download className="h-4 w-4" />
-            Exportar
-          </Button>
-        </div>
+        <OrdersControls
+          isCalendarOpen={isCalendarOpen}
+          setIsCalendarOpen={setIsCalendarOpen}
+          tempRange={tempRange}
+          handleDateRangeChange={(range) => {
+            if (range.from && range.to) {
+              setTempRange({
+                from: new Date(range.from),
+                to: new Date(range.to),
+              });
+            }
+          }}
+          handleApplyDateRange={handleApplyDateRange}
+          refreshOrders={refreshOrders}
+          handleExportCSV={handleExport}
+          isLoading={isLoading}
+          hasOrders={filteredOrders.length > 0}
+          error={null}
+        />
       </div>
 
       <div>
@@ -163,7 +182,6 @@ export function OrderDashboard() {
             paginatedOrders={paginatedOrders}
             statusFilter={statusFilter}
             searchTerm={searchTerm}
-            dateFilter={dateFilter}
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             totalPages={totalPages}
