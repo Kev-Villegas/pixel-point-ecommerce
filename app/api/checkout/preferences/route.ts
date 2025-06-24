@@ -17,10 +17,11 @@ export async function POST(request: NextRequest) {
       picture_url: item.images[0].url,
       category_id: item.brand,
     })),
+    external_reference: orderId,
     metadata: { orderId: orderId, test: "ok" },
     payer: {
-      name: payer.name,
-      surname: payer.surname,
+      first_name: payer.name,
+      last_name: payer.surname,
       email: payer.email,
       phone: {
         area_code: payer.area_code,

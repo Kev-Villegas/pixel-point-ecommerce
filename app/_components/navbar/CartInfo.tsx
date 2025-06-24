@@ -12,7 +12,7 @@ export default function CartInfo() {
   );
 
   return (
-    <Link href="/cart" className="relative">
+    <Link href="/cart" className="relative" aria-label="Ver carrito de compras">
       <ShoppingCart className="h-6 w-6" />
       {totalProducts > 0 && (
         <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">

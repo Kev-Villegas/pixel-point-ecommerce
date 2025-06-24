@@ -292,6 +292,7 @@ export function UserAddressForm() {
         statement_descriptor,
         payer,
         shipments,
+        external_reference,
       } = response.data.response;
 
       const preference = {
@@ -302,6 +303,7 @@ export function UserAddressForm() {
         statement_descriptor,
         payer,
         shipments,
+        external_reference,
       };
 
       localStorage.setItem("preference", JSON.stringify(preference));

@@ -8,9 +8,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
           {/* Navegación */}
           <div>
-            <h3 className="mb-4 text-base font-semibold text-gray-900">
+            <h2 className="mb-4 text-base font-semibold text-gray-900">
               Navegación
-            </h3>
+            </h2>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
                 <Link
@@ -49,9 +49,9 @@ export default function Footer() {
 
           {/* Información */}
           <div>
-            <h3 className="mb-4 text-base font-semibold text-gray-900">
+            <h2 className="mb-4 text-base font-semibold text-gray-900">
               Información
-            </h3>
+            </h2>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
                 <Link
@@ -66,9 +66,9 @@ export default function Footer() {
 
           {/* Redes sociales */}
           <div>
-            <h3 className="mb-4 text-base font-semibold text-gray-900">
+            <h2 className="mb-4 text-base font-semibold text-gray-900">
               Síguenos
-            </h3>
+            </h2>
             <div className="flex space-x-4">
               <a
                 href="https://www.instagram.com/pixel.pointt/"
@@ -83,59 +83,55 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Créditos y derechos */}
         <div className="mt-8 border-t border-gray-200 pt-6">
           <div className="flex flex-col items-center justify-between gap-4 text-center text-xs text-gray-500 sm:flex-row sm:text-left">
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-4">
-              {/* Kevin */}
               <div className="flex flex-col items-center sm:flex-row sm:items-center sm:gap-1">
                 <span>Desarrollado por Kevin Villegas</span>
-                <div className="flex space-x-1">
+                <div className="flex space-x-2">
                   <Link
                     href="https://www.linkedin.com/in/kevin--villegas/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-blue-600"
+                    className="flex h-10 w-10 items-center justify-center text-gray-500 hover:text-blue-600 md:h-5 md:w-5"
                     aria-label="LinkedIn Kevin"
                   >
-                    <Linkedin size={14} />
+                    <Linkedin className="h-5 w-5 md:h-4 md:w-4" />
                   </Link>
                   <Link
                     href="https://github.com/kev-villegas"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-gray-900"
+                    className="flex h-10 w-10 items-center justify-center text-gray-500 hover:text-gray-900 md:h-5 md:w-5"
                     aria-label="GitHub Kevin"
                   >
-                    <Github size={14} />
+                    <Github className="h-5 w-5 md:h-4 md:w-4" />
                   </Link>
                 </div>
               </div>
 
-              {/* Separador en desktop */}
               <span className="hidden sm:inline">|</span>
 
-              {/* Nahuel */}
               <div className="flex flex-col items-center sm:flex-row sm:items-center sm:gap-1">
                 <span>Nahuel Villegas</span>
-                <div className="flex space-x-1">
+                <div className="flex space-x-2">
                   <Link
                     href="https://www.linkedin.com/in/villegasnahuel/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-blue-600"
+                    className="flex h-10 w-10 items-center justify-center text-gray-500 hover:text-blue-600 md:h-5 md:w-5"
                     aria-label="LinkedIn Nahuel"
                   >
-                    <Linkedin size={14} />
+                    <Linkedin className="h-5 w-5 md:h-4 md:w-4" />
                   </Link>
                   <Link
                     href="https://github.com/Nahu258"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-gray-900"
+                    className="flex h-10 w-10 items-center justify-center text-gray-500 hover:text-gray-900 md:h-5 md:w-5"
                     aria-label="GitHub Nahuel"
                   >
-                    <Github size={14} />
+                    <Github className="h-5 w-5 md:h-4 md:w-4" />
                   </Link>
                 </div>
               </div>
