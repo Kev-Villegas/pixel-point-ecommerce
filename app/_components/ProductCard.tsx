@@ -64,7 +64,7 @@ export default function ProductCard({
 
   return (
     <Card
-      className="h-[310px] w-full max-w-[225px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
+      className="product-card h-[310px] w-full max-w-[225px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
       tabIndex={0}
       style={stock > 0 ? {} : { opacity: 0.5 }}
     >
