@@ -263,16 +263,18 @@ export function UserAddressForm() {
       const order = await axios.post("/api/orders", payload);
       const orderId = order.data.id.toString();
 
-      await axios.put("/api/users", {
-        phoneNumber: values.number,
-        streetName: values.street_name,
-        streetNumber: values.street_number,
-        province: values.province,
-        city: values.city,
-        postalCode: values.postalCode,
-        apartment: values.apartment,
-        floor: values.floor,
-      });
+      if (session.status === "authenticated") {
+        await axios.put("/api/users", {
+          phoneNumber: values.number,
+          streetName: values.street_name,
+          streetNumber: values.street_number,
+          province: values.province,
+          city: values.city,
+          postalCode: values.postalCode,
+          apartment: values.apartment,
+          floor: values.floor,
+        });
+      }
 
       const preferencePayload = {
         ...payload,
@@ -292,6 +294,7 @@ export function UserAddressForm() {
         statement_descriptor,
         payer,
         shipments,
+        external_reference,
       } = response.data.response;
 
       const preference = {
@@ -302,6 +305,7 @@ export function UserAddressForm() {
         statement_descriptor,
         payer,
         shipments,
+        external_reference,
       };
 
       localStorage.setItem("preference", JSON.stringify(preference));

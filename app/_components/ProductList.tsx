@@ -42,7 +42,7 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
   }, []);
 
   return (
-    <div className="relative mx-auto px-4 py-8" ref={viewRef}>
+    <div className="relative mx-auto min-h-[420px] px-4 py-8" ref={viewRef}>
       {inView && (
         <>
           <div className="mb-6 flex items-center justify-between">
@@ -57,6 +57,7 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
 
           <div className="relative">
             <button
+              aria-label="Ir al slide anterior"
               className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
               onClick={() => scroll("left")}
             >
@@ -79,7 +80,7 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
                 : products.map((product, index) => (
                     <div
                       key={product.id}
-                      className="h-[300px] min-w-[200px] max-w-[220px]"
+                      className="my-5 h-[300px] min-w-[200px] max-w-[220px]"
                     >
                       <ProductCard {...product} onUnfavorite={() => {}} />
                     </div>
@@ -87,6 +88,7 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
             </div>
 
             <button
+              aria-label="Ir al slide siguiente"
               className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
               onClick={() => scroll("right")}
             >

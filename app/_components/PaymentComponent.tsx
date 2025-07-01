@@ -9,12 +9,13 @@ import { useEffect, useMemo, useState } from "react";
 type PayloadType = {
   statement_descriptor: string;
   notification_url: string;
+  external_reference: string;
   metadata: {
     [key: string]: any;
   };
   payer: {
-    name: string;
-    surname: string;
+    first_name: string;
+    last_name: string;
     phone: {
       area_code: string;
       number: string;
@@ -94,6 +95,7 @@ export default function PaymentComponent() {
     const formToSend = {
       ...formData,
       three_d_secure_mode: "optional",
+      external_reference: payload.external_reference,
       statement_descriptor: payload.statement_descriptor,
       notification_url: payload.notification_url,
       metadata: payload.metadata,
@@ -107,8 +109,8 @@ export default function PaymentComponent() {
           category_id: item.brand,
         })),
         payer: {
-          first_name: payload.payer.name,
-          last_name: payload.payer.surname,
+          first_name: payload.payer.first_name,
+          last_name: payload.payer.last_name,
           phone: {
             area_code: payload.payer.phone.area_code,
             number: payload.payer.phone.number,
@@ -137,8 +139,6 @@ export default function PaymentComponent() {
       axios
         .post("/api/checkout", formToSend, { headers })
         .then((response) => {
-          console.log("Response from server:", response.data);
-
           if (response.data.status === "approved") {
             clearCart();
           }

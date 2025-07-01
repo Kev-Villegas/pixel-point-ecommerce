@@ -129,7 +129,6 @@ export default function BannerCarousel() {
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Contenedor con touch handlers */}
       <AnimatePresence mode="wait">
         <motion.div
           aria-live="polite"
@@ -137,12 +136,11 @@ export default function BannerCarousel() {
           initial={{ opacity: 0, x: 100, scale: 0.95 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -100, scale: 0.95 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }} // easing tipo cubic-bezier suave
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${banners[current].bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
         >
-          {/* Decoración (no captura clics) */}
           <div className="pointer-events-none absolute inset-0 z-0">
             <div className="absolute left-[10%] top-[20%] h-32 w-32 rounded-full bg-gray-800/50 blur-3xl" />
             <div className="absolute bottom-[20%] right-[10%] h-40 w-40 rounded-full bg-gray-800/50 blur-3xl" />
@@ -249,6 +247,8 @@ export default function BannerCarousel() {
               setCurrent(i);
               resetAutoSlide();
             }}
+            aria-label={`Ir al slide ${i + 1}`}
+            aria-current={i === current ? "true" : undefined}
             className={`h-1 rounded-full transition-all ${i === current ? `w-8 ${b.accentColor}` : "w-2 bg-gray-700"} `}
           />
         ))}

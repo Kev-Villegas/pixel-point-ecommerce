@@ -67,7 +67,6 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
         // },
       });
 
-      console.log("Usuario actualizado:", response.data);
       onOpenChange(false);
     } catch (error) {
       console.error("Hubo un error al actualizar el usuario:", error);

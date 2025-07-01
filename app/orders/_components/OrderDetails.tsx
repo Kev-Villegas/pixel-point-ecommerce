@@ -25,8 +25,6 @@ export function OrderDetails({ orderId }: { orderId: string }) {
 
   const order = data;
 
-  console.log(order);
-
   const total = order.totalPrice ?? 0;
   const shipping = order.shipping ?? 0;
   const subtotal = total + shipping;

@@ -1,14 +1,11 @@
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@/app/_lib/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-interface Params {
-  params: {
-    id: string;
-  };
-}
-
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(
+  req: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
   try {
     const session = await auth();
 
@@ -16,16 +13,16 @@ export async function DELETE(request: Request, { params }: Params) {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 
-    const { id } = params;
+    const params = await props.params;
 
-    if (!id) {
+    if (!params.id) {
       return NextResponse.json(
         { error: "ID de orden requerido" },
         { status: 400 },
       );
     }
 
-    const orderId = parseInt(id, 10);
+    const orderId = parseInt(params.id, 10);
 
     if (isNaN(orderId)) {
       return NextResponse.json({ error: "ID inválido" }, { status: 400 });
@@ -42,12 +39,10 @@ export async function DELETE(request: Request, { params }: Params) {
       );
     }
 
-    // Borramos primero los OrderItems asociados
     await db.orderItem.deleteMany({
       where: { orderId },
     });
 
-    // Luego borramos la orden
     await db.order.delete({
       where: { id: orderId },
     });
@@ -57,7 +52,7 @@ export async function DELETE(request: Request, { params }: Params) {
       { status: 200 },
     );
   } catch (error) {
-    console.error("[DELETE /api/dashboard/orders/[id]] Error:", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Error al eliminar la orden" },
       { status: 500 },
