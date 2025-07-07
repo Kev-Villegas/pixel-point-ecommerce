@@ -1,14 +1,11 @@
 import ProductDetailsPage from "../_components/ProductDetailsPage";
-
 import { Metadata } from "next";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
   const id = params.id;
 
   const producto = await fetch(
