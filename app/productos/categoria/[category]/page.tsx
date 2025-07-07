@@ -60,7 +60,7 @@ export default function ProductCategoryPage() {
       <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
         {mappedCategory}
       </h1>
-      <div className="grid grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 sm:justify-items-stretch md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7">
+      <div className="grid justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {products.map((product) => (
           <ProductCard key={product.id} {...product} onUnfavorite={() => {}} />
         ))}

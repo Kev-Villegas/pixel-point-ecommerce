@@ -64,7 +64,7 @@ export default function ProductCard({
 
   return (
     <Card
-      className="product-card h-[310px] w-full max-w-[225px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
+      className="product-card h-[315px] w-full max-w-[220px] overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400"
       tabIndex={0}
       style={stock > 0 ? {} : { opacity: 0.5 }}
     >
@@ -94,7 +94,7 @@ export default function ProductCard({
               <BadgeCheck className="h-4 w-4 font-semibold text-blue-700" />
             </p>
           )}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center justify-between">
             <span className="text-lg font-semibold text-emerald-600">
               {stock > 0 && `$${price.toLocaleString("es-AR")}`}
             </span>
