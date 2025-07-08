@@ -4,12 +4,13 @@ import { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const id = params.id;
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
 
   const producto = await fetch(
-    `https://pixel-point.com.ar/api/productos/${id}`,
+    `https://pixel-point.com.ar/api/products/${id}`,
     {
       cache: "no-store",
     },
