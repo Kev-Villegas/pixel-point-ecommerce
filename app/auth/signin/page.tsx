@@ -27,7 +27,7 @@ import {
 export default function SigninPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
 
   const {
@@ -63,10 +63,14 @@ export default function SigninPage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.refresh();
-      router.push("/");
+      if (session?.user?.emailVerified === null && session.user.email) {
+        router.push(`/verify?email=${encodeURIComponent(session.user.email)}`);
+      } else {
+        router.refresh();
+        router.push("/");
+      }
     }
-  }, [status]);
+  }, [status, session]);
 
   return (
     <>

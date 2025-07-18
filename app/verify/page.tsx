@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,12 +20,18 @@ export default function VerifyPage() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (email) {
+      handleResendCode();
+    }
+  }, [email]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = await fetch("/api/verify-code", {
+      const res = await fetch("/api/verification/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code }),
@@ -37,7 +43,7 @@ export default function VerifyPage() {
         toast.success("Cuenta verificada con éxito");
         // Redirigir al login o dashboard
         setTimeout(() => {
-          router.push("/login");
+          router.push("/");
         }, 1500);
       } else {
         toast.error(data.error || "Código inválido");
@@ -51,7 +57,7 @@ export default function VerifyPage() {
 
   const handleResendCode = async () => {
     try {
-      const res = await fetch("/api/resend-code", {
+      const res = await fetch("/api/verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

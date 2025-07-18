@@ -63,11 +63,18 @@ export default {
       return true; // Permitir el inicio de sesión
     },
     jwt({ token, user }: { token: any; user?: any }) {
-      if (user?.role) token.role = user.role;
+      // if (user?.role) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+        token.emailVerified = user.emailVerified ?? null;
+      }
       return token;
     },
     session({ session, token }: { session: any; token: any }) {
       if (token.role) session.user.role = token.role;
+      if (token.emailVerified !== undefined) {
+        session.user.emailVerified = token.emailVerified;
+      }
       return session;
     },
   },
