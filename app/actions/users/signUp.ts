@@ -17,13 +17,8 @@ export const signUp = async (email: string, password: string) => {
       return { error: "Datos inválidos" };
     }
 
-    const existingUser = await db.user.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
-      return { error: "El usuario ya existe" };
-    }
+    const existingUser = await db.user.findUnique({ where: { email } });
+    if (existingUser) return { error: "El usuario ya existe" };
 
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -31,6 +26,9 @@ export const signUp = async (email: string, password: string) => {
       data: {
         email,
         passwordHash,
+        verificationCode: null,
+        codeExpiresAt: null,
+        emailVerified: null,
       },
     });
 
@@ -48,7 +46,18 @@ export const signUp = async (email: string, password: string) => {
       },
     });
 
-    return { success: "Usuario creado exitosamente." };
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/verification`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    return {
+      success:
+        "Usuario creado exitosamente. Revisá tu correo para validar la cuenta.",
+    };
   } catch (error) {
     console.error("Error en signUp:", error);
     return { error: "Ocurrió un error al registrar el usuario." };
