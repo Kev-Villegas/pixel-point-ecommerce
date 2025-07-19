@@ -27,11 +27,12 @@ export default {
           if (!existingUser) {
             const newUser = await db.user.create({
               data: {
-                id: profile.sub, // Usar el ID de Google
+                id: profile.sub,
                 name: profile.name,
                 email: profile.email,
                 image: profile.picture,
                 role: "USER",
+                emailVerified: new Date(),
                 createdAt: new Date(),
               },
             });
@@ -52,15 +53,22 @@ export default {
 
             console.log("Usuario registrado:", newUser);
           } else {
+            if (!existingUser.emailVerified) {
+              await db.user.update({
+                where: { id: existingUser.id },
+                data: { emailVerified: new Date() },
+              });
+            }
+
             console.log("Usuario ya existe:", existingUser);
           }
         } catch (error) {
           console.error("Error al registrar al usuario:", error);
-          return false; // Denegar el acceso si ocurre un error
+          return false;
         }
       }
 
-      return true; // Permitir el inicio de sesión
+      return true;
     },
     jwt({ token, user }: { token: any; user?: any }) {
       // if (user?.role) token.role = user.role;

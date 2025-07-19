@@ -69,6 +69,12 @@ export const userAddressValidation = z.object({
 
 export const userRegisterSchema = z
   .object({
+    name: z
+      .string()
+      .min(3, "El nombre es obligatorio y debe tener al menos 3 caracteres"),
+    lastname: z
+      .string()
+      .min(3, "El apellido es obligatorio y debe tener al menos 3 caracteres"),
     email: z.string().min(1, "El email es obligatorio").email("Email inválido"),
     password: z
       .string()

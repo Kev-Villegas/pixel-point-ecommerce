@@ -3,7 +3,12 @@ import bcrypt from "bcryptjs";
 import { db } from "@/app/_lib/prisma";
 import { userRegisterSchema } from "@/app/_schemas/validationSchemas";
 
-export const signUp = async (email: string, password: string) => {
+export const signUp = async (
+  email: string,
+  password: string,
+  name: string,
+  lastname: string,
+) => {
   try {
     email = email.trim().toLowerCase();
 
@@ -11,6 +16,8 @@ export const signUp = async (email: string, password: string) => {
       email,
       password,
       confirmPassword: password,
+      name,
+      lastname,
     });
 
     if (!result.success) {
@@ -24,6 +31,7 @@ export const signUp = async (email: string, password: string) => {
 
     const newUser = await db.user.create({
       data: {
+        name: `${name} ${lastname}`,
         email,
         passwordHash,
         verificationCode: null,

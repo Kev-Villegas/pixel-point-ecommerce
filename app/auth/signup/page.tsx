@@ -68,7 +68,12 @@ const SignUpPage = () => {
     setLoading(true);
 
     try {
-      const response = await signUp(data.email, data.password);
+      const response = await signUp(
+        data.email,
+        data.password,
+        data.name,
+        data.lastname,
+      );
 
       if (response.error) {
         toast.error(response.error);
@@ -98,7 +103,7 @@ const SignUpPage = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex min-h-screen items-center justify-center bg-gray-100"
+      className="flex min-h-screen items-center justify-center bg-gray-100 md:my-4"
     >
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
@@ -110,6 +115,30 @@ const SignUpPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="name">Nombre</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="Tu nombre"
+              {...register("name")}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="lastname">Apellido</Label>
+            <Input
+              id="lastname"
+              type="text"
+              placeholder="Tu apellido"
+              {...register("lastname")}
+            />
+            {errors.lastname && (
+              <p className="text-sm text-red-500">{errors.lastname.message}</p>
+            )}
+          </div>
           <div>
             <Label htmlFor="email">Email</Label>
             <Input
@@ -209,6 +238,29 @@ const SignUpPage = () => {
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
           >
+            <svg
+              className="h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 48 48"
+            >
+              <path
+                fill="#EA4335"
+                d="M24 9.5c3.15 0 5.68 1.3 7.24 2.39l5.34-5.34C33.19 3.47 28.94 2 24 2 14.8 2 7.21 7.95 4.27 16.2l6.56 5.1C12.3 14.3 17.6 9.5 24 9.5z"
+              />
+              <path
+                fill="#4285F4"
+                d="M46.1 24.5c0-1.6-.13-2.8-.41-4H24v7.5h12.5c-.54 2.9-2.18 5.37-4.66 7.02l7.36 5.74C43.72 36.7 46.1 31.2 46.1 24.5z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M10.84 28.36A14.87 14.87 0 0 1 9.5 24c0-1.5.25-2.94.69-4.36L3.63 14.5A22.3 22.3 0 0 0 2 24c0 3.6.86 7.01 2.38 9.5l6.46-5.14z"
+              />
+              <path
+                fill="#34A853"
+                d="M24 46c5.94 0 10.93-1.95 14.57-5.3l-7.36-5.74c-2.02 1.4-4.6 2.24-7.21 2.24-6.37 0-11.77-4.8-13.56-11.24l-6.56 5.1C7.21 40.05 14.8 46 24 46z"
+              />
+              <path fill="none" d="M2 2h44v44H2z" />
+            </svg>
             {googleLoading ? "Cargando..." : "Google"}
           </Button>
         </CardFooter>
