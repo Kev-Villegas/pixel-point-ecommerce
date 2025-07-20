@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,12 +20,6 @@ export default function VerifyPage() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (email) {
-      handleResendCode();
-    }
-  }, [email]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -41,7 +35,6 @@ export default function VerifyPage() {
 
       if (res.ok) {
         toast.success("Cuenta verificada con éxito");
-        // Redirigir al login o dashboard
         setTimeout(() => {
           router.push("/");
         }, 1500);
@@ -64,9 +57,9 @@ export default function VerifyPage() {
       });
 
       if (res.ok) {
-        toast.success("Código reenviado");
+        toast.success("Código Enviado");
       } else {
-        toast.error("Error enviando código");
+        // toast.error("Error enviando código");
       }
     } catch (err) {
       toast.error("Error enviando código");
@@ -74,11 +67,20 @@ export default function VerifyPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <Card className="w-full max-w-md shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <Card className="relative w-full max-w-md shadow-xl">
+        {/* Botón cerrar */}
+        <button
+          onClick={() => router.push("/")}
+          className="absolute right-3 top-3 text-gray-500 hover:text-black"
+        >
+          ✕
+        </button>
+
         <CardHeader>
           <CardTitle className="text-xl">Verificá tu cuenta</CardTitle>
         </CardHeader>
+
         <CardContent>
           <p className="mb-4 text-sm text-muted-foreground">
             Ingresá el código que te enviamos a <strong>{email}</strong>

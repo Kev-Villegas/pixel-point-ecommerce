@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import { Button } from "./ui/button";
 import React, { useState } from "react";
@@ -27,6 +28,8 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
 
   const userName = session.user?.name || session.user?.email?.split("@")[0];
   const userInitial = userName ? userName[0].toUpperCase() : "U";
+
+  const router = useRouter();
 
   return (
     <>
@@ -59,7 +62,11 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
             <DropdownMenuItem
               className="cursor-pointer hover:bg-muted"
               onClick={() => {
-                setIsDialogOpen(true);
+                if (!session.user?.emailVerified) {
+                  router.push(`/verify?email=${session.user.email}`);
+                } else {
+                  setIsDialogOpen(true);
+                }
                 setIsDropdownOpen(false);
               }}
             >
