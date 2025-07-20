@@ -1,14 +1,15 @@
-"use server";
+"use client";
 import { User } from "lucide-react";
 import Link from "next/link";
 import CartInfo from "./navbar/CartInfo";
 import SearchInput from "./navbar/SearchInput";
 import UserDropDownMenu from "./UserDropDownMenu";
-import { auth } from "../_lib/auth";
 import BurgerButton from "./BurgerButton";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
-export default async function Header() {
+export default function Header() {
   const brands = [
     "Apple",
     "Samsung",
@@ -20,7 +21,13 @@ export default async function Header() {
     "Motorola",
   ];
 
-  const session = await auth();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    // Aquí puedes realizar acciones cuando la sesión cambie
+    // Por ejemplo, refrescar datos o mostrar un toast
+    // console.log('Session changed:', session);
+  }, [session, status]);
 
   return (
     <header className="bg-white px-5 shadow-md md:px-10">
