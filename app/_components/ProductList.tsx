@@ -123,17 +123,14 @@ export default function ProductList({
             >
               {isLoading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-[300px] min-w-[200px] max-w-[220px]"
-                    >
+                    <div key={i} className="min-w-[200px] max-w-[220px]">
                       <SkeletonCard />
                     </div>
                   ))
                 : products.map((product) => (
                     <div
                       key={product.id}
-                      className="my-5 h-[300px] min-w-[200px] max-w-[220px]"
+                      className="my-5 min-w-[200px] max-w-[220px]"
                     >
                       <ProductCard {...product} onUnfavorite={() => {}} />
                     </div>
