@@ -2,44 +2,70 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { ProductBase } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
+import { ProductBase } from "@/types/types";
 import ProductCard from "@/app/_components/ProductCard";
-import { useInView } from "react-intersection-observer";
 import { SkeletonCard } from "./SkeletonCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useInView } from "react-intersection-observer";
 
-interface ProductListProps {
+interface ProductCarouselProps {
   title: string;
-  href: string;
+  href?: string;
   sort?: "createdAt" | "mostSold" | "mostLiked";
+  brand?: string;
+  excludeId?: number;
 }
 
-export default function ProductList({ title, href, sort }: ProductListProps) {
+export default function ProductList({
+  title,
+  href,
+  sort,
+  brand,
+  excludeId,
+}: ProductCarouselProps) {
   const [products, setProducts] = useState<ProductBase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { ref: viewRef, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scroll = (direction: "left" | "right") => {
+  const scroll = (dir: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = scrollRef.current.offsetWidth * 0.8;
+      const amount = scrollRef.current.offsetWidth * 0.8;
       scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
+        left: dir === "left" ? -amount : amount,
         behavior: "smooth",
       });
     }
   };
 
   useEffect(() => {
-    axios
-      .get<ProductBase[]>(`/api/products?sort=${sort || ""}`)
-      .then((res) => setProducts(res.data))
-      .finally(() => setIsLoading(false));
-  }, []);
+    const fetchData = async () => {
+      try {
+        let url = "/api/products";
+
+        if (sort) {
+          url += `?sort=${sort}`;
+        } else if (brand) {
+          url += `/related?brand=${encodeURIComponent(brand)}&excludeId=${excludeId}`;
+        }
+
+        const { data } = await axios.get<ProductBase[]>(url);
+        setProducts(data);
+      } catch (err) {
+        console.error("Error al obtener productos:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [sort, brand, excludeId]);
+
+  if (!isLoading && products.length === 0) return null;
 
   return (
     <div className="relative mx-auto min-h-[420px] px-4 py-8" ref={viewRef}>
@@ -47,19 +73,21 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
         <>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-bold">{title}</h2>
-            <Link
-              href={href}
-              className="font-semibold text-blue-800 hover:underline"
-            >
-              Ver todos
-            </Link>
+            {href && (
+              <Link
+                href={href}
+                className="font-semibold text-blue-800 hover:underline"
+              >
+                Ver todos
+              </Link>
+            )}
           </div>
 
           <div className="relative">
             <button
-              aria-label="Ir al slide anterior"
-              className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
+              aria-label="Slide anterior"
               onClick={() => scroll("left")}
+              className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
             >
               <ChevronLeft />
             </button>
@@ -77,7 +105,7 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
                       <SkeletonCard />
                     </div>
                   ))
-                : products.map((product, index) => (
+                : products.map((product) => (
                     <div
                       key={product.id}
                       className="my-5 h-[300px] min-w-[200px] max-w-[220px]"
@@ -88,9 +116,9 @@ export default function ProductList({ title, href, sort }: ProductListProps) {
             </div>
 
             <button
-              aria-label="Ir al slide siguiente"
-              className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
+              aria-label="Slide siguiente"
               onClick={() => scroll("right")}
+              className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
             >
               <ChevronRight />
             </button>

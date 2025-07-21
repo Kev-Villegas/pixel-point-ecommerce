@@ -11,7 +11,6 @@ import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Separator } from "@/app/_components/ui/separator";
-import RelatedProductsCarousel from "./RelatedProductsCarousel";
 import {
   Product as PrismaProduct,
   Image as PrismaImage,
@@ -42,6 +41,7 @@ import {
   Signal,
   Ruler,
 } from "lucide-react";
+import ProductList from "@/app/_components/ProductList";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -451,9 +451,11 @@ const ProductDetailsPage = () => {
         </Card>
       </div>
 
-      <div className="pt-4">
-        <RelatedProductsCarousel brand={brand} currentProductId={Number(id)} />
-      </div>
+      <ProductList
+        title={`Más productos de ${product.brand}`}
+        brand={product.brand}
+        excludeId={product.id}
+      />
     </div>
   );
 };
