@@ -3,7 +3,11 @@ import { test, expect } from "@playwright/test";
 test("Completa flujo de compra y captura ID de pago", async ({ page }) => {
   test.setTimeout(60000);
 
-  await page.goto("http://localhost:3000");
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
+  if (!baseUrl) {
+    throw new Error("La variable de entorno NEXT_PUBLIC_URL no está definida");
+  }
+  await page.goto(baseUrl);
 
   await page.evaluate(() => {
     window.scrollBy(0, 500);

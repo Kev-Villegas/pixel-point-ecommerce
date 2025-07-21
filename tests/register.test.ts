@@ -2,8 +2,12 @@ import { test, expect } from "@playwright/test";
 
 test("Registro de usuario nuevo en /auth/signup", async ({ page }) => {
   const uniqueEmail = `usuario${Date.now()}@test.com`;
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
+  if (!baseUrl) {
+    throw new Error("La variable de entorno NEXT_PUBLIC_URL no está definida");
+  }
 
-  await page.goto("http://localhost:3000/auth/signup");
+  await page.goto(`${baseUrl}/auth/signup`);
 
   await page.fill("#email", uniqueEmail);
   await page.fill("#password", "Test1234!");
