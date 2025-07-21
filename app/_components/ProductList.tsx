@@ -26,6 +26,8 @@ export default function ProductList({
 }: ProductCarouselProps) {
   const [products, setProducts] = useState<ProductBase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { ref: viewRef, inView } = useInView({
     threshold: 0.1,
@@ -39,6 +41,15 @@ export default function ProductList({
         left: dir === "left" ? -amount : amount,
         behavior: "smooth",
       });
+    }
+  };
+
+  // Actualiza si se puede hacer scroll a la izquierda/derecha
+  const updateScrollButtons = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
     }
   };
 
@@ -65,6 +76,18 @@ export default function ProductList({
     fetchData();
   }, [sort, brand, excludeId]);
 
+  useEffect(() => {
+    const ref = scrollRef.current;
+    if (!ref) return;
+    updateScrollButtons();
+    ref.addEventListener("scroll", updateScrollButtons);
+    window.addEventListener("resize", updateScrollButtons);
+    return () => {
+      ref.removeEventListener("scroll", updateScrollButtons);
+      window.removeEventListener("resize", updateScrollButtons);
+    };
+  }, [products, isLoading]);
+
   if (!isLoading && products.length === 0) return null;
 
   return (
@@ -87,7 +110,9 @@ export default function ProductList({
             <button
               aria-label="Slide anterior"
               onClick={() => scroll("left")}
-              className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
+              className={`absolute left-0 top-1/2 z-20 ${
+                canScrollLeft ? "sm:flex" : "hidden"
+              } -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white`}
             >
               <ChevronLeft />
             </button>
@@ -118,7 +143,9 @@ export default function ProductList({
             <button
               aria-label="Slide siguiente"
               onClick={() => scroll("right")}
-              className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white sm:flex"
+              className={`absolute right-0 top-1/2 z-20 ${
+                canScrollRight ? "sm:flex" : "hidden"
+              } -translate-y-1/2 rounded-full bg-white/70 p-2 shadow-lg backdrop-blur-md transition hover:bg-white`}
             >
               <ChevronRight />
             </button>
