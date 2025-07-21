@@ -1,7 +1,7 @@
 "use client";
 
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import { Input } from "../_components/ui/input";
 import { Button } from "../_components/ui/button";
 import toast from "react-hot-toast";
 
-export default function VerifyPage() {
+function VerifyPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get("email");
@@ -110,5 +110,13 @@ export default function VerifyPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense>
+      <VerifyPageContent />
+    </Suspense>
   );
 }
