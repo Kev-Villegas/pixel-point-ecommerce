@@ -34,7 +34,6 @@ const nextConfig: NextConfig = {
     styledComponents: false,
     reactRemoveProperties: false,
     removeConsole: false,
-    transpilePackages: [],
   },
 };
 
