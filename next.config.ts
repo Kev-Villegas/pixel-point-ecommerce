@@ -29,6 +29,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  compiler: {
+    emotion: false,
+    styledComponents: false,
+    reactRemoveProperties: false,
+    removeConsole: false,
+    swcMinify: true,
+    transpilePackages: [],
+  },
 };
 
 export default bundleAnalyzer(nextConfig);

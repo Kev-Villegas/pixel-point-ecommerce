@@ -12,28 +12,30 @@ export async function GET(req: NextRequest) {
   const sort = req.nextUrl.searchParams.get("sort");
 
   try {
-    let products = await db.product.findMany({
+    let orderBy: any = { createdAt: "desc" };
+
+    if (sort === "mostSold") {
+      orderBy = { orderItems: { _count: "desc" } };
+    } else if (sort === "mostLiked") {
+      orderBy = { likes: { _count: "desc" } };
+    }
+
+    const products = await db.product.findMany({
+      where: {
+        stock: {
+          gt: 0,
+        },
+      },
       include: {
         images: true,
-        orderItems: true,
         _count: { select: { likes: true } },
         likes: userEmail
           ? { where: { user: { email: userEmail } }, select: { id: true } }
           : false,
       },
+      orderBy,
+      take: 10,
     });
-
-    if (sort === "createdAt") {
-      products.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    } else if (sort === "mostSold") {
-      products.sort((a, b) => b.orderItems.length - a.orderItems.length);
-    } else if (sort === "mostLiked") {
-      products.sort((a, b) => b._count.likes - a._count.likes);
-    }
-
-    const withStock = products.filter((p) => p.stock > 0);
-    const withoutStock = products.filter((p) => p.stock === 0);
-    products = [...withStock, ...withoutStock];
 
     const result = products.map((p) => ({
       id: p.id,

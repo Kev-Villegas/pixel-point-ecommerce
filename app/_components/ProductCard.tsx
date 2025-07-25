@@ -75,7 +75,7 @@ export default function ProductCard({
             alt={name}
             fill
             style={{ objectFit: "contain" }}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 25vw"
             priority
             className="transition-transform duration-500 ease-in-out hover:scale-110"
           />
