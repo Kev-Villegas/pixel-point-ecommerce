@@ -3,7 +3,6 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useLikes } from "@/app/_hooks/useLikes";
 import { useCartStore } from "@/store/useCartStore";
 import { ProductBase, CartProduct } from "@/types/types";

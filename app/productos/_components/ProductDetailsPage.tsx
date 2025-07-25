@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { Card } from "@/app/_components/ui/card";
 import { useCartStore } from "@/store/useCartStore";
