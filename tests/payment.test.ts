@@ -46,10 +46,19 @@ test("Completa flujo de compra y captura ID de pago", async ({ page }) => {
 
   await page.waitForURL("**/checkout/payment?preference=*");
 
-  await page.waitForSelector("iframe", { timeout: 15000 });
+  // Espera adicional para asegurar que el iframe cargue
+  await page.waitForTimeout(7000);
+  await page.waitForSelector("iframe", { timeout: 20000 });
+
+  // Log de los frames disponibles
+  const frames = page.frames();
+  console.log(
+    "Frames detectados:",
+    frames.map((f) => f.url()),
+  );
 
   let paymentFrame = null;
-  for (const frame of page.frames()) {
+  for (const frame of frames) {
     const isVisible = await frame
       .locator("form.mp-checkout-bricks__payment-form")
       .isVisible()
@@ -62,7 +71,7 @@ test("Completa flujo de compra y captura ID de pago", async ({ page }) => {
 
   if (!paymentFrame) {
     throw new Error(
-      "No se encontró el iframe de MercadoPago con el formulario visible",
+      "No se encontró el iframe de MercadoPago con el formulario visible. Revisa los logs de frames para ver si tarda en renderizar o si el selector es incorrecto.",
     );
   }
 

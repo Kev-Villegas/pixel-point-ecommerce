@@ -9,6 +9,8 @@ test("Registro de usuario nuevo en /auth/signup", async ({ page }) => {
 
   await page.goto(`${baseUrl}/auth/signup`);
 
+  await page.fill("#name", "TestNombre");
+  await page.fill("#lastname", "TestApellido");
   await page.fill("#email", uniqueEmail);
   await page.fill("#password", "Test1234!");
   await page.fill("#confirmPassword", "Test1234!");
