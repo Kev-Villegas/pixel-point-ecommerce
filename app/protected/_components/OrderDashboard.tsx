@@ -4,7 +4,10 @@ import toast from "react-hot-toast";
 import { useState, useMemo } from "react";
 import { OrderStatsGrid } from "./OrderStatsGrid";
 import OrdersControls from "./OrdersControls";
-import { OrderDetailDialog } from "./OrderDetailDialog";
+import dynamic from "next/dynamic";
+const OrderDetailDialog = dynamic(() =>
+  import("./OrderDetailDialog").then((mod) => mod.OrderDetailDialog)
+);
 import { RecentOrdersTable } from "./RecentOrdersTable";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useOrderStats } from "@/app/_hooks/useOrderStats";

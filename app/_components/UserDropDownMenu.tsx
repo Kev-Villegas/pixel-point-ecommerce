@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import { Button } from "./ui/button";
 import React, { useState } from "react";
-import UserProfileDialog from "./UserProfileDialog";
+import dynamic from "next/dynamic";
+const UserProfileDialog = dynamic(() => import("./UserProfileDialog"));
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { BookHeart, LogOut, Shield, User, WalletCards } from "lucide-react";
 import {

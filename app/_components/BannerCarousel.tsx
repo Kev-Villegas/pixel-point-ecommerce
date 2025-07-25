@@ -178,6 +178,7 @@ export default function BannerCarousel() {
                     className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
                     priority={current === 0}
                     loading={current === 0 ? "eager" : "lazy"}
+                    fetchPriority={current === 0 ? "high" : "auto"}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
@@ -203,9 +204,10 @@ export default function BannerCarousel() {
                   src="/banner/mp-blue.webp"
                   alt="Mercado Pago Logo"
                   width={200}
-                  height={500}
+                  height={81}
                   className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
                   priority
+                  fetchPriority="high"
                 />
               </div>
 

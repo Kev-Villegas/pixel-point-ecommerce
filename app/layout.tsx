@@ -99,6 +99,11 @@ export default function RootLayout({
     <SessionWrapper>
       <html lang="es">
         <head>
+          <link
+            rel="preconnect"
+            href="https://connect.facebook.net"
+            crossOrigin="anonymous"
+          />
           {/* Meta Pixel Code */}
           <Script id="facebook-pixel" strategy="afterInteractive">
             {`
