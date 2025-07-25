@@ -1,8 +1,15 @@
 import BannerWrapper from "./_components/BannerWrapper";
 import Footer from "./_components/Footer";
 import ProductList from "./_components/ProductList";
+import { getProducts } from "./actions/products/getProducts";
 
-export default function Home() {
+export default async function Home() {
+  const [newProducts, mostSoldProducts, mostLikedProducts] = await Promise.all([
+    getProducts("createdAt"),
+    getProducts("mostSold"),
+    getProducts("mostLiked"),
+  ]);
+
   return (
     <>
       <main>
@@ -11,17 +18,17 @@ export default function Home() {
           <ProductList
             href="/productos/categoria/novedades"
             title="Novedades"
-            sort="createdAt"
+            initialProducts={newProducts}
           />
           <ProductList
             href="/productos/categoria/masvendidos"
             title="Los más vendidos"
-            sort="mostSold"
+            initialProducts={mostSoldProducts}
           />
           <ProductList
             href="/productos/categoria/masgustados"
             title="Los más gustados"
-            sort="mostLiked"
+            initialProducts={mostLikedProducts}
           />
         </div>
       </main>

@@ -7,23 +7,21 @@ import { ProductBase } from "@/types/types";
 import ProductCard from "@/app/_components/ProductCard";
 import { SkeletonCard } from "./SkeletonCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductBase } from "@/types/types";
+
 interface ProductCarouselProps {
   title: string;
   href?: string;
-  sort?: "createdAt" | "mostSold" | "mostLiked";
-  brand?: string;
-  excludeId?: number;
+  initialProducts: ProductBase[];
 }
 
 export default function ProductList({
   title,
   href,
-  sort,
-  brand,
-  excludeId,
+  initialProducts,
 }: ProductCarouselProps) {
-  const [products, setProducts] = useState<ProductBase[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<ProductBase[]>(initialProducts);
+  const [isLoading, setIsLoading] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -47,28 +45,6 @@ export default function ProductList({
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let url = "/api/products";
-
-        if (sort) {
-          url += `?sort=${sort}`;
-        } else if (brand) {
-          url += `/related?brand=${encodeURIComponent(brand)}&excludeId=${excludeId}`;
-        }
-
-        const { data } = await axios.get<ProductBase[]>(url);
-        setProducts(data);
-      } catch (err) {
-        console.error("Error al obtener productos:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [sort, brand, excludeId]);
 
   useEffect(() => {
     const ref = scrollRef.current;

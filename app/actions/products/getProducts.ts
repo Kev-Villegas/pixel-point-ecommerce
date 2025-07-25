@@ -1,8 +1,19 @@
 "use server";
 
-export async function getProducts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/products`, {
-    cache: "no-store",
+import { ProductBase } from "@/types/types";
+
+type SortOptions = "createdAt" | "mostSold" | "mostLiked";
+
+export async function getProducts(sort?: SortOptions): Promise<ProductBase[]> {
+  let url = `${process.env.NEXT_PUBLIC_URL}/api/products`;
+  if (sort) {
+    url += `?sort=${sort}`;
+  }
+
+  const res = await fetch(url, {
+    next: {
+      revalidate: 60 * 60, // 1 hour
+    },
   });
 
   if (!res.ok) throw new Error("Error al cargar productos");
