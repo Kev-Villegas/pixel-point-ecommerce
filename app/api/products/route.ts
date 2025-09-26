@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
           : false,
       },
       orderBy,
-      take: 10,
+      // take: 10,
     });
 
     const result = products.map((p) => ({
