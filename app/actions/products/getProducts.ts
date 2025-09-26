@@ -12,7 +12,8 @@ export async function getProducts(sort?: SortOptions): Promise<ProductBase[]> {
 
   const res = await fetch(url, {
     next: {
-      revalidate: 60 * 60, // 1 hour
+      // revalidate: 60 * 60, // 1 hour
+      revalidate: 0,
     },
   });
 

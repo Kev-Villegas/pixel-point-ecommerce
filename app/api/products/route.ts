@@ -12,20 +12,28 @@ export async function GET(req: NextRequest) {
   const sort = req.nextUrl.searchParams.get("sort");
 
   try {
-    let orderBy: any = { createdAt: "desc" };
+    let orderBy: any[] = [];
 
+    // primero ordenamos por stock (productos sin stock al final)
+    orderBy.push({
+      stock: "desc", // mayores valores (stock > 0) primero
+    });
+
+    // después aplicamos el orden elegido
     if (sort === "mostSold") {
-      orderBy = { orderItems: { _count: "desc" } };
+      orderBy.push({ orderItems: { _count: "desc" } });
     } else if (sort === "mostLiked") {
-      orderBy = { likes: { _count: "desc" } };
+      orderBy.push({ likes: { _count: "desc" } });
+    } else {
+      orderBy.push({ createdAt: "desc" });
     }
 
     const products = await db.product.findMany({
-      where: {
-        stock: {
-          gt: 0,
-        },
-      },
+      // where: {
+      //   stock: {
+      //     gt: 0,
+      //   },
+      // },
       include: {
         images: true,
         _count: { select: { likes: true } },
