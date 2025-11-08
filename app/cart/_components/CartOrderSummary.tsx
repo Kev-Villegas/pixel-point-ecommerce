@@ -1,8 +1,11 @@
+import PaymentComponent from "@/app/_components/PaymentComponent";
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
+import axios from "axios";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface CartOrderSummaryProps {
   cartProducts: {
@@ -19,6 +22,15 @@ export function CartOrderSummary({
   getTotalOrderPrice,
 }: CartOrderSummaryProps) {
   const subtotal = getTotalOrderPrice();
+  const router = useRouter();
+
+  async function handlePayment(): Promise<void> {
+    const response = await axios.post("/api/checkout/preferences", {
+      cart: cartProducts,
+    });
+    console.log(response);
+    router.push(`/checkout/payment?preference=${response.data.response.id}`);
+  }
 
   return (
     <motion.div
@@ -64,11 +76,22 @@ export function CartOrderSummary({
           </div>
         </div>
 
-        <Link href="/checkout">
-          <Button className="mt-4 w-full" size="lg">
-            Continuar al Pago
-          </Button>
-        </Link>
+        {/* <Link href="/checkout"> */}
+        <Button
+          className="duration-400 mt-4 w-full transition-all hover:shadow-lg"
+          size="lg"
+          onClick={handlePayment}
+        >
+          {/* Continuar con */}
+          <Image
+            src="MP_RGB_horizontal.svg"
+            alt="logo mercadopago"
+            width={100}
+            height={24}
+          />
+        </Button>
+        {/* </Link> */}
+        {/* <PaymentComponent/> */}
       </Card>
     </motion.div>
   );
