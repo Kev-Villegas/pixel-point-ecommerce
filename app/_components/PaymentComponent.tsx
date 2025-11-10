@@ -1,10 +1,11 @@
 import { useCartStore } from "@/store/useCartStore";
 import useDeviceStore from "@/store/useDeviceIdStore";
-import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
+import { Brand, initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { Card } from "./ui/card";
 
 type PayloadType = {
   statement_descriptor: string;
@@ -48,12 +49,12 @@ export default function PaymentComponent() {
       initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
     }
 
-    const data = localStorage.getItem("preference");
-    if (data) {
-      const parsedData = JSON.parse(data);
-      setPayload(parsedData);
-    }
-    localStorage.removeItem("preference");
+    // const data = localStorage.getItem("preference");
+    // if (data) {
+    //   const parsedData = JSON.parse(data);
+    //   setPayload(parsedData);
+    // }
+    // localStorage.removeItem("preference");
   }, []);
 
   const totalAmount = useMemo(() => {
@@ -73,6 +74,7 @@ export default function PaymentComponent() {
 
   const customization: IPaymentBrickCustomization = {
     visual: {
+      hideFormTitle: true,
       style: {
         theme: "default",
       },
@@ -86,6 +88,7 @@ export default function PaymentComponent() {
     } as any,
   };
 
+  // TODO mejorar el submit
   const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
     if (!payload) {
       console.error("No hay payload, no se puede continuar con el pago.");
@@ -159,12 +162,15 @@ export default function PaymentComponent() {
   };
 
   return (
-    <Payment
-      initialization={initialization}
-      customization={customization}
-      onSubmit={onSubmit}
-      onReady={onReady}
-      onError={onError}
-    />
+    <Card className="min-h-[500px] p-2 shadow-md">
+      <Brand />
+      <Payment
+        initialization={initialization}
+        customization={customization}
+        onSubmit={onSubmit}
+        onReady={onReady}
+        onError={onError}
+      />
+    </Card>
   );
 }

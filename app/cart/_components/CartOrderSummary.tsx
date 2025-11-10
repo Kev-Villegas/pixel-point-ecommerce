@@ -76,22 +76,18 @@ export function CartOrderSummary({
           </div>
         </div>
 
-        {/* <Link href="/checkout"> */}
-        <Button
+        {/* <Button
           className="duration-400 mt-4 w-full transition-all hover:shadow-lg"
           size="lg"
           onClick={handlePayment}
         >
-          {/* Continuar con */}
           <Image
             src="MP_RGB_horizontal.svg"
             alt="logo mercadopago"
             width={100}
             height={24}
           />
-        </Button>
-        {/* </Link> */}
-        {/* <PaymentComponent/> */}
+        </Button> */}
       </Card>
     </motion.div>
   );

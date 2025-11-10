@@ -103,7 +103,6 @@ export default function CartPage() {
               />
             </motion.div>
 
-            {/* 💳 Derecha: Payment Brick */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -111,14 +110,7 @@ export default function CartPage() {
               transition={{ duration: 0.4 }}
               className="h-min"
             >
-              <Card className="p-2 shadow-md">
-                <h2 className="mb-4 text-center text-2xl font-semibold text-gray-800">
-                  {/* Finalizar pago */}
-                </h2>
-                <Brand />
-                <Separator className="mb-4" />
-                <PaymentComponent />
-              </Card>
+              <PaymentComponent />
             </motion.div>
           </div>
         )}
