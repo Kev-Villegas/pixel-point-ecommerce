@@ -14,9 +14,19 @@ export async function POST(request: NextRequest) {
       unit_price: item.price,
       quantity: item.quantity,
       title: item.name,
+      description: item.description,
       picture_url: item.images[0].url,
       category_id: item.brand,
     })),
+    notification_url:
+      "https://www.pixel-point.com.ar/api/checkout/notifications",
+    statement_descriptor: "Pixel Point",
+    back_urls: {
+      failure: "https://www.pixel-point.com.ar",
+      pending: "https://www.pixel-point.com.ar",
+      success: "https://www.pixel-point.com.ar",
+    },
+    auto_return: "approved",
     // external_reference: orderId,
     // metadata: { orderId: orderId, test: "ok" },
     // payer: {
@@ -63,6 +73,31 @@ export async function POST(request: NextRequest) {
   };
 
   const response = await preference.create({ body });
+  return NextResponse.json({ response });
+}
 
+export async function PUT(request: NextRequest) {
+  const client = new MercadoPagoConfig({
+    accessToken: process.env.ACCESS_TOKEN as string,
+  });
+  const preference = new Preference(client);
+  const { id, cart, payer } = await request.json();
+
+  const updatePreferenceRequest = {
+    items: cart.map((item: any) => ({
+      id: item.id,
+      unit_price: item.price,
+      quantity: item.quantity,
+      title: item.name,
+      description: item.description,
+      picture_url: item.images[0].url,
+      category_id: item.brand,
+    })),
+    payer: {
+      email: payer.email,
+    },
+  };
+
+  const response = await preference.update({ id, updatePreferenceRequest });
   return NextResponse.json({ response });
 }

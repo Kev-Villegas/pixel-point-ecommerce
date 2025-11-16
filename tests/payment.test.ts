@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test("Completa flujo de compra y captura ID de pago", async ({ page }) => {
   test.setTimeout(60000);
 
-  const baseUrl = process.env.NEXT_PUBLIC_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
   if (!baseUrl) {
     throw new Error("La variable de entorno NEXT_PUBLIC_URL no está definida");
   }
@@ -25,26 +25,26 @@ test("Completa flujo de compra y captura ID de pago", async ({ page }) => {
   await expect(cartButton.locator("span")).toHaveText("1");
 
   await page.getByRole("link", { name: "Ver carrito de compras" }).click();
-  await page.waitForURL("**/cart");
 
-  await page.getByRole("button", { name: "Continuar al Pago" }).click();
-  await page.waitForURL("**/checkout");
+  // await page.waitForURL("**/cart");
+  // await page.getByRole("button", { name: "Continuar al Pago" }).click();
+  // await page.waitForURL("**/checkout");
 
-  await page.fill('input[id="name"]', "Juan");
-  await page.fill('input[id="surname"]', "Perez");
-  await page.fill('input[id="street_name"]', "Calle Falsa 123");
-  await page.fill('input[id="street_number"]', "1234");
-  await page.fill('input[id="email"]', "test@example.com");
-  await page.fill('input[id="number"]', "1123456789");
-  await page.fill('input[id="city"]', "Buenos Aires");
-  await page.fill('input[id="province"]', "Buenos Aires");
-  await page.fill('input[id="postalCode"]', "1425");
-  await page.fill('input[id="floor"]', "1");
-  await page.fill('input[id="apartment"]', "A");
+  // await page.fill('input[id="name"]', "Juan");
+  // await page.fill('input[id="surname"]', "Perez");
+  // await page.fill('input[id="street_name"]', "Calle Falsa 123");
+  // await page.fill('input[id="street_number"]', "1234");
+  // await page.fill('input[id="email"]', "test@example.com");
+  // await page.fill('input[id="number"]', "1123456789");
+  // await page.fill('input[id="city"]', "Buenos Aires");
+  // await page.fill('input[id="province"]', "Buenos Aires");
+  // await page.fill('input[id="postalCode"]', "1425");
+  // await page.fill('input[id="floor"]', "1");
+  // await page.fill('input[id="apartment"]', "A");
 
-  await page.getByRole("button", { name: "Enviar" }).click();
+  // await page.getByRole("button", { name: "Enviar" }).click();
 
-  await page.waitForURL("**/checkout/payment?preference=*");
+  await page.waitForURL("**/cart?preference=*");
 
   // Espera adicional para asegurar que el iframe cargue
   await page.waitForTimeout(7000);

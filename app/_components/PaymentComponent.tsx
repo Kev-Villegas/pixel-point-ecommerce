@@ -7,54 +7,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Card } from "./ui/card";
 
-type PayloadType = {
-  statement_descriptor: string;
-  notification_url: string;
-  external_reference: string;
-  metadata: {
-    [key: string]: any;
-  };
-  payer: {
-    first_name: string;
-    last_name: string;
-    phone: {
-      area_code: string;
-      number: string;
-    };
-    address: {
-      postalCode: string;
-      street_name: string;
-      street_number: number;
-    };
-  };
-  shipments: {
-    receiver_address: {
-      postalCode: string;
-      street_name: string;
-      street_number: number;
-      floor?: string;
-      apartment?: string;
-    };
-  };
-};
-
 export default function PaymentComponent() {
   const router = useRouter();
   const { cartProducts, clearCart } = useCartStore();
-  const [payload, setPayload] = useState<PayloadType | null>(null);
   const deviceId = useDeviceStore((state) => state.deviceId);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
     }
-
-    // const data = localStorage.getItem("preference");
-    // if (data) {
-    //   const parsedData = JSON.parse(data);
-    //   setPayload(parsedData);
-    // }
-    // localStorage.removeItem("preference");
   }, []);
 
   const totalAmount = useMemo(() => {
@@ -90,67 +51,35 @@ export default function PaymentComponent() {
 
   // TODO mejorar el submit
   const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
-    if (!payload) {
-      console.error("No hay payload, no se puede continuar con el pago.");
-      return;
-    }
-
-    const formToSend = {
-      ...formData,
-      three_d_secure_mode: "optional",
-      external_reference: payload.external_reference,
-      statement_descriptor: payload.statement_descriptor,
-      notification_url: payload.notification_url,
-      metadata: payload.metadata,
-      additional_info: {
-        items: cartProducts.map((item: any) => ({
-          id: item.id,
-          unit_price: item.price,
-          quantity: item.quantity,
-          title: item.name,
-          picture_url: item.images[0].url,
-          category_id: item.brand,
-        })),
-        payer: {
-          first_name: payload.payer.first_name,
-          last_name: payload.payer.last_name,
-          phone: {
-            area_code: payload.payer.phone.area_code,
-            number: payload.payer.phone.number,
-          },
-          address: {
-            zip_code: payload.payer.address.postalCode,
-            street_name: payload.payer.address.street_name,
-            street_number: payload.payer.address.street_number,
-          },
-        },
-        shipments: {
-          receiver_address: {
-            zip_code: payload.shipments.receiver_address.postalCode,
-            street_number: payload.shipments.receiver_address.street_number,
-            street_name: payload.shipments.receiver_address.street_name,
-            floor: payload.shipments.receiver_address.floor,
-            apartment: payload.shipments.receiver_address.apartment,
-          },
-        },
-      },
-    };
+    console.log(formData);
+    console.log(selectedPaymentMethod);
 
     const headers = { "X-meli-session-id": deviceId };
 
-    return new Promise((resolve, reject) => {
-      axios
-        .post("/api/checkout", formToSend, { headers })
-        .then((response) => {
-          if (response.data.status === "approved") {
-            clearCart();
-          }
+    await axios
+      .put(`/api/checkout/preferences`, {
+        payer: {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          email: formData.payer.email,
+        },
+        id: preferenceId,
+        cart: cartProducts,
+      })
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          axios
+            .post("/api/checkout", formData, { headers })
+            .then((response) => {
+              if (response.data.status === "approved") {
+                clearCart();
+              }
 
-          // localStorage.setItem("paymentStatusData", JSON.stringify(response.data));
-          router.push(`/checkout/payment/status?id=${response.data.id}`);
-        })
-        .catch((error) => console.log(error));
-    });
+              router.push(`/checkout/payment/status?id=${response.data.id}`);
+            })
+            .catch((error) => console.log(error));
+        });
+      });
   };
 
   const onError = async (error: any) => {
