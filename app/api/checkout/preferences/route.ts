@@ -1,3 +1,4 @@
+import { getClientContext } from "@/app/_lib/getClientContext";
 import MercadoPagoConfig, { Preference } from "mercadopago";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,7 +7,9 @@ export async function POST(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
-  const { cart } = await request.json();
+  const { cart, orderId } = await request.json();
+
+  const { ip, userAgent } = getClientContext(request);
 
   const body = {
     items: cart.map((item: any) => ({
@@ -27,8 +30,13 @@ export async function POST(request: NextRequest) {
       success: "https://www.pixel-point.com.ar",
     },
     auto_return: "approved",
-    // external_reference: orderId,
-    // metadata: { orderId: orderId, test: "ok" },
+    external_reference: orderId,
+    metadata: {
+      orderId: orderId,
+      created_from: "guest-checkout",
+      ip_address: ip,
+      user_agent: userAgent,
+    },
     // payer: {
     //   first_name: payer.name,
     //   last_name: payer.surname,
@@ -81,9 +89,9 @@ export async function PUT(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
-  const { id, cart, payer } = await request.json();
+  const { id, cart, payer, metadata } = await request.json();
 
-  const updatePreferenceRequest = {
+  const updatePreferenceRequest: any = {
     items: cart.map((item: any) => ({
       id: item.id,
       unit_price: item.price,
@@ -93,10 +101,17 @@ export async function PUT(request: NextRequest) {
       picture_url: item.images[0].url,
       category_id: item.brand,
     })),
-    payer: {
-      email: payer.email,
-    },
   };
+
+  if (payer) {
+    updatePreferenceRequest.payer = {
+      email: payer.email,
+    };
+  }
+
+  if (metadata) {
+    updatePreferenceRequest.metadata = metadata;
+  }
 
   const response = await preference.update({ id, updatePreferenceRequest });
   return NextResponse.json({ response });

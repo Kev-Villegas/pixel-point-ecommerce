@@ -56,30 +56,31 @@ export default function PaymentComponent() {
 
     const headers = { "X-meli-session-id": deviceId };
 
-    await axios
-      .put(`/api/checkout/preferences`, {
-        payer: {
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          email: formData.payer.email,
-        },
+    try {
+      await axios.put(`/api/checkout/preferences`, {
         id: preferenceId,
         cart: cartProducts,
-      })
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          axios
-            .post("/api/checkout", formData, { headers })
-            .then((response) => {
-              if (response.data.status === "approved") {
-                clearCart();
-              }
-
-              router.push(`/checkout/payment/status?id=${response.data.id}`);
-            })
-            .catch((error) => console.log(error));
-        });
+        payer: {
+          email: formData.payer?.email,
+        },
+        metadata: {
+          user_agent:
+            typeof navigator !== "undefined" ? navigator.userAgent : "unknown",
+          timezone:
+            typeof Intl !== "undefined"
+              ? Intl.DateTimeFormat().resolvedOptions().timeZone
+              : "unknown",
+        },
       });
+
+      const response = await axios.post("/api/checkout", formData, { headers });
+      if (response.data?.status === "approved") {
+        clearCart();
+      }
+      router.push(`/checkout/payment/status?id=${response.data.id}`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onError = async (error: any) => {
@@ -89,6 +90,20 @@ export default function PaymentComponent() {
   const onReady = async () => {
     console.log("Payment Brick is ready");
   };
+
+  // Send deviceId to server once available and preferenceId is present (fire-and-forget)
+  useEffect(() => {
+    if (!deviceId || !preferenceId) return;
+    try {
+      fetch("/api/checkout/preferences/context", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preferenceId, deviceId }),
+      }).catch((e) => console.warn("Failed to send device id", e));
+    } catch (e) {
+      console.warn("Failed to send device id", e);
+    }
+  }, [deviceId, preferenceId]);
 
   return (
     <Card className="min-h-[500px] p-2 shadow-md">
