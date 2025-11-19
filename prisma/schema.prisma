@@ -26,6 +26,7 @@ model Order {
   phonenumber   String
   totalPrice    Float
   paid          Boolean
+  paymentId     String?     // ID del pago de MercadoPago cuando se acredita
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   status        OrderStatus @default(PAGO_PENDIENTE)
