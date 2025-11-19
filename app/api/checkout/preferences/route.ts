@@ -113,6 +113,11 @@ export async function PUT(request: NextRequest) {
     updatePreferenceRequest.metadata = metadata;
   }
 
-  const response = await preference.update({ id, updatePreferenceRequest });
-  return NextResponse.json({ response });
+  // Update the preference
+  await preference.update({ id, updatePreferenceRequest });
+
+  // Fetch the complete updated preference
+  const completePreference = await preference.get({ preferenceId: id } as any);
+
+  return NextResponse.json({ response: completePreference });
 }

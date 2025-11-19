@@ -49,7 +49,6 @@ export default function PaymentComponent() {
     } as any,
   };
 
-  // TODO mejorar el submit
   const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
     console.log(formData);
     console.log(selectedPaymentMethod);
@@ -57,9 +56,18 @@ export default function PaymentComponent() {
     const headers = { "X-meli-session-id": deviceId };
 
     try {
-      await axios.put(`/api/checkout/preferences`, {
+      const payload = {
+        cart: cartProducts,
+        total: totalAmount,
+      };
+
+      const order = await axios.post("/api/orders", payload);
+      const orderId = order.data.id.toString();
+
+      const preferenceResponse = await axios.put(`/api/checkout/preferences`, {
         id: preferenceId,
         cart: cartProducts,
+        external_reference: orderId,
         payer: {
           email: formData.payer?.email,
         },
@@ -70,10 +78,48 @@ export default function PaymentComponent() {
             typeof Intl !== "undefined"
               ? Intl.DateTimeFormat().resolvedOptions().timeZone
               : "unknown",
+          orderId,
         },
       });
 
-      const response = await axios.post("/api/checkout", formData, { headers });
+      const completePreference = preferenceResponse.data.response;
+
+      // Prepare the payment data with complete preference information
+      const paymentPayload = {
+        ...formData,
+        three_d_secure_mode: "optional",
+        // use the created order id as external_reference
+        external_reference: completePreference.external_reference,
+        statement_descriptor: completePreference.statement_descriptor,
+        notification_url: completePreference.notification_url,
+        metadata: {
+          ...formData.metadata,
+          ...completePreference.metadata,
+        },
+        additional_info: {
+          items: (completePreference.items || []).map((item: any) => ({
+            id: item.id,
+            unit_price: item.unit_price,
+            quantity: item.quantity,
+            title: item.title,
+            picture_url: item.picture_url,
+            category_id: item.category_id,
+            description: item.description,
+          })),
+          payer: completePreference.payer
+            ? {
+                first_name: completePreference.payer.first_name,
+                last_name: completePreference.payer.last_name,
+                phone: completePreference.payer.phone,
+                address: completePreference.payer.address,
+              }
+            : undefined,
+        },
+      };
+
+      const response = await axios.post("/api/checkout", paymentPayload, {
+        headers,
+      });
       if (response.data?.status === "approved") {
         clearCart();
       }

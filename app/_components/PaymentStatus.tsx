@@ -21,6 +21,9 @@ export default function PaymentStatus() {
       error: process.env.NEXT_PUBLIC_URL as string,
       return: process.env.NEXT_PUBLIC_URL as string,
     },
+    visual: {
+      showExternalReference: true,
+    },
   };
 
   const onError = async (error: any) => {

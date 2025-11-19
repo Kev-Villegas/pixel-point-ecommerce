@@ -45,19 +45,29 @@ export async function POST(request: NextRequest) {
   const { payer, cart, total } = await request.json();
 
   try {
+    // Allow creating a minimal order when payer is not provided
+    const username = payer?.name || "Guest";
+    const surname = payer?.surname ? ` ${payer.surname}` : "";
+    const email = payer?.email || `guest_${Date.now()}@guest.local`;
+    const city = payer?.city || "";
+    const postalCode = payer?.postalCode || "";
+    const streetAddress = payer?.street_name || "";
+    const province = payer?.province || "";
+    const phonenumber = (payer?.area_code || "") + (payer?.number || "");
+
     const newOrder = await db.order.create({
       data: {
-        username: payer.name + " " + payer.surname,
-        email: payer.email,
-        city: payer.city,
+        username: username + surname,
+        email,
+        city,
         totalPrice: total,
-        postalCode: payer.postalCode,
-        streetAddress: payer.street_name,
-        province: payer.province,
-        phonenumber: payer.area_code + payer.number,
+        postalCode,
+        streetAddress,
+        province,
+        phonenumber,
         paid: false,
         items: {
-          create: cart.map((item: any) => ({
+          create: (cart || []).map((item: any) => ({
             product: {
               connect: {
                 id: item.id,
