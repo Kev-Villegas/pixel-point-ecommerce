@@ -89,7 +89,8 @@ export async function PUT(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
-  const { id, cart, payer, metadata } = await request.json();
+  const { id, cart, payer, metadata, external_reference } =
+    await request.json();
 
   const updatePreferenceRequest: any = {
     items: cart.map((item: any) => ({
@@ -102,6 +103,10 @@ export async function PUT(request: NextRequest) {
       category_id: item.brand,
     })),
   };
+
+  if (external_reference) {
+    updatePreferenceRequest.external_reference = external_reference;
+  }
 
   if (payer) {
     updatePreferenceRequest.payer = {
