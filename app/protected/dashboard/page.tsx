@@ -15,7 +15,7 @@ const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState("ventas");
 
   return (
-    <section className="mt-6 flex-1 dark:bg-gray-950">
+    <section className="mt-6 flex-1 overflow-x-hidden dark:bg-gray-950">
       <div className="ml-4 w-full px-8">
         <div className="pl-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">

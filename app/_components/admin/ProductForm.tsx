@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import Image from "next/image";
 import { CldUploadButton } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ interface ItemType {
 }
 
 type ProductFormProps = {
-  id?: string;
+  id?: string | number;
   name?: string;
   description?: string;
   price?: number;
@@ -26,6 +27,7 @@ type ProductFormProps = {
   brand?: string;
   stock?: number;
   properties?: Record<string, string>;
+  onSuccess?: () => void;
 };
 
 export default function ProductForm({
@@ -37,6 +39,7 @@ export default function ProductForm({
   brand: existingBrand,
   properties: existingProperties,
   stock: existingStock,
+  onSuccess,
 }: ProductFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState(existingName || "");
@@ -70,16 +73,31 @@ export default function ProductForm({
   ];
 
   useEffect(() => {
+    if (!existingName && !existingDescription && !existingImages) return;
+
+    setTitle(existingName || "");
+    setDescription(existingDescription || "");
+    setImages(existingImages || []);
+    setProductBrand(existingBrand || "");
+    setStock(existingStock || 0);
+
     if (existingProperties) {
-      const formattedProperties = Object.entries(existingProperties)
-        .map(([key, value]) => ({
+      const formattedProperties = Object.entries(existingProperties).map(
+        ([key, value]) => ({
           name: key,
-          values: value,
-        }))
-        .filter((prop) => prop.values !== null);
-      setProperties([...formattedProperties]);
+          values: value || "",
+        }),
+      );
+      setProperties(formattedProperties);
     }
-  }, [existingProperties]);
+  }, [
+    existingName,
+    existingDescription,
+    existingImages,
+    existingBrand,
+    existingProperties,
+    existingStock,
+  ]);
 
   const saveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,14 +114,22 @@ export default function ProductForm({
     if (id) {
       await axios.put(`/api/products/${id}`, { ...data, id }).then(() => {
         toast.success("Producto actualizado correctamente");
-        router.push("/protected/products");
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.push("/protected/dashboard");
+        }
       });
     } else {
       try {
         const response = await axios.post("/api/products", data);
         if (response.status === 201) {
           toast.success("Producto creado correctamente");
-          router.push("/protected/products");
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            router.push("/protected/dashboard");
+          }
         }
       } catch (error: any) {
         const errorMessage = error.response.data.error || "Error desconocido";
@@ -211,9 +237,11 @@ export default function ProductForm({
                 key={image.id}
                 className="group relative h-24 w-fit rounded-sm border border-gray-200 bg-white p-4 shadow-sm"
               >
-                <img
+                <Image
                   src={image.url}
                   alt="A product image"
+                  width={96}
+                  height={96}
                   className="rounded-lg"
                 />
                 <button

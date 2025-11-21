@@ -90,3 +90,39 @@ export async function POST(
 
   return new NextResponse("Método no permitido", { status: 405 });
 }
+
+// Agregar este nuevo método PATCH
+export async function PATCH(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
+  const params = await props.params;
+  const body = await request.json();
+  const newStatus = body.status as string;
+
+  if (
+    newStatus !== "PAGO_PENDIENTE" &&
+    newStatus !== "ENVIO_PENDIENTE" &&
+    newStatus !== "ENVIADO" &&
+    newStatus !== "ENTREGADO"
+  ) {
+    return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
+  }
+
+  try {
+    await db.order.update({
+      where: { id: parseInt(params.id) },
+      data: { status: newStatus },
+    });
+
+    return NextResponse.json(
+      { message: "Estado actualizado correctamente" },
+      { status: 200 },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al actualizar el estado" },
+      { status: 500 },
+    );
+  }
+}

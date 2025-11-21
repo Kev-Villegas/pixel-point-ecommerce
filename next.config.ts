@@ -27,6 +27,11 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
         pathname: "/df11ucbfe/image/upload/v*/pixelpoint/*",
       },
+      {
+        protocol: "https",
+        hostname: "www.atacadoconnect.com",
+        pathname: "/**",
+      },
     ],
   },
   compiler: {

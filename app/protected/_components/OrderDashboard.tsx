@@ -6,7 +6,7 @@ import { OrderStatsGrid } from "./OrderStatsGrid";
 import OrdersControls from "./OrdersControls";
 import dynamic from "next/dynamic";
 const OrderDetailDialog = dynamic(() =>
-  import("./OrderDetailDialog").then((mod) => mod.OrderDetailDialog)
+  import("./OrderDetailDialog").then((mod) => mod.OrderDetailDialog),
 );
 import { RecentOrdersTable } from "./RecentOrdersTable";
 import { Skeleton } from "@/app/_components/ui/skeleton";
@@ -21,18 +21,24 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
   BarChart,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { DateRange } from "../types/dashboard";
+import axios from "axios";
+
+// Mapeo de estados para el select
+const statusOptions = [
+  { value: "PAGO_PENDIENTE", label: "Pago Pendiente" },
+  { value: "ENVIO_PENDIENTE", label: "Envío Pendiente" },
+  { value: "ENVIADO", label: "Enviado" },
+  { value: "ENTREGADO", label: "Entregado" },
+];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -43,18 +49,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         {payload[0].payload.revenue && (
           <p className="text-green-600">{`Ingresos: $${payload[0].payload.revenue.toLocaleString()}`}</p>
         )}
-      </div>
-    );
-  }
-  return null;
-};
-
-const PieTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="rounded border bg-white p-2 shadow-lg">
-        <p className="font-semibold">{payload[0].name}</p>
-        <p className="text-blue-600">{`${payload[0].value}%`}</p>
       </div>
     );
   }
@@ -81,6 +75,19 @@ export function OrderDashboard() {
   const handleApplyDateRange = () => {
     setDateRange(tempRange);
     setIsCalendarOpen(false);
+  };
+
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
+    try {
+      await axios.patch(`/api/orders/${orderId}`, {
+        status: newStatus,
+      });
+      toast.success("Estado actualizado correctamente");
+      refreshOrders();
+    } catch (error) {
+      toast.error("Error al actualizar el estado");
+      console.error("Error updating order status:", error);
+    }
   };
 
   const filteredOrders = useMemo(() => {
@@ -110,7 +117,7 @@ export function OrderDashboard() {
     startIndex + itemsPerPage,
   );
 
-  const { stats, pieData } = useOrderStats(filteredOrders);
+  const { stats } = useOrderStats(filteredOrders);
 
   const handleExport = () => {
     exportToCSV({
@@ -177,76 +184,26 @@ export function OrderDashboard() {
         <OrderStatsGrid stats={stats} />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <RecentOrdersTable
-            refreshOrders={refreshOrders}
-            filteredOrders={filteredOrders}
-            paginatedOrders={paginatedOrders}
-            statusFilter={statusFilter}
-            searchTerm={searchTerm}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            startIndex={startIndex}
-            setSearchTerm={setSearchTerm}
-            setStatusFilter={setStatusFilter}
-            setItemsPerPage={setItemsPerPage}
-            setCurrentPage={setCurrentPage}
-            clearFilters={clearFilters}
-            setSelectedOrder={setSelectedOrder}
-            setIsDetailModalOpen={setIsDetailModalOpen}
-          />
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Estado de Órdenes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4 text-center">
-              <p className="text-lg font-semibold">
-                Completado {pieData.find((d) => d.name === "Completado")?.value}
-                %
-              </p>
-            </div>
-            <div className="relative h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={2}
-                    dataKey="value"
-                    animationBegin={0}
-                    animationDuration={800}
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<PieTooltip />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-              {pieData.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: item.color }}
-                  />
-                  <span className="text-gray-600">
-                    {item.name} ({item.count})
-                  </span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      <div>
+        <RecentOrdersTable
+          refreshOrders={refreshOrders}
+          filteredOrders={filteredOrders}
+          paginatedOrders={paginatedOrders}
+          statusFilter={statusFilter}
+          searchTerm={searchTerm}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          startIndex={startIndex}
+          setSearchTerm={setSearchTerm}
+          setStatusFilter={setStatusFilter}
+          setItemsPerPage={setItemsPerPage}
+          setCurrentPage={setCurrentPage}
+          clearFilters={clearFilters}
+          setSelectedOrder={setSelectedOrder}
+          setIsDetailModalOpen={setIsDetailModalOpen}
+          onStatusChange={handleStatusChange}
+        />
       </div>
 
       <Card>
