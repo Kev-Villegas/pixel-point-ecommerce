@@ -60,38 +60,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  props: { params: Promise<{ id: string }> },
-) {
-  const params = await props.params;
-  const formData = await request.formData();
-  const methodOverride = formData.get("_method");
-
-  if (methodOverride === "PATCH") {
-    const newStatus = formData.get("status") as string;
-
-    if (
-      newStatus !== "PAGO_PENDIENTE" &&
-      newStatus !== "ENVIO_PENDIENTE" &&
-      newStatus !== "ENVIADO" &&
-      newStatus !== "ENTREGADO"
-    ) {
-      return new NextResponse("Estado inválido", { status: 400 });
-    }
-
-    await db.order.update({
-      where: { id: parseInt(params.id) },
-      data: { status: newStatus },
-    });
-
-    return NextResponse.redirect(`${request.nextUrl.origin}/protected/orders`);
-  }
-
-  return new NextResponse("Método no permitido", { status: 405 });
-}
-
-// Agregar este nuevo método PATCH
 export async function PATCH(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },

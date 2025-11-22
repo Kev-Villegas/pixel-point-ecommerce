@@ -99,28 +99,6 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
                 </Link>
               </DropdownMenuItem>
             )}
-            {session.user?.role === "ADMIN" && (
-              <DropdownMenuItem
-                asChild
-                className="cursor-pointer hover:bg-muted"
-              >
-                <Link href="/protected/products" className="flex items-center">
-                  <Shield className="h-4 w-4" />
-                  <span>Productos</span>
-                </Link>
-              </DropdownMenuItem>
-            )}
-            {session.user?.role === "ADMIN" && (
-              <DropdownMenuItem
-                asChild
-                className="cursor-pointer hover:bg-muted"
-              >
-                <Link href="/protected/orders" className="flex items-center">
-                  <Shield className="h-4 w-4" />
-                  <span>Ordenes</span>
-                </Link>
-              </DropdownMenuItem>
-            )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="group cursor-pointer hover:bg-muted-foreground">

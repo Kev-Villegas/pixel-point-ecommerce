@@ -1,6 +1,6 @@
 "use client";
 import ProductForm from "@/app/_components/admin/ProductForm";
-import { ProductScraperForm } from "@/app/protected/products/_components/ProductScraperForm";
+import { ProductScraperForm } from "@/app/_components/ProductScraperForm";
 import Link from "next/link";
 import { useState } from "react";
 
