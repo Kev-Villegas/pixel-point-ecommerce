@@ -55,10 +55,13 @@ export function OrderDetails({ orderId }: { orderId: string }) {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="outline" className="w-full" size="sm">
-              <ExternalLink className="mr-2 h-4 w-4" />
-              Ver Factura
-            </Button>
+            {/* TODO -- CREATE CART WITH ORDER.ITEMS */}
+            {order.status === "PAGO_PENDIENTE" && (
+              <Button variant="default" className="w-full" size="sm">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Continuar con el pago
+              </Button>
+            )}
           </CardFooter>
         </Card>
 

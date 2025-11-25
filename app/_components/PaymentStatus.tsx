@@ -17,8 +17,10 @@ export default function PaymentStatus() {
   };
 
   const customization = {
+    // Error: boton -> legir otro medio de pago
+    // return: boton -> volver a la tienda
     backUrls: {
-      error: process.env.NEXT_PUBLIC_URL as string,
+      error: `${process.env.NEXT_PUBLIC_URL as string}/error`,
       return: process.env.NEXT_PUBLIC_URL as string,
     },
     visual: {

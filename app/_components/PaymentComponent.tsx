@@ -121,9 +121,12 @@ export default function PaymentComponent() {
         headers,
       });
       if (response.data?.status === "approved") {
-        clearCart();
+        // clearCart();
+        router.push(`/checkout/payment/status?id=${response.data.id}&ok`);
+      } else {
+        router.push(`/checkout/payment/status?id=${response.data.id}`);
       }
-      router.push(`/checkout/payment/status?id=${response.data.id}`);
+      console.log(response.data);
     } catch (err) {
       console.error(err);
     }

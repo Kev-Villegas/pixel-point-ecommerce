@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Accordion,
   AccordionContent,
@@ -29,12 +28,42 @@ const faqCategories = [
     ],
   },
   {
+    title: "Proceso de Compra",
+    items: [
+      {
+        question: "¿Cómo es el proceso de compra?",
+        answer:
+          "El proceso es muy simple y consta de 4 pasos: 1) Armás tu carrito con los productos que querés. 2) Realizás el pago de forma segura a través de nuestra plataforma. 3) Te enviamos un correo confirmando tu compra junto con un formulario para que completes tu domicilio de entrega. 4) Una vez que completás y enviás el formulario, despachamos tu paquete.",
+      },
+      {
+        question: "¿Cuánto tarda en llegar mi pedido después de pagar?",
+        answer:
+          "Una vez que completes el formulario con tu domicilio que te enviamos por correo, procesamos y despachamos tu pedido. Los tiempos de entrega dependen de tu ubicación y pueden variar según el servicio de envío.",
+      },
+      {
+        question: "¿Qué pasa si no completo el formulario de domicilio?",
+        answer:
+          "Es importante que completes el formulario que te enviamos por correo lo antes posible. Sin esta información, no podemos despachar tu pedido. Si tenés algún inconveniente, contactanos y te ayudamos.",
+      },
+    ],
+  },
+  {
     title: "Envíos y Entregas",
     items: [
       {
         question: "¿Hacen envíos a todo el país?",
         answer:
-          "Sí, realizamos envíos a todo el país por correo. También podés retirar en persona si estás cerca.",
+          "Sí, realizamos envíos a todo el país a través de Andreani. También podés retirar en persona si estás cerca, coordinando previamente en nuestro punto de entrega.",
+      },
+      {
+        question: "¿Con qué empresa de logística trabajan?",
+        answer:
+          "Trabajamos con Andreani, una de las empresas de logística más confiables de Argentina, para asegurar que tu pedido llegue en tiempo y forma.",
+      },
+      {
+        question: "¿Puedo hacer seguimiento de mi envío?",
+        answer:
+          "Sí, una vez que despachemos tu paquete con Andreani, te enviaremos el código de seguimiento para que puedas rastrear tu envío en tiempo real.",
       },
     ],
   },
@@ -55,6 +84,26 @@ const faqCategories = [
         question: "¿Hacen descuentos por compras grandes o mayoristas?",
         answer:
           "Sí, tenemos precios especiales para compras por cantidad. Escribinos y te armamos un presupuesto a medida.",
+      },
+    ],
+  },
+  {
+    title: "Cuenta y Registro",
+    items: [
+      {
+        question: "¿Qué beneficios tengo si me registro en el ecommerce?",
+        answer:
+          "Al registrarte como cliente en nuestra plataforma tenés acceso a funciones exclusivas: podés guardar tus productos favoritos, hacer seguimiento de tus pedidos en tiempo real, acceder más rápido al checkout con tus datos guardados, recibir notificaciones sobre promociones especiales, y mucho más. ¡Es gratis y solo te toma unos segundos!",
+      },
+      {
+        question: "¿Es obligatorio registrarme para comprar?",
+        answer:
+          "No es obligatorio, podés comprar como invitado. Sin embargo, te recomendamos registrarte para aprovechar todas las ventajas y tener un mejor control de tus compras.",
+      },
+      {
+        question: "¿Mis datos están seguros?",
+        answer:
+          "Absolutamente. Utilizamos tecnología de encriptación y protocolos de seguridad para proteger toda tu información personal y de pago.",
       },
     ],
   },
