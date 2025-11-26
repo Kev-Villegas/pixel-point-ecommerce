@@ -28,7 +28,6 @@ export function CartOrderSummary({
     const response = await axios.post("/api/checkout/preferences", {
       cart: cartProducts,
     });
-    console.log(response);
     router.push(`/checkout/payment?preference=${response.data.response.id}`);
   }
 

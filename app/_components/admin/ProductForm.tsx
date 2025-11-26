@@ -133,7 +133,6 @@ export default function ProductForm({
         }
       } catch (error: any) {
         const errorMessage = error.response.data.error || "Error desconocido";
-        // console.log(error.response.data.error)
         toast.error(`Error: ${errorMessage}`);
       }
     }

@@ -52,7 +52,6 @@ export function ProductScraperForm({ onDataScraped }: ProductScraperFormProps) {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         setError(data.error || "Error al procesar la solicitud");
@@ -79,16 +78,12 @@ export function ProductScraperForm({ onDataScraped }: ProductScraperFormProps) {
           })
           .filter(Boolean) as ItemType[],
       };
-      console.log(transformedData);
 
-      // Enviar los datos transformados al componente padre
       onDataScraped(transformedData);
 
-      // Mostrar mensaje de éxito
       setSuccess(true);
       setUrl("");
 
-      // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => {
         setSuccess(false);
       }, 3000);

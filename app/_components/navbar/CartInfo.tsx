@@ -1,4 +1,5 @@
 "use client";
+import { fbq } from "@/app/_utils/pixel";
 import { useCartStore } from "@/store/useCartStore";
 import axios from "axios";
 import { ShoppingCart, Loader2 } from "lucide-react";
@@ -29,6 +30,18 @@ export default function CartInfo() {
     setLoading(true);
 
     try {
+      fbq("track", "InitiateCheckout", {
+        value: cartProducts.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0,
+        ),
+        currency: "ARS",
+        contents: cartProducts.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+        })),
+      });
+
       const { data } = await axios.post("/api/checkout/preferences", {
         cart: cartProducts,
       });

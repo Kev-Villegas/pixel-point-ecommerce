@@ -8,6 +8,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { ProductBase, CartProduct } from "@/types/types";
 import { BadgeCheck, ShoppingBag, Heart } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { fbq } from "../_utils/pixel";
 
 interface ProductCardProps extends ProductBase {
   onUnfavorite?: () => void;
@@ -34,6 +35,11 @@ export default function ProductCard({
     };
 
     addProduct(itemToAdd);
+    fbq("track", "AddToCart", {
+      content_ids: [itemToAdd.id],
+      value: itemToAdd.price,
+      currency: "ARS",
+    });
     setTimeout(() => setIsAdding(false), 800);
   };
 

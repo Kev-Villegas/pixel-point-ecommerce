@@ -4,12 +4,12 @@ import { Brand, initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Card } from "./ui/card";
 
 export default function PaymentComponent() {
   const router = useRouter();
-  const { cartProducts, clearCart } = useCartStore();
+  const { cartProducts } = useCartStore();
   const deviceId = useDeviceStore((state) => state.deviceId);
 
   useEffect(() => {
@@ -50,9 +50,6 @@ export default function PaymentComponent() {
   };
 
   const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
-    console.log(formData);
-    console.log(selectedPaymentMethod);
-
     const headers = { "X-meli-session-id": deviceId };
 
     try {
@@ -121,12 +118,10 @@ export default function PaymentComponent() {
         headers,
       });
       if (response.data?.status === "approved") {
-        // clearCart();
-        router.push(`/checkout/payment/status?id=${response.data.id}&ok`);
+        router.replace(`/checkout/payment/status?id=${response.data.id}&ok`);
       } else {
-        router.push(`/checkout/payment/status?id=${response.data.id}`);
+        router.replace(`/checkout/payment/status?id=${response.data.id}`);
       }
-      console.log(response.data);
     } catch (err) {
       console.error(err);
     }

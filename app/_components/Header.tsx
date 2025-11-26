@@ -23,11 +23,7 @@ export default function Header() {
 
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    // Aquí puedes realizar acciones cuando la sesión cambie
-    // Por ejemplo, refrescar datos o mostrar un toast
-    // console.log('Session changed:', session);
-  }, [session, status]);
+  useEffect(() => {}, [session, status]);
 
   return (
     <header className="bg-white px-5 shadow-md md:px-10">

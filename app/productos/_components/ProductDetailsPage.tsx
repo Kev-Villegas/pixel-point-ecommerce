@@ -41,6 +41,7 @@ import {
   Ruler,
 } from "lucide-react";
 import ProductList from "@/app/_components/ProductList";
+import { fbq } from "@/app/_utils/pixel";
 
 interface Product extends PrismaProduct {
   images: PrismaImage[];
@@ -61,9 +62,17 @@ const ProductDetailsPage = () => {
       try {
         const res = await fetch(`/api/products/${id}`);
         if (!res.ok) throw new Error("Producto no encontrado");
+
         const data = await res.json();
         setProduct(data);
         setSelectedImage(data.images[0]?.url || null);
+
+        fbq("track", "ViewContent", {
+          content_ids: [data.id],
+          content_type: "product",
+          value: data.price,
+          currency: "ARS",
+        });
       } catch (error) {
         console.error(error);
         router.push("/404");
@@ -146,6 +155,11 @@ const ProductDetailsPage = () => {
       description,
       createdAt,
       updatedAt,
+    });
+    fbq("track", "AddToCart", {
+      content_ids: [Number(id)],
+      value: price,
+      currency: "ARS",
     });
     setTimeout(() => setIsAdding(false), 800);
   };
