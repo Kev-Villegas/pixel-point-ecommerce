@@ -45,10 +45,16 @@ export async function POST(request: NextRequest) {
   const { payer, cart, total } = await request.json();
 
   try {
-    // Allow creating a minimal order when payer is not provided
-    const username = payer?.name || "Guest";
+    // Obtener la sesión del servidor
+    const session = await auth();
+
+    // Priorizar datos de sesión si existe, sino usar datos del payer o valores por defecto
+    const username = session?.user?.name || payer?.name || "Guest";
     const surname = payer?.surname ? ` ${payer.surname}` : "";
-    const email = payer?.email || `guest_${Date.now()}@guest.local`;
+    const email =
+      session?.user?.email || payer?.email || `guest_${Date.now()}@guest.local`;
+
+    // Los datos de dirección siempre vienen del payer (formulario de checkout)
     const city = payer?.city || "";
     const postalCode = payer?.postalCode || "";
     const streetAddress = payer?.street_name || "";
