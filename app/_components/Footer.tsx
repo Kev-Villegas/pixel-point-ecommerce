@@ -61,6 +61,14 @@ export default function Footer() {
                   Preguntas Frecuentes
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/proximos-pasos"
+                  className="transition-colors hover:text-gray-900"
+                >
+                  Próximos Pasos
+                </Link>
+              </li>
             </ul>
           </div>
 

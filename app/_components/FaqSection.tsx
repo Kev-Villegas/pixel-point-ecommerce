@@ -113,7 +113,7 @@ export function FaqSection() {
   return (
     <div className="space-y-10">
       {faqCategories.map((category, index) => (
-        <div key={index} className="rounded-lg border bg-card p-6">
+        <div key={index} className="rounded-lg border bg-white p-6">
           <h2 className="mb-4 text-xl font-semibold">{category.title}</h2>
           <Accordion type="single" collapsible className="w-full">
             {category.items.map((item, itemIndex) => (

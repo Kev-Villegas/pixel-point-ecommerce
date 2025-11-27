@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import Header from "./_components/Header";
+import Footer from "./_components/Footer";
 import SessionWrapper from "./_components/SessionWrapper";
 import "./globals.css";
 import Script from "next/script";
@@ -136,6 +137,7 @@ export default function RootLayout({
           <React.StrictMode>
             <Header />
             <main>{children}</main>
+            <Footer />
           </React.StrictMode>
           <Toaster
             position="top-center"
