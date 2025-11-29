@@ -10,6 +10,7 @@ interface UserInfo {
   postalCode: string;
   apartment: string;
   floor: string;
+  observations: string;
   loading: boolean; // Estado de carga
   error: string | null; // Estado de error
   fetchUserInfo: () => Promise<void>; // Método para obtener la información del usuario
@@ -30,6 +31,7 @@ export const useUserInfoStore = create<UserInfo>()(
       postalCode: "",
       apartment: "",
       floor: "",
+      observations: "",
       loading: false,
       error: null,
       fetchUserInfo: async () => {
@@ -51,6 +53,7 @@ export const useUserInfoStore = create<UserInfo>()(
             postalCode: data.postalCode || "",
             apartment: data.apartment || "",
             floor: data.floor || "",
+            observations: data.observations || "",
             loading: false,
           });
         } catch (error: any) {

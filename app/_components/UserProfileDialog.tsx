@@ -38,6 +38,7 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     postalCode,
     apartment,
     floor,
+    observations,
     updateUser,
     fetchUserInfo,
   } = useUserInfoStore();
@@ -56,6 +57,7 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
       postalCode,
       apartment,
       floor,
+      observations,
     };
 
     try {
@@ -152,6 +154,14 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
           <div className="flex flex-col">
             <Label htmlFor="floor">Piso (Opcional)</Label>
             <Input id="floor" value={floor} onChange={handleChange} />
+          </div>
+          <div className="col-span-1 flex flex-col sm:col-span-2">
+            <Label htmlFor="observations">Observaciones (Opcional)</Label>
+            <Input
+              id="observations"
+              value={observations || ""}
+              onChange={handleChange}
+            />
           </div>
         </div>
 

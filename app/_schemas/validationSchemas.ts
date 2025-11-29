@@ -65,6 +65,12 @@ export const userAddressValidation = z.object({
     .string()
     .max(10, { message: "El departamento no debe exceder los 10 caracteres." })
     .optional(),
+  observations: z
+    .string()
+    .max(300, {
+      message: "Las observaciones no deben exceder los 300 caracteres.",
+    })
+    .optional(),
 });
 
 export const userRegisterSchema = z

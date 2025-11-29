@@ -128,6 +128,10 @@ export async function PUT(request: NextRequest) {
             ? body.apartment
             : user.shipments[0].apartment,
         floor: body.floor !== undefined ? body.floor : user.shipments[0].floor,
+        observations:
+          body.observations !== undefined
+            ? body.observations
+            : user.shipments[0].observations,
         updatedAt: new Date(),
       },
     });
