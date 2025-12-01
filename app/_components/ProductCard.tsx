@@ -9,6 +9,7 @@ import { ProductBase, CartProduct } from "@/types/types";
 import { BadgeCheck, ShoppingBag, Heart } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { fbq } from "../_utils/pixel";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps extends ProductBase {
   onUnfavorite?: () => void;
@@ -23,6 +24,7 @@ export default function ProductCard({
   const [isAdding, setIsAdding] = useState(false);
   const { likedProductIds, mutate } = useLikes();
   const [likeLoading, setLikeLoading] = useState(false);
+  const router = useRouter();
 
   const isLiked = likedProductIds.includes(id);
 
@@ -61,6 +63,9 @@ export default function ProductCard({
       }
       mutate();
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        router.push("/auth/signin");
+      }
       mutate(prevLikedIds, false);
     } finally {
       setLikeLoading(false);
