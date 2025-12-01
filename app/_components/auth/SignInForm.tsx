@@ -137,7 +137,7 @@ const SignInForm = () => {
           className="w-full"
           onClick={(e) => {
             e.preventDefault();
-            signIn("google");
+            signIn("google", { callbackUrl: "/" });
           }}
         >
           <svg
