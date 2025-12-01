@@ -9,22 +9,22 @@ export default function FavoritesPage() {
 
   if (isLoading) {
     return (
-      <section className="px-6">
+      <main className="container mx-auto min-h-[80vh] px-4 py-8">
         <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
           Mis Favoritos
         </h1>
-        <div className="flex flex-row flex-wrap gap-4">
-          {Array.from({ length: favorites?.length || 6 }).map((_, index) => (
+        <div className="grid grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 sm:justify-items-stretch md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7">
+          {Array.from({ length: 6 }).map((_, index) => (
             <SkeletonCard key={index} />
           ))}
         </div>
-      </section>
+      </main>
     );
   }
 
   if (error) {
     return (
-      <div className="p-8 text-center">
+      <main className="container mx-auto flex min-h-[80vh] flex-col items-center justify-center px-4 py-8">
         <p className="text-red-500">Error cargando favoritos.</p>
         <button
           onClick={() => mutate()}
@@ -32,21 +32,23 @@ export default function FavoritesPage() {
         >
           Reintentar
         </button>
-      </div>
+      </main>
     );
   }
 
   if (favorites.length === 0) {
     return (
-      <div className="p-8 text-center">
+      <main className="container mx-auto flex min-h-[80vh] flex-col items-center justify-center px-4 py-8">
         <h1 className="mb-2 text-2xl font-semibold">Mis Favoritos</h1>
-        <p>No tienes productos en favoritos aún.</p>
-      </div>
+        <p className="text-muted-foreground">
+          No tienes productos en favoritos aún.
+        </p>
+      </main>
     );
   }
 
   return (
-    <section className="px-6">
+    <main className="container mx-auto min-h-[80vh] px-4 py-8">
       <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
         Mis Favoritos
       </h1>
@@ -61,6 +63,6 @@ export default function FavoritesPage() {
           />
         ))}
       </div>
-    </section>
+    </main>
   );
 }
