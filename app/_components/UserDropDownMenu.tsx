@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from "./ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 interface UserDropDownMenuProps {
   session: Session;
@@ -101,11 +102,17 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
             )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="group cursor-pointer hover:bg-muted-foreground">
-            <Link href="/api/auth/signout" className="flex w-full items-center">
-              <LogOut className="mr-2 h-4 w-4 font-bold group-hover:font-extrabold group-hover:text-red-800" />
-              <span>Cerrar sesión</span>
-            </Link>
+          <DropdownMenuItem
+            asChild
+            className="group cursor-pointer hover:bg-muted-foreground"
+          >
+            <button
+              className="flex w-full items-center"
+              onClick={() => signOut()}
+            >
+              <LogOut className="h-4 w-4 font-bold group-hover:font-extrabold group-hover:text-red-800" />
+              <span className="group-hover:text-red-800">Cerrar sesión</span>
+            </button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
