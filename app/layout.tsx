@@ -95,8 +95,10 @@ const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <SessionWrapper>
@@ -137,6 +139,7 @@ export default function RootLayout({
           <React.StrictMode>
             <Header />
             <main>{children}</main>
+            {modal}
             <Footer />
           </React.StrictMode>
           <Toaster
