@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence, LazyMotion, domAnimation } from "framer-motion";
 
 const banners = [
   {
@@ -129,117 +129,119 @@ export default function BannerCarousel() {
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          aria-live="polite"
-          key={banners[current].id}
-          initial={{ opacity: 0, x: 100, scale: 0.95 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          exit={{ opacity: 0, x: -100, scale: 0.95 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${banners[current].bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
-        >
-          <div className="pointer-events-none absolute inset-0 z-0">
-            <div className="absolute left-[10%] top-[20%] h-32 w-32 rounded-full bg-gray-800/50 blur-3xl" />
-            <div className="absolute bottom-[20%] right-[10%] h-40 w-40 rounded-full bg-gray-800/50 blur-3xl" />
-            <div
-              className={`absolute bottom-[10%] left-[30%] h-24 w-24 rounded-full ${b.accentColor}/10 blur-2xl`}
-            />
-            <div
-              className={`absolute right-[20%] top-[30%] h-20 w-20 rounded-full ${b.accentColor}/10 blur-2xl`}
-            />
-          </div>
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence mode="wait">
+          <m.div
+            aria-live="polite"
+            key={banners[current].id}
+            initial={{ opacity: 0, x: 100, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -100, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            className={`relative flex w-full flex-col items-center overflow-hidden bg-gradient-to-r ${banners[current].bgGradient} rounded-2xl px-4 py-12 md:min-h-[500px] md:flex-row md:py-0`}
+          >
+            <div className="pointer-events-none absolute inset-0 z-0">
+              <div className="absolute left-[10%] top-[20%] h-32 w-32 rounded-full bg-gray-800/50 blur-3xl" />
+              <div className="absolute bottom-[20%] right-[10%] h-40 w-40 rounded-full bg-gray-800/50 blur-3xl" />
+              <div
+                className={`absolute bottom-[10%] left-[30%] h-24 w-24 rounded-full ${b.accentColor}/10 blur-2xl`}
+              />
+              <div
+                className={`absolute right-[20%] top-[30%] h-20 w-20 rounded-full ${b.accentColor}/10 blur-2xl`}
+              />
+            </div>
 
-          <div className="relative flex w-full items-center justify-center md:w-1/2 md:justify-end">
-            <div className="relative z-10 flex items-center md:mr-12">
-              <div
-                className={`absolute -left-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
-              />
-              <div
-                className={`absolute -right-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
-              />
-              <div className="group relative">
+            <div className="relative flex w-full items-center justify-center md:w-1/2 md:justify-end">
+              <div className="relative z-10 flex items-center md:mr-12">
                 <div
-                  className={`absolute -inset-0.5 rounded-2xl ${b.accentColor}/20 blur-sm transition duration-300 group-hover:${b.accentColor}/30`}
+                  className={`absolute -left-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
                 />
                 <div
-                  className="relative rounded-2xl p-1"
-                  style={{ width: 300, height: 500 }}
+                  className={`absolute -right-4 top-1/2 h-40 w-1 -translate-y-1/2 ${b.accentColor} blur-sm`}
+                />
+                <div className="group relative">
+                  <div
+                    className={`absolute -inset-0.5 rounded-2xl ${b.accentColor}/20 blur-sm transition duration-300 group-hover:${b.accentColor}/30`}
+                  />
+                  <div
+                    className="relative rounded-2xl p-1"
+                    style={{ width: 300, height: 500 }}
+                  >
+                    <Image
+                      src={b.imagePath}
+                      alt={b.imageAlt}
+                      fill
+                      style={{ objectFit: "contain" }}
+                      // width={300}
+                      // height={500}
+                      className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                      priority={current === 0}
+                      loading={current === 0 ? "eager" : "lazy"}
+                      fetchPriority={current === 0 ? "high" : "auto"}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Texto y CTA */}
+            <div className="z-10 flex w-full flex-col items-center text-center md:w-1/2 md:items-start md:pl-8 md:text-left">
+              <span
+                className={`inline-block rounded-full ${b.accentColor}/20 py-1 text-sm font-medium ${b.textColor}`}
+              >
+                {b.subtitle}
+              </span>
+              <h1 className="mt-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+                {b.title}
+              </h1>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <div
+                  className={`flex items-center gap-2 rounded-lg ${b.accentColor}/10 px-6 py-3`}
                 >
                   <Image
-                    src={b.imagePath}
-                    alt={b.imageAlt}
-                    fill
-                    style={{ objectFit: "contain" }}
-                    // width={300}
-                    // height={500}
+                    src="/banner/mp-blue.webp"
+                    alt="Mercado Pago Logo"
+                    width={200}
+                    height={81}
                     className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
-                    priority={current === 0}
-                    loading={current === 0 ? "eager" : "lazy"}
-                    fetchPriority={current === 0 ? "high" : "auto"}
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                    fetchPriority="high"
                   />
                 </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Texto y CTA */}
-          <div className="z-10 flex w-full flex-col items-center text-center md:w-1/2 md:items-start md:pl-8 md:text-left">
-            <span
-              className={`inline-block rounded-full ${b.accentColor}/20 py-1 text-sm font-medium ${b.textColor}`}
-            >
-              {b.subtitle}
-            </span>
-            <h1 className="mt-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-              {b.title}
-            </h1>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <div
-                className={`flex items-center gap-2 rounded-lg ${b.accentColor}/10 px-6 py-3`}
-              >
-                <Image
-                  src="/banner/mp-blue.webp"
-                  alt="Mercado Pago Logo"
-                  width={200}
-                  height={81}
-                  className="rounded-xl drop-shadow-[0_0_15px_rgba(0,0,0,0.5)]"
-                  priority
-                  fetchPriority="high"
-                />
-              </div>
-
-              <div className="flex flex-col justify-center rounded-lg bg-gray-800/50 px-6 py-3 backdrop-blur-sm">
-                <p className="mb-1 text-center text-sm font-semibold leading-none text-white">
-                  HASTA
-                </p>
-                <div className="flex items-baseline justify-center gap-2 leading-none">
-                  <span className="text-3xl font-bold text-white">
-                    {b.installments}
-                  </span>
-                  <span className="text-lg font-semibold text-white">
-                    CUOTAS
-                  </span>
+                <div className="flex flex-col justify-center rounded-lg bg-gray-800/50 px-6 py-3 backdrop-blur-sm">
+                  <p className="mb-1 text-center text-sm font-semibold leading-none text-white">
+                    HASTA
+                  </p>
+                  <div className="flex items-baseline justify-center gap-2 leading-none">
+                    <span className="text-3xl font-bold text-white">
+                      {b.installments}
+                    </span>
+                    <span className="text-lg font-semibold text-white">
+                      CUOTAS
+                    </span>
+                  </div>
                 </div>
               </div>
+              <p className="mt-4 text-sm text-gray-400">
+                Pagalo en cuotas con tu tarjeta, fácil y seguro.
+              </p>
+              {["hot-sale", "flash-sale"].includes(b.type) ? (
+                <></>
+              ) : (
+                // <CountdownTimer accentColor={b.textColor} />
+                <></>
+                // <Button className={`${b.buttonColor} mt-6 px-8 py-3`}>
+                //   Comprar Ahora
+                // </Button>
+              )}
             </div>
-            <p className="mt-4 text-sm text-gray-400">
-              Pagalo en cuotas con tu tarjeta, fácil y seguro.
-            </p>
-            {["hot-sale", "flash-sale"].includes(b.type) ? (
-              <></>
-            ) : (
-              // <CountdownTimer accentColor={b.textColor} />
-              <></>
-              // <Button className={`${b.buttonColor} mt-6 px-8 py-3`}>
-              //   Comprar Ahora
-              // </Button>
-            )}
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          </m.div>
+        </AnimatePresence>
+      </LazyMotion>
 
       <div className="flex justify-center gap-2 bg-transparent py-4">
         {banners.map((_, i) => (

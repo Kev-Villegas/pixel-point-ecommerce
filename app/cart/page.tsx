@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartStore } from "@/store/useCartStore";
-import { AnimatePresence, motion } from "framer-motion";
+import { m, AnimatePresence, LazyMotion, domAnimation } from "framer-motion";
 import { X } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { Button } from "../_components/ui/button";
@@ -45,76 +45,78 @@ export default function CartPage() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
-      className="min-h-screen bg-gray-50"
-    >
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 lg:text-left">
-          Checkout
-        </h1>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        className="min-h-screen bg-gray-50"
+      >
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 lg:text-left">
+            Checkout
+          </h1>
 
-        {cartProducts.length === 0 ? (
-          <EmptyCartBanner />
-        ) : (
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr,1.5fr]">
-            {/* 🛒 Izquierda: Carrito y resumen */}
-            <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <Card className="gap-2 space-y-3 shadow-sm">
-                <AnimatePresence>
-                  {cartProducts.map((product) => (
-                    <CartProductItem
-                      key={product.id}
-                      product={product}
-                      onQuantityChange={handleQuantityChange}
-                      onRemove={handleRemoveProduct}
-                    />
-                  ))}
-                </AnimatePresence>
-              </Card>
+          {cartProducts.length === 0 ? (
+            <EmptyCartBanner />
+          ) : (
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr,1.5fr]">
+              {/* 🛒 Izquierda: Carrito y resumen */}
+              <m.div
+                className="space-y-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <Card className="gap-2 space-y-3 shadow-sm">
+                  <AnimatePresence>
+                    {cartProducts.map((product) => (
+                      <CartProductItem
+                        key={product.id}
+                        product={product}
+                        onQuantityChange={handleQuantityChange}
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </Card>
 
-              <div className="flex items-center justify-between px-2">
-                <div className="text-lg font-semibold text-gray-700">
-                  {cartProducts.length}{" "}
-                  {cartProducts.length === 1 ? "Artículo" : "Artículos"}
+                <div className="flex items-center justify-between px-2">
+                  <div className="text-lg font-semibold text-gray-700">
+                    {cartProducts.length}{" "}
+                    {cartProducts.length === 1 ? "Artículo" : "Artículos"}
+                  </div>
+                  <Button
+                    variant="destructive"
+                    className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                    onClick={handleClearCart}
+                  >
+                    <X className="mr-2 h-4 w-4" />
+                    Vaciar Carrito
+                  </Button>
                 </div>
-                <Button
-                  variant="destructive"
-                  className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-                  onClick={handleClearCart}
-                >
-                  <X className="mr-2 h-4 w-4" />
-                  Vaciar Carrito
-                </Button>
-              </div>
 
-              <CartOrderSummary
-                cartProducts={cartProducts}
-                getTotalOrderPrice={getTotalOrderPrice}
-              />
-            </motion.div>
+                <CartOrderSummary
+                  cartProducts={cartProducts}
+                  getTotalOrderPrice={getTotalOrderPrice}
+                />
+              </m.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -25 }}
-              transition={{ duration: 0.4 }}
-              className="h-min"
-            >
-              <PaymentComponent />
-            </motion.div>
-          </div>
-        )}
-      </div>
-    </motion.div>
+              <m.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.4 }}
+                className="h-min"
+              >
+                <PaymentComponent />
+              </m.div>
+            </div>
+          )}
+        </div>
+      </m.div>
+    </LazyMotion>
   );
 }

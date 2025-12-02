@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Button } from "@/app/_components/ui/button";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 
@@ -28,7 +28,7 @@ export function CartProductItem({
   onRemove,
 }: CartProductItemProps) {
   return (
-    <motion.div
+    <m.div
       key={product.id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -80,6 +80,6 @@ export function CartProductItem({
           <Trash2 className="h-6 w-6 text-gray-50" />
         </Button>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

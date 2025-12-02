@@ -7,7 +7,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { Button } from "@/app/_components/ui/button";
 import ProductDescription from "./ProductDescription";
 import { useParams, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence, LazyMotion, domAnimation } from "framer-motion";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Separator } from "@/app/_components/ui/separator";
 import {
@@ -178,23 +178,25 @@ const ProductDetailsPage = () => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="flex flex-col">
           <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedImage}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={selectedImage || "/placeholder.png"}
-                  alt={name}
-                  fill
-                  className="object-contain"
-                />
-              </motion.div>
-            </AnimatePresence>
+            <LazyMotion features={domAnimation}>
+              <AnimatePresence mode="wait">
+                <m.div
+                  key={selectedImage}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={selectedImage || "/placeholder.png"}
+                    alt={name}
+                    fill
+                    className="object-contain"
+                  />
+                </m.div>
+              </AnimatePresence>
+            </LazyMotion>
           </div>
 
           <div className="mt-4 flex flex-wrap justify-start gap-2">

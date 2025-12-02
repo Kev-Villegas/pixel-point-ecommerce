@@ -3,7 +3,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -32,7 +32,7 @@ export function CartOrderSummary({
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -25 }}
@@ -88,6 +88,6 @@ export function CartOrderSummary({
           />
         </Button> */}
       </Card>
-    </motion.div>
+    </m.div>
   );
 }
