@@ -7,11 +7,11 @@ export async function POST(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
-  const { cart, orderId } = await request.json();
+  const { cart, orderId, payer, shipments, metadata } = await request.json();
 
   const { ip, userAgent } = getClientContext(request);
 
-  const body = {
+  const body: any = {
     items: cart.map((item: any) => ({
       id: item.id,
       unit_price: item.price,
@@ -33,52 +33,43 @@ export async function POST(request: NextRequest) {
     external_reference: orderId,
     metadata: {
       orderId: orderId,
-      created_from: "guest-checkout",
+      created_from: payer ? "user-checkout" : "guest-checkout",
       ip_address: ip,
       user_agent: userAgent,
+      ...(metadata || {}), // Merge additional metadata if provided
     },
-    // payer: {
-    //   first_name: payer.name,
-    //   last_name: payer.surname,
-    //   email: payer.email,
-    //   phone: {
-    //     area_code: payer.area_code,
-    //     number: payer.number,
-    //   },
-    //   address: {
-    //     zip_code: payer.postalCode,
-    //     street_name: payer.street_name,
-    //     street_number: payer.street_number,
-    //   },
-    // },
-    // shipments: {
-    //   local_pickup: false,
-    //   free_methods: [
-    //     {
-    //       id: 1,
-    //     },
-    //   ],
-    //   // cost: 10,
-    //   free_shipping: false,
-    //   dimensions: "10x10x20,500",
-    //   receiver_address: {
-    //     zip_code: payer.postalCode,
-    //     street_number: payer.street_number,
-    //     street_name: payer.street_name,
-    //     floor: payer.floor,
-    //     apartment: payer.apartment,
-    //   },
-    // },
-    // notification_url:
-    //   "https://www.pixel-point.com.ar/api/checkout/notifications",
-    // statement_descriptor: "Pixel Point",
-    // back_urls: {
-    //   failure: "https://www.pixel-point.com.ar",
-    //   pending: "https://www.pixel-point.com.ar",
-    //   success: "https://www.pixel-point.com.ar",
-    // },
-    // auto_return: "approved",
   };
+
+  // Agregar información del payer si está disponible
+  if (payer) {
+    body.payer = {
+      email: payer.email,
+      phone: {
+        area_code: payer.phone?.area_code || "",
+        number: payer.phone?.number || "",
+      },
+      address: {
+        zip_code: payer.address?.zip_code || "",
+        street_name: payer.address?.street_name || "",
+        street_number: payer.address?.street_number || null,
+      },
+    };
+  }
+
+  // Agregar información de shipments si está disponible
+  if (shipments) {
+    body.shipments = {
+      receiver_address: {
+        zip_code: shipments.receiver_address?.zip_code || "",
+        street_name: shipments.receiver_address?.street_name || "",
+        street_number: shipments.receiver_address?.street_number || null,
+        floor: shipments.receiver_address?.floor || "",
+        apartment: shipments.receiver_address?.apartment || "",
+        city_name: shipments.receiver_address?.city_name || null,
+        state_name: shipments.receiver_address?.state_name || null,
+      },
+    };
+  }
 
   const response = await preference.create({ body });
   return NextResponse.json({ response });

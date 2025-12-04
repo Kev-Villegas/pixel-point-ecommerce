@@ -61,7 +61,6 @@ export default function BurgerButton({ brands }: Props) {
             {/* <button
               className="w-full rounded-md bg-black px-4 py-3 text-white transition-colors hover:bg-gray-800"
               onClick={() => {
-                // Add login logic here
                 setIsOpen(false);
               }}
             >

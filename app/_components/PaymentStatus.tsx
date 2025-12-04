@@ -10,15 +10,26 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 initMercadoPago(process.env.NEXT_PUBLIC_PUBLIC_KEY as string);
 
-export default function PaymentStatus() {
+interface PaymentStatusProps {
+  paymentId?: string;
+  isApproved?: boolean;
+  inModal?: boolean;
+}
+
+export default function PaymentStatus({
+  paymentId: propPaymentId,
+  isApproved: propIsApproved,
+  inModal = false,
+}: PaymentStatusProps = {}) {
   const searchParams = useSearchParams();
   const { cartProducts, clearCart } = useCartStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const hasFiredRef = useRef(false);
 
-  const paymentId = searchParams.get("id") as string;
-  const isApproved = searchParams.has("ok");
+  const paymentId = propPaymentId || (searchParams.get("id") as string);
+  const isApproved =
+    propIsApproved !== undefined ? propIsApproved : searchParams.has("ok");
 
   const initialization = { paymentId };
 
@@ -64,21 +75,28 @@ export default function PaymentStatus() {
 
   const onError = (err: any) => console.log(err);
 
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+  const statusContent = (
+    <>
       <PaymentConfirmationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
+      <StatusScreen
+        initialization={initialization}
+        customization={customization}
+        onError={onError}
+      />
+    </>
+  );
 
-      <Card className="min-h-96 w-full max-w-lg bg-white">
-        <CardContent className="p-0 text-center">
-          <StatusScreen
-            initialization={initialization}
-            customization={customization}
-            onError={onError}
-          />
-        </CardContent>
+  if (inModal) {
+    return statusContent;
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <Card className="w-full max-w-lg bg-white">
+        <CardContent className="p-0 text-center">{statusContent}</CardContent>
       </Card>
     </div>
   );

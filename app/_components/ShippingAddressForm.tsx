@@ -3,7 +3,6 @@
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
-// import { Textarea } from "@/app/_components/ui/textarea";
 import { userAddressValidation } from "@/app/_schemas/validationSchemas";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -116,7 +115,6 @@ export function ShippingAddressForm({ onSuccess }: ShippingAddressFormProps) {
         });
       }
 
-      // Here you would typically trigger the next step or close the modal
       if (onSuccess) {
         onSuccess();
       }

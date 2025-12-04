@@ -25,7 +25,9 @@ export default function ProductList({
   brand,
   excludeId,
 }: ProductCarouselProps) {
-  const [products, setProducts] = useState<ProductBase[]>(initialProducts || []);
+  const [products, setProducts] = useState<ProductBase[]>(
+    initialProducts || [],
+  );
   const [isLoading, setIsLoading] = useState(!initialProducts);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -41,7 +43,6 @@ export default function ProductList({
     }
   };
 
-  // Actualiza si se puede hacer scroll a la izquierda/derecha
   const updateScrollButtons = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -49,7 +50,6 @@ export default function ProductList({
       setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
     }
   };
-
 
   useEffect(() => {
     if (initialProducts) return;

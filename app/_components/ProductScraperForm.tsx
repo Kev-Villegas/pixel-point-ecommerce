@@ -58,7 +58,6 @@ export function ProductScraperForm({ onDataScraped }: ProductScraperFormProps) {
         return;
       }
 
-      // Transformar las imágenes al formato ItemType si vienen como strings
       const transformedData: ScrapedData = {
         ...data.data,
         images: (data.data.images || [])

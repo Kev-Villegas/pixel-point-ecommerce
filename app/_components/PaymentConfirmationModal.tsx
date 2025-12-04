@@ -30,10 +30,8 @@ export default function PaymentConfirmationModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 
-      {/* Modal Content */}
       <div className="relative z-50 mx-4 max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
         <div className="space-y-6">
           <div className="space-y-2 text-center">

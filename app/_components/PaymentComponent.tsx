@@ -7,7 +7,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { Card } from "./ui/card";
 
-export default function PaymentComponent() {
+interface PaymentComponentProps {
+  onPaymentStart?: () => void;
+  onPaymentComplete?: (data: { id: string; status: string }) => void;
+}
+
+export default function PaymentComponent({
+  onPaymentStart,
+  onPaymentComplete,
+}: PaymentComponentProps = {}) {
   const router = useRouter();
   const { cartProducts } = useCartStore();
   const deviceId = useDeviceStore((state) => state.deviceId);
@@ -52,15 +60,24 @@ export default function PaymentComponent() {
   const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
     const headers = { "X-meli-session-id": deviceId };
 
+    if (
+      selectedPaymentMethod === "wallet_purchase" ||
+      selectedPaymentMethod === "onboarding_credits"
+    ) {
+      // MercadoPago redirige automaticamente a init_point
+      return;
+    }
+
+    onPaymentStart?.();
+    const payload = {
+      cart: cartProducts,
+      total: totalAmount,
+    };
+
+    const order = await axios.post("/api/orders", payload);
+    const orderId = order.data.id.toString();
+
     try {
-      const payload = {
-        cart: cartProducts,
-        total: totalAmount,
-      };
-
-      const order = await axios.post("/api/orders", payload);
-      const orderId = order.data.id.toString();
-
       const preferenceResponse = await axios.put(`/api/checkout/preferences`, {
         id: preferenceId,
         cart: cartProducts,
@@ -81,11 +98,9 @@ export default function PaymentComponent() {
 
       const completePreference = preferenceResponse.data.response;
 
-      // Prepare the payment data with complete preference information
       const paymentPayload = {
         ...formData,
         three_d_secure_mode: "optional",
-        // use the created order id as external_reference
         external_reference: completePreference.external_reference,
         statement_descriptor: completePreference.statement_descriptor,
         notification_url: completePreference.notification_url,
@@ -117,13 +132,27 @@ export default function PaymentComponent() {
       const response = await axios.post("/api/checkout", paymentPayload, {
         headers,
       });
-      if (response.data?.status === "approved") {
-        router.replace(`/checkout/payment/status?id=${response.data.id}&ok`);
+
+      if (onPaymentComplete) {
+        onPaymentComplete({
+          id: response.data.id,
+          status: response.data.status,
+        });
       } else {
-        router.replace(`/checkout/payment/status?id=${response.data.id}`);
+        if (response.data?.status === "approved") {
+          router.replace(`/checkout/payment/status?id=${response.data.id}&ok`);
+        } else {
+          router.replace(`/checkout/payment/status?id=${response.data.id}`);
+        }
       }
     } catch (err) {
       console.error(err);
+      if (onPaymentComplete) {
+        onPaymentComplete({
+          id: "",
+          status: "error",
+        });
+      }
     }
   };
 
@@ -135,7 +164,6 @@ export default function PaymentComponent() {
     console.log("Payment Brick is ready");
   };
 
-  // Send deviceId to server once available and preferenceId is present (fire-and-forget)
   useEffect(() => {
     if (!deviceId || !preferenceId) return;
     try {
@@ -150,7 +178,7 @@ export default function PaymentComponent() {
   }, [deviceId, preferenceId]);
 
   return (
-    <Card className="min-h-[500px] p-2 shadow-md">
+    <Card className="min-h-[515px] shadow-md">
       <Brand />
       <Payment
         initialization={initialization}
