@@ -29,6 +29,7 @@ function CartPageContent() {
   const [paymentData, setPaymentData] = useState<{
     id: string;
     status: string;
+    orderId?: string;
   } | null>(null);
 
   const handleRemoveProduct = (productId: number) => {
@@ -72,23 +73,29 @@ function CartPageContent() {
     setPaymentState("processing");
   };
 
-  const handlePaymentComplete = (data: { id: string; status: string }) => {
+  const handlePaymentComplete = (data: {
+    id: string;
+    status: string;
+    orderId?: string;
+  }) => {
     setPaymentData(data);
     setPaymentState("completed");
 
     // Update URL to show payment ID instead of preference
     if (data.id) {
+      const orderIdParam = data.orderId ? `&orderId=${data.orderId}` : "";
       const newUrl =
         data.status === "approved"
-          ? `/cart?id=${data.id}&ok`
-          : `/cart?id=${data.id}`;
+          ? `/cart?id=${data.id}${orderIdParam}&ok`
+          : `/cart?id=${data.id}${orderIdParam}`;
       router.replace(newUrl, { scroll: false });
     }
 
     // If payment is approved, redirect to shipping form after a brief delay
     if (data.status === "approved") {
       setTimeout(() => {
-        router.push(`/checkout/payment/status?id=${data.id}&ok`);
+        const orderIdParam = data.orderId ? `&orderId=${data.orderId}` : "";
+        router.push(`/checkout/payment/status?id=${data.id}${orderIdParam}&ok`);
       }, 3000); // 3 second delay to show the success status
     }
   };

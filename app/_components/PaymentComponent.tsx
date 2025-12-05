@@ -9,7 +9,11 @@ import { Card } from "./ui/card";
 
 interface PaymentComponentProps {
   onPaymentStart?: () => void;
-  onPaymentComplete?: (data: { id: string; status: string }) => void;
+  onPaymentComplete?: (data: {
+    id: string;
+    status: string;
+    orderId?: string;
+  }) => void;
 }
 
 export default function PaymentComponent({
@@ -137,12 +141,17 @@ export default function PaymentComponent({
         onPaymentComplete({
           id: response.data.id,
           status: response.data.status,
+          orderId: orderId,
         });
       } else {
         if (response.data?.status === "approved") {
-          router.replace(`/checkout/payment/status?id=${response.data.id}&ok`);
+          router.replace(
+            `/checkout/payment/status?id=${response.data.id}&orderId=${orderId}&ok`,
+          );
         } else {
-          router.replace(`/checkout/payment/status?id=${response.data.id}`);
+          router.replace(
+            `/checkout/payment/status?id=${response.data.id}&orderId=${orderId}`,
+          );
         }
       }
     } catch (err) {
@@ -151,6 +160,7 @@ export default function PaymentComponent({
         onPaymentComplete({
           id: "",
           status: "error",
+          orderId: undefined,
         });
       }
     }

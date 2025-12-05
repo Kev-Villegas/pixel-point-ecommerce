@@ -8,11 +8,13 @@ import { ShippingAddressForm } from "./ShippingAddressForm";
 interface PaymentConfirmationModalProps {
   isOpen: boolean;
   onClose?: () => void;
+  orderId?: number | null;
 }
 
 export default function PaymentConfirmationModal({
   isOpen,
   onClose,
+  orderId,
 }: PaymentConfirmationModalProps) {
   // Prevenir scroll cuando el modal está abierto
   useEffect(() => {
@@ -44,7 +46,7 @@ export default function PaymentConfirmationModal({
             </p>
           </div>
 
-          <ShippingAddressForm onSuccess={onClose} />
+          <ShippingAddressForm onSuccess={onClose} orderId={orderId} />
         </div>
       </div>
     </div>

@@ -30,6 +30,9 @@ export default function PaymentStatus({
   const paymentId = propPaymentId || (searchParams.get("id") as string);
   const isApproved =
     propIsApproved !== undefined ? propIsApproved : searchParams.has("ok");
+  const orderId = searchParams.get("orderId")
+    ? parseInt(searchParams.get("orderId") as string)
+    : null;
 
   const initialization = { paymentId };
 
@@ -80,6 +83,7 @@ export default function PaymentStatus({
       <PaymentConfirmationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        orderId={orderId}
       />
       <StatusScreen
         initialization={initialization}

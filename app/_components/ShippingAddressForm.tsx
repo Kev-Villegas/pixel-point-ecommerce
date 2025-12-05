@@ -15,9 +15,13 @@ import { Textarea } from "./ui/textarea";
 
 interface ShippingAddressFormProps {
   onSuccess?: () => void;
+  orderId?: number | null;
 }
 
-export function ShippingAddressForm({ onSuccess }: ShippingAddressFormProps) {
+export function ShippingAddressForm({
+  onSuccess,
+  orderId,
+}: ShippingAddressFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const session = useSession();
   const {
@@ -89,6 +93,7 @@ export function ShippingAddressForm({ onSuccess }: ShippingAddressFormProps) {
     setIsSubmitting(true);
     try {
       if (session.status === "authenticated") {
+        // Authenticated user: Update ShipmentData
         await axios.put("/api/users", {
           phoneNumber: values.number,
           streetName: values.street_name,
@@ -112,6 +117,30 @@ export function ShippingAddressForm({ onSuccess }: ShippingAddressFormProps) {
           apartment: values.apartment,
           floor: values.floor,
           observations: values.observations,
+        });
+
+        // Also update the Order if orderId is provided
+        if (orderId) {
+          await axios.patch(`/api/orders/${orderId}`, {
+            username: `${values.name} ${values.surname}`,
+            email: values.email,
+            city: values.city,
+            postalCode: values.postalCode,
+            streetAddress: `${values.street_name} ${values.street_number}${values.floor ? `, Piso ${values.floor}` : ""}${values.apartment ? `, Dpto ${values.apartment}` : ""}`,
+            province: values.province,
+            phonenumber: values.number,
+          });
+        }
+      } else if (orderId) {
+        // Guest user: Update Order only
+        await axios.patch(`/api/orders/${orderId}`, {
+          username: `${values.name} ${values.surname}`,
+          email: values.email,
+          city: values.city,
+          postalCode: values.postalCode,
+          streetAddress: `${values.street_name} ${values.street_number}${values.floor ? `, Piso ${values.floor}` : ""}${values.apartment ? `, Dpto ${values.apartment}` : ""}`,
+          province: values.province,
+          phonenumber: values.number,
         });
       }
 

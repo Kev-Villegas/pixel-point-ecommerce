@@ -66,30 +66,49 @@ export async function PATCH(
 ) {
   const params = await props.params;
   const body = await request.json();
-  const newStatus = body.status as string;
-
-  if (
-    newStatus !== "PAGO_PENDIENTE" &&
-    newStatus !== "ENVIO_PENDIENTE" &&
-    newStatus !== "ENVIADO" &&
-    newStatus !== "ENTREGADO"
-  ) {
-    return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
-  }
 
   try {
+    // Build update data object dynamically
+    const updateData: any = {};
+
+    // Handle status update (existing functionality)
+    if (body.status) {
+      const newStatus = body.status as string;
+      if (
+        newStatus !== "PAGO_PENDIENTE" &&
+        newStatus !== "ENVIO_PENDIENTE" &&
+        newStatus !== "ENVIADO" &&
+        newStatus !== "ENTREGADO"
+      ) {
+        return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
+      }
+      updateData.status = newStatus;
+    }
+
+    // Handle shipping address updates (new functionality for guest users)
+    if (body.username !== undefined) updateData.username = body.username;
+    if (body.email !== undefined) updateData.email = body.email;
+    if (body.city !== undefined) updateData.city = body.city;
+    if (body.postalCode !== undefined) updateData.postalCode = body.postalCode;
+    if (body.streetAddress !== undefined)
+      updateData.streetAddress = body.streetAddress;
+    if (body.province !== undefined) updateData.province = body.province;
+    if (body.phonenumber !== undefined)
+      updateData.phonenumber = body.phonenumber;
+
     await db.order.update({
       where: { id: parseInt(params.id) },
-      data: { status: newStatus },
+      data: updateData,
     });
 
     return NextResponse.json(
-      { message: "Estado actualizado correctamente" },
+      { message: "Orden actualizada correctamente" },
       { status: 200 },
     );
   } catch (error) {
+    console.error("Error al actualizar la orden:", error);
     return NextResponse.json(
-      { error: "Error al actualizar el estado" },
+      { error: "Error al actualizar la orden" },
       { status: 500 },
     );
   }

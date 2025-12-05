@@ -7,9 +7,13 @@ import PaymentStatus from "./PaymentStatus";
 
 interface PaymentModalProps {
   paymentState: "idle" | "processing" | "completed";
-  paymentData: { id: string; status: string } | null;
+  paymentData: { id: string; status: string; orderId?: string } | null;
   onPaymentStart: () => void;
-  onPaymentComplete: (data: { id: string; status: string }) => void;
+  onPaymentComplete: (data: {
+    id: string;
+    status: string;
+    orderId?: string;
+  }) => void;
 }
 
 export default function PaymentModal({

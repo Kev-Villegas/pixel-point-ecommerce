@@ -28,12 +28,12 @@ const nextStepsCategories = [
       {
         question: "¿Cómo funciona el envío actualmente?",
         answer:
-          "Actualmente, al finalizar tu compra, recibirás un correo electrónico con un formulario (de Andreani) para que completes tu domicilio y abones el costo del envío. Es un paso adicional para asegurar que tu pedido llegue correctamente.",
+          "Actualmente, al finalizar tu compra y confirmar el pago, se muestra directamente en la página un formulario para que completes tu domicilio. Es un paso adicional para asegurar que tu pedido llegue correctamente.",
       },
       {
         question: "Integración futura de envíos",
         answer:
-          "Estamos trabajando para integrar la selección de método de envío (Correo Argentino / Andreani) directamente en el proceso de pago de la página. Esto eliminará el paso del formulario por correo y podrás gestionar todo desde aquí.",
+          "Estamos trabajando para integrar la selección de método de envío y el cálculo de costos de Correo Argentino directamente en el proceso de pago de la página. Esto te permitirá gestionar todo desde aquí de forma aún más fluida.",
       },
     ],
   },
@@ -43,7 +43,7 @@ const nextStepsCategories = [
       {
         question: "¿Qué sucede después de pagar?",
         answer:
-          "Una vez confirmado el pago, te enviaremos un formulario a tu celular/correo. Es CRUCIAL que completes este formulario con tu dirección real para coordinar la entrega. Sin este paso, no podemos despachar el producto.",
+          "Una vez confirmado el pago, se mostrará directamente en la página un formulario para que completes tu dirección de entrega. Es CRUCIAL que completes este formulario con tu dirección real para coordinar la entrega. Sin este paso, no podemos despachar el producto.",
       },
     ],
   },
