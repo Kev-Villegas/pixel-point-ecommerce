@@ -73,7 +73,7 @@ const faqCategories = [
       {
         question: "¿Qué medios de pago aceptan?",
         answer:
-          "Aceptamos transferencias, tarjetas de crédito/débito, pagos por MercadoPago y efectivo si retirás en persona.",
+          "Aceptamos transferencias, tarjetas de crédito/débito y pagos por MercadoPago. También podés abonar en efectivo generando un ticket para Pago Fácil o Rapipago.",
       },
       {
         question: "¿Puedo pagar en cuotas?",

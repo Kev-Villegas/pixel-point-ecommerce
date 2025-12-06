@@ -79,7 +79,12 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const formattedProperties = body.properties.reduce((acc: any, prop: any) => {
     const key = prop.name.toLowerCase();
-    acc[key] = prop.values;
+    if (key === "fastcharging") {
+      const val = String(prop.values).toLowerCase();
+      acc[key] = ["true", "1", "si", "sim", "yes", "s"].includes(val);
+    } else {
+      acc[key] = prop.values;
+    }
     return acc;
   }, {});
 

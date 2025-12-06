@@ -41,8 +41,16 @@ export interface ScrapedProduct {
 }
 
 export async function scrapeProduct(url: string): Promise<ScrapedProduct> {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
+  const browser = await chromium.launch({
+    headless: true, // headless: false for visual debugging if needed local
+  });
+  const context = await browser.newContext({
+    userAgent:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    viewport: { width: 1280, height: 720 },
+    deviceScaleFactor: 1,
+  });
+  const page = await context.newPage();
 
   await page.context().clearCookies();
 
@@ -51,7 +59,14 @@ export async function scrapeProduct(url: string): Promise<ScrapedProduct> {
   });
 
   try {
-    await page.goto(url, { waitUntil: "networkidle" });
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
+
+    // Debug screenshot to see what's happening
+    const publicPath = path.join(process.cwd(), "public");
+    if (!fs.existsSync(publicPath)) fs.mkdirSync(publicPath);
+    await page.screenshot({
+      path: path.join(publicPath, "debug-screenshot.png"),
+    });
 
     // Extraer nombre del producto - busca en label con clase 'nome-prod-header'
     const name = await extractName(page);

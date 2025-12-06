@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
           data: {
             paid: true,
             status: "ENVIO_PENDIENTE",
+            paymentId: String(paymentId),
           },
         });
 

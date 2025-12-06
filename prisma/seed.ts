@@ -1,11 +1,45 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../app/_lib/prisma.js";
 
 async function main() {
-  await prisma.product.deleteMany({});
+  // Borrar en orden correcto respetando las relaciones de claves foráneas
+  console.log("🗑️  Borrando todos los datos de la base de datos...");
+
+  // 1. Primero borrar las tablas que dependen de otras (tablas hijas)
+  await prisma.orderItem.deleteMany({});
+  console.log("✅ OrderItems borrados");
+
+  await prisma.like.deleteMany({});
+  console.log("✅ Likes borrados");
+
   await prisma.image.deleteMany({});
+  console.log("✅ Images borradas");
+
   await prisma.properties.deleteMany({});
+  console.log("✅ Properties borradas");
+
+  await prisma.shipmentData.deleteMany({});
+  console.log("✅ ShipmentData borrados");
+
+  await prisma.account.deleteMany({});
+  console.log("✅ Accounts borradas");
+
+  await prisma.session.deleteMany({});
+  console.log("✅ Sessions borradas");
+
+  await prisma.verificationToken.deleteMany({});
+  console.log("✅ VerificationTokens borrados");
+
+  await prisma.order.deleteMany({});
+  console.log("✅ Orders borradas");
+
+  await prisma.product.deleteMany({});
+  console.log("✅ Products borrados");
+
+  await prisma.user.deleteMany({});
+  console.log("✅ Users borrados");
+
+  console.log("\n🎉 Todos los datos han sido borrados exitosamente\n");
+  console.log("📝 Insertando productos de ejemplo...");
 
   const products = [
     {

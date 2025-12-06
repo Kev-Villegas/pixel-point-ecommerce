@@ -9,7 +9,18 @@ export default function FaqPage() {
             Preguntas Frecuentes
           </h1>
           <p className="text-balance text-muted-foreground">
-            Encontrá respuestas a las preguntas más comunes sobre Pixel Point
+            Encontrá respuestas a las preguntas más comunes sobre Pixel Point.
+            <br />
+            Cualquier consulta sobre su compra, pueden mandarnos un mensaje por{" "}
+            <a
+              href="https://www.instagram.com/pixel.pointt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              Instagram
+            </a>
+            .
           </p>
         </div>
         <FaqSection />

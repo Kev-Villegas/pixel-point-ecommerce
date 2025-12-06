@@ -181,8 +181,14 @@ export default function ProductForm({
   };
 
   async function deleteImage(url: string) {
-    const res = await axios.delete("/api/images/?url=" + url);
-    if (res.status === 200) {
+    if (url.includes("res.cloudinary.com")) {
+      const res = await axios.delete("/api/images/?url=" + url);
+      if (res.status === 200) {
+        setImages((prevImages) =>
+          prevImages.filter((image) => image.url !== url),
+        );
+      }
+    } else {
       setImages((prevImages) =>
         prevImages.filter((image) => image.url !== url),
       );
