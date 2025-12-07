@@ -172,7 +172,7 @@ export default function ProductsTabContent() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
-            <div className="relative w-full max-w-sm flex-1">
+            <div className="relative w-full md:max-w-sm md:flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
               <Input
                 placeholder="Buscar productos..."
@@ -192,7 +192,7 @@ export default function ProductsTabContent() {
                 setCurrentPage(1);
               }}
             >
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-full md:w-48">
                 <SelectValue placeholder="Todas las marcas" />
               </SelectTrigger>
               <SelectContent>
@@ -212,7 +212,7 @@ export default function ProductsTabContent() {
                 setCurrentPage(1);
               }}
             >
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-full md:w-48">
                 <SelectValue placeholder="Todos los estados" />
               </SelectTrigger>
               <SelectContent>
@@ -234,106 +234,110 @@ export default function ProductsTabContent() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Nombre</TableHead>
-                <TableHead>Marca</TableHead>
-                <TableHead>Precio</TableHead>
-                <TableHead>Stock</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead>Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading
-                ? Array.from({ length: 5 }).map((_, i) => (
-                    <TableRow key={`skeleton-${i}`}>
-                      <TableCell>
-                        <Skeleton className="h-4 w-16" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-4 w-32" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-4 w-24" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-4 w-14" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-4 w-10" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-6 w-20 rounded-full" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-4 w-8" />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : paginatedProducts.map((product: Product) => {
-                    const status =
-                      product.stock > 10
-                        ? "En stock"
-                        : product.stock > 0
-                          ? "Pocas unidades"
-                          : "Agotado";
-
-                    const badgeVariant =
-                      status === "En stock"
-                        ? "default"
-                        : status === "Pocas unidades"
-                          ? "secondary"
-                          : "destructive";
-
-                    return (
-                      <TableRow key={product.id}>
-                        <TableCell className="font-medium">
-                          {product.id}
-                        </TableCell>
-                        <TableCell
-                          className="cursor-pointer text-blue-600 hover:underline"
-                          onClick={() => handleOpenEditProduct(product.id)}
-                        >
-                          {product.name}
-                        </TableCell>
-                        <TableCell>{product.brand}</TableCell>
-                        <TableCell>${product.price.toFixed(2)}</TableCell>
-                        <TableCell>{product.stock}</TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Marca</TableHead>
+                  <TableHead>Precio</TableHead>
+                  <TableHead>Stock</TableHead>
+                  <TableHead>Estado</TableHead>
+                  <TableHead>Acciones</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading
+                  ? Array.from({ length: 5 }).map((_, i) => (
+                      <TableRow key={`skeleton-${i}`}>
                         <TableCell>
-                          <Badge variant={badgeVariant}>{status}</Badge>
+                          <Skeleton className="h-4 w-16" />
                         </TableCell>
                         <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleOpenEditProduct(product.id)
-                                }
-                              >
-                                Editar
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-destructive"
-                                onClick={() => handleDeleteProduct(product.id)}
-                              >
-                                Eliminar
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <Skeleton className="h-4 w-32" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-24" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-14" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-10" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-6 w-20 rounded-full" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-8" />
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
-            </TableBody>
-          </Table>
+                    ))
+                  : paginatedProducts.map((product: Product) => {
+                      const status =
+                        product.stock > 10
+                          ? "En stock"
+                          : product.stock > 0
+                            ? "Pocas unidades"
+                            : "Agotado";
+
+                      const badgeVariant =
+                        status === "En stock"
+                          ? "default"
+                          : status === "Pocas unidades"
+                            ? "secondary"
+                            : "destructive";
+
+                      return (
+                        <TableRow key={product.id}>
+                          <TableCell className="font-medium">
+                            {product.id}
+                          </TableCell>
+                          <TableCell
+                            className="cursor-pointer text-blue-600 hover:underline"
+                            onClick={() => handleOpenEditProduct(product.id)}
+                          >
+                            {product.name}
+                          </TableCell>
+                          <TableCell>{product.brand}</TableCell>
+                          <TableCell>${product.price.toFixed(2)}</TableCell>
+                          <TableCell>{product.stock}</TableCell>
+                          <TableCell>
+                            <Badge variant={badgeVariant}>{status}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    handleOpenEditProduct(product.id)
+                                  }
+                                >
+                                  Editar
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive"
+                                  onClick={() =>
+                                    handleDeleteProduct(product.id)
+                                  }
+                                >
+                                  Eliminar
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+              </TableBody>
+            </Table>
+          </div>
 
           <div className="flex items-center justify-between pt-4">
             <p className="text-sm text-muted-foreground">

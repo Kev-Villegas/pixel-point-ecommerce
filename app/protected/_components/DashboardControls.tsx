@@ -39,7 +39,7 @@ const DashboardControls: React.FC<DashboardControlsProps> = ({
   error,
   hasOrders,
 }) => (
-  <div className="mb-6 flex flex-wrap items-center justify-end gap-2">
+  <div className="mb-6 flex flex-wrap items-center justify-start gap-2 md:justify-end">
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
       <PopoverTrigger asChild>
         <Button

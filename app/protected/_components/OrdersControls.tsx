@@ -38,7 +38,7 @@ const OrdersControls: React.FC<OrdersControlsProps> = ({
   hasOrders,
   error,
 }) => (
-  <div className="mb-6 flex flex-wrap items-center justify-end gap-2">
+  <div className="mb-6 flex flex-wrap items-center justify-start gap-2 md:justify-end">
     {/* Filtro por fecha */}
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
       <PopoverTrigger asChild>

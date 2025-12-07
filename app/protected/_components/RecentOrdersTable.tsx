@@ -156,11 +156,11 @@ export function RecentOrdersTable({
     <>
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <CardTitle>Órdenes Recientes</CardTitle>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -173,11 +173,11 @@ export function RecentOrdersTable({
                   <SelectItem value="PAGO_PENDIENTE">Pago Pendiente</SelectItem>
                 </SelectContent>
               </Select>
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Buscar órdenes..."
-                  className="w-40 pl-8"
+                  className="w-full pl-8 sm:w-40"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -191,101 +191,103 @@ export function RecentOrdersTable({
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Cliente</TableHead>
-                <TableHead>Producto</TableHead>
-                <TableHead>Precio</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead>Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedOrders.map((order) => (
-                <TableRow key={order.id} className="hover:bg-gray-50">
-                  <TableCell className="font-medium">{order.id}</TableCell>
-                  <TableCell>{order.cliente}</TableCell>
-                  <TableCell>{order.producto}</TableCell>
-                  <TableCell>${order.precio.toFixed(2)}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={order.estado}
-                      onValueChange={(newStatus) =>
-                        handleStatusChange(order.rawId.toString(), newStatus)
-                      }
-                      disabled={updatingOrderId === order.id}
-                    >
-                      <SelectTrigger className="w-40">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="PAGO_PENDIENTE">
-                          Pago Pendiente
-                        </SelectItem>
-                        <SelectItem value="ENVIO_PENDIENTE">
-                          Envío Pendiente
-                        </SelectItem>
-                        <SelectItem value="ENVIADO">Enviado</SelectItem>
-                        <SelectItem value="ENTREGADO">Entregado</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedOrder(order);
-                          setIsDetailModalOpen(true);
-                        }}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={deletingOrderId === order.rawId}
-                        onClick={() => {
-                          setOrderToDelete(order);
-                          setDialogOpen(true);
-                        }}
-                        aria-label={`Eliminar orden ${order.id}`}
-                      >
-                        {deletingOrderId === order.rawId ? (
-                          <svg
-                            className="h-4 w-4 animate-spin"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                            />
-                          </svg>
-                        ) : (
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        )}
-                      </Button>
-                    </div>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Cliente</TableHead>
+                  <TableHead>Producto</TableHead>
+                  <TableHead>Precio</TableHead>
+                  <TableHead>Estado</TableHead>
+                  <TableHead>Acciones</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {paginatedOrders.map((order) => (
+                  <TableRow key={order.id} className="hover:bg-gray-50">
+                    <TableCell className="font-medium">{order.id}</TableCell>
+                    <TableCell>{order.cliente}</TableCell>
+                    <TableCell>{order.producto}</TableCell>
+                    <TableCell>${order.precio.toFixed(2)}</TableCell>
+                    <TableCell>
+                      <Select
+                        value={order.estado}
+                        onValueChange={(newStatus) =>
+                          handleStatusChange(order.rawId.toString(), newStatus)
+                        }
+                        disabled={updatingOrderId === order.id}
+                      >
+                        <SelectTrigger className="w-40">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="PAGO_PENDIENTE">
+                            Pago Pendiente
+                          </SelectItem>
+                          <SelectItem value="ENVIO_PENDIENTE">
+                            Envío Pendiente
+                          </SelectItem>
+                          <SelectItem value="ENVIADO">Enviado</SelectItem>
+                          <SelectItem value="ENTREGADO">Entregado</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedOrder(order);
+                            setIsDetailModalOpen(true);
+                          }}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          disabled={deletingOrderId === order.rawId}
+                          onClick={() => {
+                            setOrderToDelete(order);
+                            setDialogOpen(true);
+                          }}
+                          aria-label={`Eliminar orden ${order.id}`}
+                        >
+                          {deletingOrderId === order.rawId ? (
+                            <svg
+                              className="h-4 w-4 animate-spin"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                              />
+                            </svg>
+                          ) : (
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                          )}
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
 
           {/* Pagination */}
           <div className="mt-4 flex items-center justify-between">
