@@ -51,7 +51,7 @@ const SignInForm = () => {
         toast.error("Correo electrónico o contraseña incorrecta");
       } else {
         toast.success("Inicio de sesión exitoso.");
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);

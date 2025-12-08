@@ -1,5 +1,4 @@
-"use client";
-
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -34,9 +33,11 @@ export function Modal({
   onClose,
 }: ModalProps) {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
+      setIsOpen(false);
       if (onClose) {
         onClose();
       } else {
@@ -46,7 +47,7 @@ export function Modal({
   };
 
   return (
-    <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
+    <Dialog defaultOpen={true} open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent
         hideCloseButton={hideCloseButton}
         className={`border-none bg-transparent shadow-none ${maxWidth} ${minHeight || ""} ${maxHeight || ""} ${padding} ${enableScroll ? "overflow-y-auto" : ""}`}
