@@ -14,7 +14,7 @@ if (resultInvalid.success) {
   process.exit(1);
 } else {
   console.log("SUCCESS: Schema rejected .con email.");
-  const msg = resultInvalid.error.errors.find((e) =>
+  const msg = resultInvalid.error.issues.find((e) =>
     e.path.includes("email"),
   )?.message;
   console.log("Error message:", msg);
@@ -34,7 +34,7 @@ if (resultTypo.success) {
   process.exit(1);
 } else {
   console.log("SUCCESS: Schema rejected gmil.com email.");
-  const msg = resultTypo.error.errors.find((e) =>
+  const msg = resultTypo.error.issues.find((e) =>
     e.path.includes("email"),
   )?.message;
   console.log("Error message:", msg);
@@ -54,7 +54,7 @@ if (resultFuzzy.success) {
   process.exit(1);
 } else {
   console.log("SUCCESS: Schema rejected fuzzy typo gmil.co email.");
-  const msg = resultFuzzy.error.errors.find((e) =>
+  const msg = resultFuzzy.error.issues.find((e) =>
     e.path.includes("email"),
   )?.message;
   console.log("Error message:", msg);
