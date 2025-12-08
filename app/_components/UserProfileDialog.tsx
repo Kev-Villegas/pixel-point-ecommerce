@@ -16,6 +16,7 @@ import {
 } from "./ui/dialog";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { updateEmail } from "@/app/actions/users/updateEmail";
 
 interface UserProfileDialogProps {
   open: boolean;
@@ -43,6 +44,18 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     fetchUserInfo,
   } = useUserInfoStore();
 
+  const session = useSession();
+
+  const [email, setEmail] = React.useState("");
+  //@ts-ignore
+  const isEmailVerified = !!session?.data?.user?.emailVerified;
+
+  useEffect(() => {
+    if (session?.data?.user?.email) {
+      setEmail(session.data.user.email);
+    }
+  }, [session?.data?.user?.email]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateUser({ [e.target.id]: e.target.value });
   };
@@ -61,21 +74,24 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
     };
 
     try {
-      const response = await axios.put("/api/users", userData, {
-        // headers: {
-        // "Content-Type": "application/json",
-        // Si necesitas autenticación, agrega el token:
-        // Authorization: `Bearer ${token}`,
-        // },
-      });
+      await axios.put("/api/users", userData);
+
+      // Handle Email Update
+      if (email !== session.data?.user?.email && !isEmailVerified) {
+        const result = await updateEmail(email);
+        if (result.error) {
+          alert(result.error); // Simple feedback
+          return;
+        } else {
+          alert(result.success);
+        }
+      }
 
       onOpenChange(false);
     } catch (error) {
       console.error("Hubo un error al actualizar el usuario:", error);
     }
   };
-
-  const session = useSession();
 
   useEffect(() => {
     if (open) {
@@ -110,10 +126,23 @@ const UserProfileDialog: React.FC<UserProfileDialogProps> = ({
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              value={session?.data?.user?.email ?? ""}
-              onChange={handleChange}
-              disabled
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isEmailVerified}
+              placeholder={
+                isEmailVerified
+                  ? "Email verificado (no se puede cambiar)"
+                  : "Email"
+              }
             />
+            {isEmailVerified && (
+              <span className="text-xs text-green-600">Verificado</span>
+            )}
+            {!isEmailVerified && (
+              <span className="text-xs text-yellow-600">
+                No verificado (Editable)
+              </span>
+            )}
           </div>
           <div className="flex flex-col">
             <Label htmlFor="phoneNumber">Teléfono</Label>

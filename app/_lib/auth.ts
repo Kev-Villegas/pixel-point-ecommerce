@@ -50,6 +50,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           return null;
         }
 
+        if (!user.emailVerified) {
+          // Ideally we would throw a specific error, but NextAuth credentials provider
+          // often masks it. Returning null is the safest "bad credentials/not allowed" signal.
+          // Or we can throw an error if the frontend handles it.
+          // For now, let's just return null so they can't sign in.
+          // Ideally, we'd trigger a new verification email here, but let's keep it simple first.
+          return null;
+        }
+
         return user;
       },
     }),

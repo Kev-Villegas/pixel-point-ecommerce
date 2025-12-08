@@ -40,7 +40,7 @@ export function Modal({
       if (onClose) {
         onClose();
       } else {
-        router.back();
+        router.push("/");
       }
     }
   };

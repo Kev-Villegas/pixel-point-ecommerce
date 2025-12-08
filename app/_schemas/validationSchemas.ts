@@ -1,5 +1,14 @@
 import * as z from "zod";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { levenshteinDistance } from "@/app/_utils/stringUtils";
+
+const PROTECTED_DOMAINS = [
+  "gmail.com",
+  "hotmail.com",
+  "outlook.com",
+  "yahoo.com",
+  "icloud.com",
+];
 
 export const userAddressValidation = z.object({
   name: z
@@ -27,7 +36,42 @@ export const userAddressValidation = z.object({
     .email({ message: "Debe ser un correo electrónico válido." })
     .max(100, {
       message: "El correo electrónico no debe exceder los 100 caracteres.",
-    }),
+    })
+    .refine((email) => !email.endsWith(".con"), {
+      message: "El correo electrónico no parece válido (verifica '.con').",
+    })
+    .refine(
+      (email) => {
+        const domain = email.split("@")[1];
+        if (!domain) return false;
+
+        // Check strict blacklist first
+        const blockedDomains = [
+          "gmil.com",
+          "hotmial.com",
+          "outlok.com",
+          "gmial.com",
+          "hotmal.com",
+        ];
+        if (blockedDomains.includes(domain)) return false;
+
+        // Check fuzzy matching against protected domains
+        for (const protectedDomain of PROTECTED_DOMAINS) {
+          if (domain !== protectedDomain) {
+            const distance = levenshteinDistance(domain, protectedDomain);
+            // Threshold of 2 allows catching "gmil.co" (dist 2 from gmail.com) or "gmal.com" (dist 1)
+            if (distance <= 2) {
+              return false;
+            }
+          }
+        }
+        return true;
+      },
+      {
+        message:
+          "El dominio del correo electrónico parece incorrecto (ej. gmil.com -> gmail.com).",
+      },
+    ),
   number: z
     .string()
     .min(7, { message: "Muy corto para ser un número válido." })
@@ -81,7 +125,45 @@ export const userRegisterSchema = z
     lastname: z
       .string()
       .min(3, "El apellido es obligatorio y debe tener al menos 3 caracteres"),
-    email: z.string().min(1, "El email es obligatorio").email("Email inválido"),
+    email: z
+      .string()
+      .min(1, "El email es obligatorio")
+      .email("Email inválido")
+      .refine((email) => !email.endsWith(".con"), {
+        message: "El correo electrónico no parece válido (verifica '.con').",
+      })
+      .refine(
+        (email) => {
+          const domain = email.split("@")[1];
+          if (!domain) return false;
+
+          // Check strict blacklist first
+          const blockedDomains = [
+            "gmil.com",
+            "hotmial.com",
+            "outlok.com",
+            "gmial.com",
+            "hotmal.com",
+          ];
+          if (blockedDomains.includes(domain)) return false;
+
+          // Check fuzzy matching against protected domains
+          for (const protectedDomain of PROTECTED_DOMAINS) {
+            if (domain !== protectedDomain) {
+              const distance = levenshteinDistance(domain, protectedDomain);
+              // Threshold of 2 allows catching "gmil.co" (dist 2 from gmail.com) or "gmal.com" (dist 1)
+              if (distance <= 2) {
+                return false;
+              }
+            }
+          }
+          return true;
+        },
+        {
+          message:
+            "El dominio del correo electrónico parece incorrecto (ej. gmil.com -> gmail.com).",
+        },
+      ),
     password: z
       .string()
       .min(6, "La contraseña debe tener al menos 6 caracteres"),
