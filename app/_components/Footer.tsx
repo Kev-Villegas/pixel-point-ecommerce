@@ -1,4 +1,4 @@
-import { Github, Instagram, Linkedin } from "lucide-react";
+import { Github, Instagram, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -94,6 +94,19 @@ export default function Footer() {
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
+              </a>
+            </div>
+
+            <div className="mt-6">
+              <h2 className="mb-4 text-base font-semibold text-gray-900">
+                Contacto
+              </h2>
+              <a
+                href="mailto:contacto@pixel-point.com.ar"
+                className="flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
+              >
+                <Mail size={18} />
+                <span>contacto@pixel-point.com.ar</span>
               </a>
             </div>
           </div>

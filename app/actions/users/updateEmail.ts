@@ -25,7 +25,7 @@ export const updateEmail = async (newEmail: string) => {
     const result = updateEmailSchema.safeParse({ email: newEmail });
 
     if (!result.success) {
-      return { error: result.error.errors[0].message };
+      return { error: result.error.issues[0].message };
     }
 
     const currentUser = await db.user.findUnique({
