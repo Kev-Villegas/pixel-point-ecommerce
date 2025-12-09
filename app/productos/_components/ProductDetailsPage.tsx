@@ -39,13 +39,66 @@ import {
   CreditCard,
   Signal,
   Ruler,
+  Tag,
 } from "lucide-react";
 import ProductList from "@/app/_components/ProductList";
 import { fbq } from "@/app/_utils/pixel";
 
+// Helper functions for dynamic specs
+const getIconByKey = (key: string) => {
+  const k = key.toLowerCase();
+  if (k.includes("battery") || k.includes("batería")) return Battery;
+  if (k.includes("processor") || k.includes("procesador") || k.includes("cpu"))
+    return Cpu;
+  if (k.includes("graphics") || k.includes("gpu") || k.includes("gráficos"))
+    return MonitorSmartphone;
+  if (k.includes("ram") || k.includes("memoria")) return MemoryStick;
+  if (
+    k.includes("capacity") ||
+    k.includes("storage") ||
+    k.includes("almacenamiento")
+  )
+    return HardDrive;
+  if (k.includes("screen") || k.includes("display") || k.includes("pantalla"))
+    return Smartphone;
+  if (k.includes("color")) return Palette;
+  if (k.includes("weight") || k.includes("peso")) return Ruler; // Approximate
+  if (
+    k.includes("connectivity") ||
+    k.includes("conectividad") ||
+    k.includes("wifi")
+  )
+    return Wifi;
+  if (k.includes("network") || k.includes("red")) return Signal;
+
+  return Tag;
+};
+
+const getLabelByKey = (key: string) => {
+  const map: Record<string, string> = {
+    battery: "Batería",
+    processor: "Procesador",
+    graphics: "Gráficos",
+    ram: "RAM",
+    capacity: "Capacidad",
+    model: "Modelo",
+    color: "Color",
+    screen: "Pantalla",
+    weight: "Peso",
+    dimensions: "Dimensiones",
+    connectivity: "Conectividad",
+    camera: "Cámara",
+    front_camera: "Cámara Frontal",
+    rear_camera: "Cámara Trasera",
+    os: "Sistema Operativo",
+    dpi: "DPI",
+  };
+  return map[key.toLowerCase()] || key;
+};
+
 interface Product extends PrismaProduct {
   images: PrismaImage[];
-  properties: PrismaProperties;
+  properties: PrismaProperties & { specs?: Record<string, string> };
 }
 
 const ProductDetailsPage = () => {
@@ -277,190 +330,62 @@ const ProductDetailsPage = () => {
         </h2>
         <Card className="mt-4 px-4 py-4">
           <ul className="grid grid-cols-1 gap-4 text-gray-600 md:grid-cols-2">
-            {properties.battery && (
-              <li className="flex space-x-2">
-                <Battery className="text-green-500" />
-                <span className="font-medium">Batería:</span>
-                <span>{properties.battery}</span>
-              </li>
-            )}
-            {properties.processor && (
-              <li className="flex space-x-2">
-                <Cpu />
-                <span className="font-medium">Procesador:</span>
-                <span>{properties.processor}</span>
-              </li>
-            )}
-            {properties.graphics && (
-              <li className="flex space-x-2">
-                <MonitorSmartphone />
-                <span className="font-medium">Gráficos:</span>
-                <span>{properties.graphics}</span>
-              </li>
-            )}
-            {properties.ram && (
-              <li className="flex space-x-2">
-                <MemoryStick className="text-primary" />
-                <span className="font-medium">RAM:</span>
-                <span>{properties.ram}</span>
-              </li>
-            )}
-            {properties.capacity && (
-              <li className="flex space-x-2">
-                <HardDrive />
-                <span className="font-medium">Capacidad:</span>
-                <span>{properties.capacity}</span>
-              </li>
-            )}
-            {properties.model && (
-              <li className="flex space-x-2">
-                <BadgeCheck />
-                <span className="font-medium">Modelo:</span>
-                <span>{properties.model}</span>
-              </li>
-            )}
-            {properties.color && (
-              <li className="flex space-x-2">
-                <Palette />
-                <span className="font-medium">Color:</span>
-                <span>{properties.color}</span>
-              </li>
-            )}
-            {properties.chipset && (
-              <li className="flex space-x-2">
-                <Microchip />
-                <span className="font-medium">Chipset:</span>
-                <span>{properties.chipset}</span>
-              </li>
-            )}
-            {properties.connectivity && (
-              <li className="flex space-x-2">
-                <Wifi />
-                <span className="font-medium">Conectividad:</span>
-                <span>{properties.connectivity}</span>
-              </li>
-            )}
-            {properties.navigation && (
-              <li className="flex space-x-2">
-                <Map />
-                <span className="font-medium">Navegación:</span>
-                <span>{properties.navigation}</span>
-              </li>
-            )}
-            {properties.audio && (
-              <li className="flex space-x-2">
-                <Volume2 />
-                <span className="font-medium">Audio:</span>
-                <span>{properties.audio}</span>
-              </li>
-            )}
-            {properties.sensors && (
-              <li className="flex space-x-2">
-                <ActivitySquare />
-                <span className="font-medium">Sensores:</span>
-                <span>{properties.sensors}</span>
-              </li>
-            )}
-            {properties.features && (
-              <li className="flex space-x-2">
-                <ListChecks />
-                <span className="font-medium">Características:</span>
-                <span>{properties.features}</span>
-              </li>
-            )}
-            {properties.weight && (
-              <li className="flex space-x-2">
-                <span className="font-medium">Peso:</span>
-                <span>{properties.weight}</span>
-              </li>
-            )}
-            {properties.dimensions && (
-              <li className="flex space-x-2">
-                <Ruler />
-                <span className="font-medium">Dimensiones:</span>
-                <span>{properties.dimensions}</span>
-              </li>
-            )}
-            {properties.fastcharging !== null && (
-              <li className="flex space-x-2">
-                <Zap />
-                <span className="font-medium">Carga Rápida:</span>
-                <span>{properties.fastcharging ? "Sí" : "No"}</span>
-              </li>
-            )}
-            {properties.frontcamera && (
-              <li className="flex space-x-2">
-                <Camera />
-                <span className="font-medium">Cámara Frontal:</span>
-                <span>{properties.frontcamera}</span>
-              </li>
-            )}
-            {properties.rearcamera && (
-              <li className="flex space-x-2">
-                <Camera />
-                <span className="font-medium">Cámara Trasera:</span>
-                <span>{properties.rearcamera}</span>
-              </li>
-            )}
-            {properties.screenresolution && (
-              <li className="flex space-x-2">
-                <Monitor />
-                <span className="font-medium">Resolución:</span>
-                <span>{properties.screenresolution}</span>
-              </li>
-            )}
-            {properties.screensize && (
-              <li className="flex space-x-2">
-                <Smartphone />
-                <span className="font-medium">Tamaño de Pantalla:</span>
-                <span>{properties.screensize}</span>
-              </li>
-            )}
-            {properties.screentype && (
-              <li className="flex space-x-2">
-                <Tv />
-                <span className="font-medium">Tipo de Pantalla:</span>
-                <span>{properties.screentype}</span>
-              </li>
-            )}
-            {properties.operatingsystem && (
-              <li className="flex space-x-2">
-                <Server />
-                <span className="font-medium">Sistema Operativo:</span>
-                <span>{properties.operatingsystem}</span>
-              </li>
-            )}
-            {properties.simcard && (
-              <li className="flex space-x-2">
-                <CreditCard />
-                <span className="font-medium">SIM:</span>
-                <span>{properties.simcard}</span>
-              </li>
-            )}
-            {(properties.network2g ||
-              properties.network3g ||
-              properties.network4g ||
-              properties.network5g) && (
-              <li className="flex flex-col space-y-1">
-                <div className="flex items-center space-x-2">
-                  <Signal />
-                  <span className="font-medium">Redes:</span>
-                </div>
-                <div className="pl-6 text-sm">
-                  {properties.network2g && (
-                    <div>2G: {properties.network2g}</div>
-                  )}
-                  {properties.network3g && (
-                    <div>3G: {properties.network3g}</div>
-                  )}
-                  {properties.network4g && (
-                    <div>4G: {properties.network4g}</div>
-                  )}
-                  {properties.network5g && (
-                    <div>5G: {properties.network5g}</div>
-                  )}
-                </div>
-              </li>
+            {/* Dynamic Specs Rendering from JSON */}
+            {properties.specs &&
+              Object.entries(properties.specs as Record<string, string>).map(
+                ([key, value]) => {
+                  const Icon = getIconByKey(key);
+                  const label = getLabelByKey(key);
+                  return (
+                    <li key={key} className="flex space-x-2">
+                      <Icon className="text-primary" />
+                      <span className="font-medium capitalize">{label}:</span>
+                      <span>{value}</span>
+                    </li>
+                  );
+                },
+              )}
+
+            {/* Fallback/Legacy: Render specific fields if specs is not present or partial */}
+            {!properties.specs && (
+              <>
+                {properties.battery && (
+                  <li className="flex space-x-2">
+                    <Battery className="text-green-500" />
+                    <span className="font-medium">Batería:</span>
+                    <span>{properties.battery}</span>
+                  </li>
+                )}
+                {/* ... (other legacy fields can remain or be removed if we are sure) */}
+                {properties.processor && (
+                  <li className="flex space-x-2">
+                    <Cpu />
+                    <span className="font-medium">Procesador:</span>
+                    <span>{properties.processor}</span>
+                  </li>
+                )}
+                {properties.ram && (
+                  <li className="flex space-x-2">
+                    <MemoryStick />
+                    <span className="font-medium">RAM:</span>
+                    <span>{properties.ram}</span>
+                  </li>
+                )}
+                {properties.capacity && (
+                  <li className="flex space-x-2">
+                    <HardDrive />
+                    <span className="font-medium">Capacidad:</span>
+                    <span>{properties.capacity}</span>
+                  </li>
+                )}
+                {properties.color && (
+                  <li className="flex space-x-2">
+                    <Palette />
+                    <span className="font-medium">Color:</span>
+                    <span>{properties.color}</span>
+                  </li>
+                )}
+              </>
             )}
           </ul>
         </Card>

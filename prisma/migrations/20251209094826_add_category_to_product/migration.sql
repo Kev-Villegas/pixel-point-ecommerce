@@ -1,0 +1,12 @@
+-- CreateEnum
+CREATE TYPE "Category" AS ENUM ('SMARTPHONE', 'CONSOLE', 'PERIPHERAL', 'OTHER');
+
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "category" "Category" NOT NULL DEFAULT 'SMARTPHONE';
+
+-- AlterTable
+ALTER TABLE "Properties" ADD COLUMN     "specs" JSONB,
+ALTER COLUMN "model" DROP NOT NULL,
+ALTER COLUMN "capacity" DROP NOT NULL,
+ALTER COLUMN "ram" DROP NOT NULL,
+ALTER COLUMN "color" DROP NOT NULL;

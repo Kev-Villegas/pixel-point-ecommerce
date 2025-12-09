@@ -46,6 +46,7 @@ model Product {
   likes       Like[]
   orderItems  OrderItem[]
   properties  Properties?
+  category    Category    @default(SMARTPHONE)
 }
 
 model Like {
@@ -61,10 +62,10 @@ model Like {
 
 model Properties {
   id               Int      @id @default(autoincrement())
-  model            String
-  capacity         String
-  ram              String
-  color            String
+  model            String?
+  capacity         String?
+  ram              String?
+  color            String?
   battery          String?
   processor        String?
   graphics         String?
@@ -87,6 +88,7 @@ model Properties {
   screenresolution String?
   screensize       String?
   screentype       String?
+  specs            Json?
   productId        Int?     @unique
   simcard          String?
   product          Product? @relation(fields: [productId], references: [id])
@@ -180,4 +182,10 @@ enum OrderStatus {
 enum UserRole {
   ADMIN
   USER
+}
+enum Category {
+  SMARTPHONE
+  CONSOLE
+  PERIPHERAL
+  OTHER
 }
