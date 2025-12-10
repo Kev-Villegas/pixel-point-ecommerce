@@ -25,20 +25,29 @@ import {
   UserRegisterSchema,
 } from "@/app/_schemas/validationSchemas";
 
-const SignUpForm = () => {
+import { useAuthModal } from "@/app/_hooks/useAuthModal";
+
+interface SignUpFormProps {
+  isModal?: boolean;
+}
+
+const SignUpForm = ({ isModal = false }: SignUpFormProps) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { status } = useSession();
   const router = useRouter();
+  const { setView } = useAuthModal();
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.refresh();
-      router.push("/");
+      if (!isModal) {
+        router.refresh();
+        router.push("/");
+      }
     }
-  }, [status, router]);
+  }, [status, router, isModal]);
 
   const {
     register,
@@ -79,7 +88,11 @@ const SignUpForm = () => {
         toast.error(response.error);
       } else {
         toast.success("Usuario registrado exitosamente.");
-        router.push("/auth/signin");
+        if (isModal) {
+          setView("signin");
+        } else {
+          router.push("/auth/signin");
+        }
       }
     } catch (error) {
       console.error("Error en el registro:", error);
@@ -100,8 +113,8 @@ const SignUpForm = () => {
     }
   };
 
-  return (
-    <Card className="mx-auto w-full max-w-md">
+  const Content = (
+    <>
       <CardHeader className="space-y-1">
         <CardTitle className="text-center text-2xl font-bold">
           Crear Cuenta
@@ -264,13 +277,28 @@ const SignUpForm = () => {
         </Button>
         <div className="pb-4 text-center text-sm text-gray-600">
           Ya tienes una cuenta?{" "}
-          <Link href="/auth/signin" className="text-blue-700 hover:underline">
-            Iniciar Sesión
-          </Link>
+          {isModal ? (
+            <span
+              onClick={() => setView("signin")}
+              className="cursor-pointer text-blue-700 hover:underline"
+            >
+              Iniciar Sesión
+            </span>
+          ) : (
+            <Link href="/auth/signin" className="text-blue-700 hover:underline">
+              Iniciar Sesión
+            </Link>
+          )}
         </div>
       </CardFooter>
-    </Card>
+    </>
   );
+
+  if (isModal) {
+    return <div className="w-full">{Content}</div>;
+  }
+
+  return <Card className="mx-auto w-full max-w-md">{Content}</Card>;
 };
 
 export default SignUpForm;

@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
+import { useAuthModal } from "@/app/_hooks/useAuthModal";
 
 export default function Header() {
   const categories = [
@@ -48,6 +49,7 @@ export default function Header() {
   // For now, passing all unique brands to BurgerButton to keep it working as before roughly,
   // or we can update BurgerButton to accept categories.
   const allBrands = Array.from(new Set(categories.flatMap((c) => c.brands)));
+  const { openModal } = useAuthModal();
 
   const { data: session, status } = useSession();
 
@@ -95,10 +97,15 @@ export default function Header() {
             {session && session.user?.email ? (
               <UserDropDownMenu session={session} />
             ) : (
-              <Link href="/auth/signin">
+              <div
+                onClick={() => openModal("signin")}
+                className="cursor-pointer transition-colors hover:text-primary"
+                role="button"
+                tabIndex={0}
+              >
                 <User className="h-6 w-6" />
                 <span className="sr-only">Login</span>
-              </Link>
+              </div>
             )}
           </div>
         </div>

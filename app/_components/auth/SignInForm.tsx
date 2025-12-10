@@ -23,12 +23,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
+import { useAuthModal } from "@/app/_hooks/useAuthModal";
 
-const SignInForm = () => {
+interface SignInFormProps {
+  isModal?: boolean;
+}
+
+const SignInForm = ({ isModal = false }: SignInFormProps) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { status, data: session } = useSession();
   const router = useRouter();
+  const { setView } = useAuthModal();
 
   const {
     register,
@@ -51,7 +57,9 @@ const SignInForm = () => {
         toast.error("Correo electrónico o contraseña incorrecta");
       } else {
         toast.success("Inicio de sesión exitoso.");
-        window.location.href = "/";
+        // If in modal, we can close it or just refresh. Usually reload or router.refresh is enough.
+        // But for better UX we might want to reload to update session state in UI.
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
@@ -65,15 +73,19 @@ const SignInForm = () => {
     if (status === "authenticated") {
       if (session?.user?.emailVerified === null && session.user.email) {
         router.push(`/verify?email=${encodeURIComponent(session.user.email)}`);
-      } else {
+      } else if (!isModal) {
+        // Only redirect if not in modal (to avoid redirecting to home if we are already there)
+        // But actually, if we are in modal, we probably just want to close it.
+        // The onSubmit handles the success reload/redirect.
+        // This effect is more for if the user lands on the page already authenticated.
         router.refresh();
         router.push("/");
       }
     }
-  }, [status, session, router]);
+  }, [status, session, router, isModal]);
 
-  return (
-    <Card className="mx-auto w-full max-w-md">
+  const Content = (
+    <>
       <CardHeader className="space-y-1">
         <CardTitle className="text-center text-2xl font-bold">
           Iniciar Sesión
@@ -167,13 +179,28 @@ const SignInForm = () => {
         </Button>
         <div className="pb-4 text-center text-sm text-gray-600">
           No tienes una cuenta?{" "}
-          <Link href="/auth/signup" className="text-blue-700 hover:underline">
-            Crear Cuenta
-          </Link>
+          {isModal ? (
+            <span
+              onClick={() => setView("signup")}
+              className="cursor-pointer text-blue-700 hover:underline"
+            >
+              Crear Cuenta
+            </span>
+          ) : (
+            <Link href="/auth/signup" className="text-blue-700 hover:underline">
+              Crear Cuenta
+            </Link>
+          )}
         </div>
       </CardFooter>
-    </Card>
+    </>
   );
+
+  if (isModal) {
+    return <div className="w-full">{Content}</div>;
+  }
+
+  return <Card className="mx-auto w-full max-w-md">{Content}</Card>;
 };
 
 export default SignInForm;

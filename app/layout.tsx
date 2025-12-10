@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 import SessionWrapper from "./_components/SessionWrapper";
+import AuthModal from "./_components/auth/AuthModal";
 import "./globals.css";
 import Script from "next/script";
 
@@ -95,10 +96,8 @@ const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
     <SessionWrapper>
@@ -139,7 +138,7 @@ export default function RootLayout({
           <React.StrictMode>
             <Header />
             <main>{children}</main>
-            {modal}
+            <AuthModal />
             <Footer />
           </React.StrictMode>
           <Toaster

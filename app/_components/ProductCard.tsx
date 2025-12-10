@@ -10,6 +10,7 @@ import { BadgeCheck, ShoppingBag, Heart } from "lucide-react";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { fbq } from "../_utils/pixel";
 import { useRouter } from "next/navigation";
+import { useAuthModal } from "../_hooks/useAuthModal";
 
 interface ProductCardProps extends ProductBase {
   onUnfavorite?: () => void;
@@ -25,6 +26,7 @@ export default function ProductCard({
   const { likedProductIds, mutate } = useLikes();
   const [likeLoading, setLikeLoading] = useState(false);
   const router = useRouter();
+  const { openModal } = useAuthModal();
 
   const isLiked = likedProductIds.includes(id);
 
@@ -64,7 +66,7 @@ export default function ProductCard({
       mutate();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        router.push("/auth/signin");
+        openModal("signin");
       }
       mutate(prevLikedIds, false);
     } finally {
