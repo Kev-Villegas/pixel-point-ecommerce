@@ -108,7 +108,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ session }) => {
           >
             <button
               className="flex w-full items-center"
-              onClick={() => signOut()}
+              onClick={() => signOut({ callbackUrl: "/" })}
             >
               <LogOut className="h-4 w-4 font-bold group-hover:font-extrabold group-hover:text-red-800" />
               <span className="group-hover:text-red-800">Cerrar sesión</span>

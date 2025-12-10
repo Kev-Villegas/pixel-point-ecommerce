@@ -124,5 +124,26 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       return true;
     },
+    async session({ session, token }) {
+      if (token.sub) {
+        const user = await db.user.findUnique({
+          where: { id: token.sub },
+          select: { id: true },
+        });
+
+        if (!user) {
+          return null as any;
+        }
+      }
+
+      if (token.role && session.user) {
+        session.user.role = token.role as any;
+      }
+      if (token.emailVerified !== undefined && session.user) {
+        session.user.emailVerified = token.emailVerified as Date;
+      }
+
+      return session;
+    },
   },
 });
