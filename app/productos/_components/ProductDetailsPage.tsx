@@ -227,7 +227,7 @@ const ProductDetailsPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="m-2 mx-auto max-w-7xl bg-white px-4 py-8 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="flex flex-col">
           <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
@@ -367,6 +367,10 @@ const ProductDetailsPage = () => {
             })()}
           </ul>
         </Card>
+      </div>
+
+      <div className="mb-2 pt-4">
+        <Separator className="my-5" />
       </div>
 
       <ProductList

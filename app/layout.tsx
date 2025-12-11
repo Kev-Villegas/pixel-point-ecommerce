@@ -125,7 +125,7 @@ export default function RootLayout({
           </Script>
         </head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
         >
           <noscript>
             <img
@@ -137,7 +137,7 @@ export default function RootLayout({
           </noscript>
           <React.StrictMode>
             <Header />
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
             <AuthModal />
             <Footer />
           </React.StrictMode>
