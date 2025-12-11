@@ -1,5 +1,6 @@
 import { auth } from "@/app/_lib/auth";
 import { db } from "@/app/_lib/prisma";
+import { formatPropertiesForPrisma } from "@/app/_utils/productHelpers";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -36,11 +37,13 @@ export async function PUT(
   const params = await props.params;
   const body = await request.json();
 
-  const formattedProperties = body.properties.reduce((acc: any, prop: any) => {
-    const key = prop.name.toLowerCase();
-    acc[key] = prop.values;
+  // Convert array to object first
+  const rawProperties = body.properties.reduce((acc: any, prop: any) => {
+    acc[prop.name] = prop.values;
     return acc;
   }, {});
+
+  const formattedProperties = formatPropertiesForPrisma(rawProperties);
 
   const updatedProduct = await db.product.update({
     where: { id: parseInt(params.id) },
@@ -52,7 +55,7 @@ export async function PUT(
       stock: body.stock,
       properties: {
         delete: {},
-        create: { ...formattedProperties },
+        create: formattedProperties,
       },
       images: {
         deleteMany: {},

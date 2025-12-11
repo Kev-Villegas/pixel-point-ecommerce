@@ -330,63 +330,41 @@ const ProductDetailsPage = () => {
         </h2>
         <Card className="mt-4 px-4 py-4">
           <ul className="grid grid-cols-1 gap-4 text-gray-600 md:grid-cols-2">
-            {/* Dynamic Specs Rendering from JSON */}
-            {properties.specs &&
-              Object.entries(properties.specs as Record<string, string>).map(
-                ([key, value]) => {
-                  const Icon = getIconByKey(key);
-                  const label = getLabelByKey(key);
-                  return (
-                    <li key={key} className="flex space-x-2">
-                      <Icon className="text-primary" />
-                      <span className="font-medium capitalize">{label}:</span>
-                      <span>{value}</span>
-                    </li>
-                  );
-                },
-              )}
+            {/* Unified Specs Rendering */}
+            {(() => {
+              // Combine standard columns and specs into one object for display
+              // We can't import flattenProperties directly if it's not available,
+              // but assuming we can import it or reproduce the logic.
+              // Let's rely on the previous logic style but merged.
 
-            {/* Fallback/Legacy: Render specific fields if specs is not present or partial */}
-            {!properties.specs && (
-              <>
-                {properties.battery && (
-                  <li className="flex space-x-2">
-                    <Battery className="text-green-500" />
-                    <span className="font-medium">Batería:</span>
-                    <span>{properties.battery}</span>
+              const { id, productId, specs, ...standardProps } = properties;
+              const specsObj = (specs as Record<string, string>) || {};
+
+              // Filter nulls from standard props
+              const cleanStandardProps = Object.entries(standardProps).reduce(
+                (acc, [key, value]) => {
+                  if (value && key !== "id" && key !== "productId") {
+                    acc[key] = String(value);
+                  }
+                  return acc;
+                },
+                {} as Record<string, string>,
+              );
+
+              const allProps = { ...cleanStandardProps, ...specsObj };
+
+              return Object.entries(allProps).map(([key, value]) => {
+                const Icon = getIconByKey(key);
+                const label = getLabelByKey(key);
+                return (
+                  <li key={key} className="flex space-x-2">
+                    <Icon className="text-primary" />
+                    <span className="font-medium capitalize">{label}:</span>
+                    <span>{value}</span>
                   </li>
-                )}
-                {/* ... (other legacy fields can remain or be removed if we are sure) */}
-                {properties.processor && (
-                  <li className="flex space-x-2">
-                    <Cpu />
-                    <span className="font-medium">Procesador:</span>
-                    <span>{properties.processor}</span>
-                  </li>
-                )}
-                {properties.ram && (
-                  <li className="flex space-x-2">
-                    <MemoryStick />
-                    <span className="font-medium">RAM:</span>
-                    <span>{properties.ram}</span>
-                  </li>
-                )}
-                {properties.capacity && (
-                  <li className="flex space-x-2">
-                    <HardDrive />
-                    <span className="font-medium">Capacidad:</span>
-                    <span>{properties.capacity}</span>
-                  </li>
-                )}
-                {properties.color && (
-                  <li className="flex space-x-2">
-                    <Palette />
-                    <span className="font-medium">Color:</span>
-                    <span>{properties.color}</span>
-                  </li>
-                )}
-              </>
-            )}
+                );
+              });
+            })()}
           </ul>
         </Card>
       </div>

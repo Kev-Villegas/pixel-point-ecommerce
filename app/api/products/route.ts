@@ -1,6 +1,7 @@
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@/app/_lib/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { formatPropertiesForPrisma } from "@/app/_utils/productHelpers";
 
 type Image = {
   url: string;
@@ -77,16 +78,14 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const formattedProperties = body.properties.reduce((acc: any, prop: any) => {
-    const key = prop.name.toLowerCase();
-    if (key === "fastcharging") {
-      const val = String(prop.values).toLowerCase();
-      acc[key] = ["true", "1", "si", "sim", "yes", "s"].includes(val);
-    } else {
-      acc[key] = prop.values;
-    }
+
+  // Convert array to object first
+  const rawProperties = body.properties.reduce((acc: any, prop: any) => {
+    acc[prop.name] = prop.values;
     return acc;
   }, {});
+
+  const formattedProperties = formatPropertiesForPrisma(rawProperties);
 
   try {
     const product = await db.product.create({

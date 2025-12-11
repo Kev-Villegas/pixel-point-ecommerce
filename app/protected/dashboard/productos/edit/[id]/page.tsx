@@ -1,4 +1,5 @@
 import ProductForm from "@/app/_components/admin/ProductForm";
+import { flattenProperties } from "@/app/_utils/productHelpers";
 import Link from "next/link";
 import axios from "axios";
 
@@ -15,8 +16,10 @@ export default async function EditProductPage({
       `${process.env.NEXT_PUBLIC_URL}/api/products/${id}`,
     );
     data = response.data;
-    delete data.properties.id;
-    delete data.properties.productId;
+    data = response.data;
+    if (data.properties) {
+      data.properties = flattenProperties(data.properties);
+    }
   } catch (error) {
     return (
       <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-950">

@@ -15,40 +15,11 @@ import {
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
 import { useAuthModal } from "@/app/_hooks/useAuthModal";
+import { ALL_BRANDS, PRODUCT_CATEGORIES } from "../_utils/categories";
 
 export default function Header() {
-  const categories = [
-    {
-      name: "Celulares",
-      value: "SMARTPHONE",
-      brands: [
-        "Apple",
-        "Samsung",
-        "Xiaomi",
-        "Realme",
-        "Honor",
-        "Oneplus",
-        "Oppo",
-        "Motorola",
-        "Google",
-      ],
-    },
-    {
-      name: "Consolas",
-      value: "CONSOLE",
-      brands: ["Valve", "Nintendo", "Sony", "Microsoft"],
-    },
-    {
-      name: "Periféricos",
-      value: "PERIPHERAL",
-      brands: ["Logitech", "Razer", "HyperX", "Corsair"],
-    },
-  ];
-
-  // Flatten brands for mobile menu compatibility if needed, or update BurgerButton later.
-  // For now, passing all unique brands to BurgerButton to keep it working as before roughly,
-  // or we can update BurgerButton to accept categories.
-  const allBrands = Array.from(new Set(categories.flatMap((c) => c.brands)));
+  // Flatten brands for mobile menu compatibility
+  // For now, passing all unique brands to BurgerButton to keep it working
   const { openModal } = useAuthModal();
 
   const { data: session, status } = useSession();
@@ -60,7 +31,7 @@ export default function Header() {
       <div className="mx-auto py-4">
         <div className="mb-2 flex items-center justify-between">
           <div className="mr-2 md:hidden">
-            <BurgerButton brands={allBrands} />
+            <BurgerButton brands={ALL_BRANDS} />
           </div>
           <Link
             href="/"
@@ -72,25 +43,27 @@ export default function Header() {
         </div>
         <div className="flex items-center justify-between">
           <nav className="hidden space-x-6 text-sm font-medium text-gray-700 md:flex">
-            {categories.map((category) => (
-              <DropdownMenu key={category.name}>
-                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none">
-                  {category.name} <ChevronDown className="h-4 w-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {category.brands.map((brand) => (
-                    <DropdownMenuItem key={brand} asChild>
-                      <Link
-                        href={`/brands/${brand}`}
-                        className="w-full cursor-pointer hover:bg-gray-100"
-                      >
-                        {brand}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ))}
+            {PRODUCT_CATEGORIES.filter((c) => c.brands.length > 0).map(
+              (category) => (
+                <DropdownMenu key={category.name}>
+                  <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none">
+                    {category.name} <ChevronDown className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {category.brands.map((brand) => (
+                      <DropdownMenuItem key={brand} asChild>
+                        <Link
+                          href={`/brands/${brand}`}
+                          className="w-full cursor-pointer hover:bg-gray-100"
+                        >
+                          {brand}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ),
+            )}
           </nav>
           <div className="flex w-full items-center justify-between md:justify-end md:space-x-4">
             <CartInfo />

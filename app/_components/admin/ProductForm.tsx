@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ReactSortable } from "react-sortablejs";
 import Spinner from "./Spinner";
+import { ALL_BRANDS, PRODUCT_CATEGORIES } from "@/app/_utils/categories";
 
 interface CloudinaryResult {
   secure_url: string;
@@ -46,7 +47,13 @@ export default function ProductForm({
   const [description, setDescription] = useState(existingDescription || "");
   const [price, setPrice] = useState<number>(existingPrice ?? 159.99); // Usa `??` para evitar problemas con `null`
   const [images, setImages] = useState<ItemType[]>(existingImages || []);
-  const [productBrand, setProductBrand] = useState(existingBrand || "");
+  const [productBrand, setProductBrand] = useState(() => {
+    if (!existingBrand) return "";
+    const match = ALL_BRANDS.find(
+      (b) => b.toLowerCase() === existingBrand.toLowerCase(),
+    );
+    return match || existingBrand;
+  });
   const [stock, setStock] = useState<number>(existingStock || 0);
   const [properties, setProperties] = useState<
     { name: string; values: string }[]
@@ -61,24 +68,16 @@ export default function ProductForm({
 
   const [isUploading, setIsUploading] = useState(false);
 
-  const brands = [
-    "Apple",
-    "Samsung",
-    "Xiaomi",
-    "Realme",
-    "Honor",
-    "Oneplus",
-    "Oppo",
-    "Motorola",
-  ];
-
   useEffect(() => {
     if (!existingName && !existingDescription && !existingImages) return;
 
     setTitle(existingName || "");
     setDescription(existingDescription || "");
     setImages(existingImages || []);
-    setProductBrand(existingBrand || "");
+    const brandMatch = ALL_BRANDS.find(
+      (b) => b.toLowerCase() === (existingBrand || "").toLowerCase(),
+    );
+    setProductBrand(brandMatch || existingBrand || "");
     setStock(existingStock || 0);
 
     if (existingProperties) {
@@ -221,12 +220,15 @@ export default function ProductForm({
         onChange={(e) => setProductBrand(e.target.value)}
       >
         <option value="">Sin Marca</option>
-        {brands.length > 0 &&
-          brands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
-          ))}
+        {PRODUCT_CATEGORIES.map((category) => (
+          <optgroup key={category.value} label={category.name}>
+            {category.brands.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </optgroup>
+        ))}
       </select>
 
       <label>Fotos</label>
