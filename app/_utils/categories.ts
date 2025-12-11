@@ -25,6 +25,11 @@ export const PRODUCT_CATEGORIES = [
     brands: ["Logitech", "Razer", "HyperX", "Corsair", "Redragon"],
   },
   {
+    name: "Accesorios",
+    value: "ACCESSORY",
+    brands: ["Samsung", "Apple", "Xiaomi", "Sony", "JBL"],
+  },
+  {
     name: "Otros",
     value: "OTHER",
     brands: [],

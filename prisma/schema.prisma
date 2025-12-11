@@ -187,5 +187,6 @@ enum Category {
   SMARTPHONE
   CONSOLE
   PERIPHERAL
+  ACCESSORY
   OTHER
 }

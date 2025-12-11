@@ -376,268 +376,684 @@ async function main() {
     //     },
     //   },
     // },
+    // {
+    //   name: "Headset Gamer Corsair HS55 CA-9011260-NA Mini Jack 3.5mm - Negro",
+    //   description:
+    //     "Los auriculares Corsair HS55 son ligeros y duraderos, ideales para largas sesiones de juego con comodidad. Equipado con controladores de 50 mm, ofrece un sonido de alta calidad. El micrófono omnidireccional con función de giro para silenciar garantiza una comunicación clara. La conexión estable con interfaz Jack de 3.5 mm proporciona compatibilidad con varios dispositivos. Con suave espuma viscoelástica y orejeras de piel sintética, ofrece comodidad duradera.",
+    //   brand: "CORSAIR",
+    //   price: 107500.0,
+    //   category: Category.PERIPHERAL,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226741.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226742.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226743.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226744.jpg",
+    //       },
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "HS55",
+    //       specs: {
+    //         tipodeconexion: "Con cable",
+    //         conector: "Mini Jack 3.5 mm",
+    //         frecuenciaderespuesta: "20 Hz - 20 kHz",
+    //         impedancia: "32k Ohms | 1 kHz",
+    //         drivers: "50 mm",
+    //         microfono: "Omnidireccional",
+    //         sensibilidaddelmicrofono: "-41dB (+/-3dB)",
+    //         compatibilidad: "PC, PS4/5, Xbox One, X | S, Mobile",
+    //         longituddelcable: "1.8 m",
+    //         color: "Carbón",
+    //       },
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Headset Gamer Hyperx Cloud Stinger 2 3.5mm - Negro",
+    //   description:
+    //     "El Headset HyperX Cloud Stinger II combina comodidad y calidad de sonido para una experiencia inmersiva. Equipado con transductores de 50 mm, ofrece un audio potente y equilibrado. Su micrófono bidireccional con cancelación de ruido garantiza una comunicación clara. La tecnología DTS Headphone:X Spatial Audio ofrece un sonido espacial para una mayor precisión. Con una interfaz de 3,5 mm, es compatible con varios dispositivos. Las suaves almohadillas de cuero sintético garantizan la comodidad.",
+    //   brand: "HYPERX",
+    //   price: 98500.0,
+    //   category: Category.PERIPHERAL,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269604.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269601.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269602.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269603.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269600.jpg",
+    //       },
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "Cloud Stinger II",
+    //       specs: {
+    //         tipodeconexion: "Con cable",
+    //         conector: "Mini Jack 3.5 mm",
+    //         frecuenciaderespuesta: "10 Hz - 28 kHz",
+    //         impedancia: "32 ohm",
+    //         drivers: "50 mm",
+    //         microfono: "Bidireccional",
+    //         sensibilidaddelmicrofono: "-40,5 dBV (1 V/Pa a 1 kHz)",
+    //         calidaddesonido: "DTS Headphone:X Spatial Audio",
+    //         controldevolumen: "Integrado",
+    //         iluminacion: "No",
+    //         material: "Plástico",
+    //         color: "Negro",
+    //       },
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Headset Gamer Redragon Zeus 2 H510W USB - Blanco",
+    //   description:
+    //     "Con sonido envolvente 7.1 y controladores de 53 mm, el Redragon Zeus 2 H510W ofrece una alta calidad de sonido. Compatible con entrada USB 2.0 y 3,5 mm, se adapta a múltiples plataformas. Las almohadillas de cuero sintético brindan comodidad duradera, incluso durante sesiones de juego maratónicas. Una elección equilibrada entre rendimiento y comodidad para jugadores exigentes.",
+    //   brand: "REDRAGON",
+    //   price: 95350.0,
+    //   category: Category.PERIPHERAL,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/131974.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/71474.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/106271.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/22694.jpg",
+    //       },
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "Zeus 2",
+    //       specs: {
+    //         tipodeconexion: "Con cable",
+    //         interfaz: "USB",
+    //         conector: "Mini Jack 3.5 mm",
+    //         alcance: "2 m",
+    //         frecuenciaderespuesta: "20 Hz - 20 kHz",
+    //         impedancia: "64O ± 15% (f = 1KHZ)",
+    //         drivers: "53 mm",
+    //         microfono:
+    //           "Omnidireccional | Micrófono Desmontable con Captación de voz Totalmente Libre de Ruido para su Comunicación en el Juego",
+    //         sensibilidaddelmicrofono: "-42 ± 3dB",
+    //         calidaddesonido: "7.1 Surround",
+    //         compatibilidad: "PC | PS4, PS3 | Xbox One | Switch | Smartphones",
+    //         material:
+    //           "Almohadillas Courino de Calidad Avanzada para Mayor Durabilidad",
+    //         color: "Blanco",
+    //         features:
+    //           "Conexiones Extraíbles para Compatibilidad, Comodidad de Transporte y Durabilidad | Fantástica Calidad de Sonido para la Reproducción de Música, con Modo de Ecualización para Diferentes Estilos | Equipado con Almohadas Suaves y Cómodas",
+    //       },
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Headset Gamer Redragon H610 Wireless - Negro",
+    //   description:
+    //     "Sonido potente y aislamiento para concentrarse. El Headset Redragon H610 ofrece drivers de 40 mm con rango de frecuencia 20 Hz–20 kHz, ideal para juegos, música o películas. Su sistema ANC bloquea ruidos externos entre 35 y 40 dB, garantizando inmersión incluso en entornos ruidosos. Con batería de hasta 50 h por Bluetooth y diseño over-ear ergonómico, resulta cómodo en sesiones largas. Conectividad por Bluetooth 5.3 o cable AUX, micrófono integrado, es versátil para PC, consolas o móvil.",
+    //   brand: "REDRAGON",
+    //   price: 74350.0,
+    //   category: Category.PERIPHERAL,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316830.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316829.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316831.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316832.jpg",
+    //       },
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "VibeCore H610",
+    //       specs: {
+    //         tipodeconexion: "Sin cable",
+    //         conectividad: "Bluetooth 5.3 | AUX 3,5 mm",
+    //         conector: "Mini Jack 3.5 mm",
+    //         alcance: "15 m",
+    //         frecuenciaderespuesta: "20 Hz – 20 kHz",
+    //         impedancia: "16",
+    //         drivers: "40 mm",
+    //         microfono: "Integrado",
+    //         calidaddesonido: "Audio estéreo",
+    //         longituddelcable: "1,2m",
+    //         battery: "500 mAh",
+    //         autonomiadelabateria: "50h",
+    //         tiempodecarga: "2–3h",
+    //         color: "Negro",
+    //         features: "Cancelación activa de ruido (ANC)",
+    //         weight: "327g",
+    //         dimensions: "186 × P83 × A182 mm",
+    //       },
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Headset Redragon Aurora H376WG USB - Blanco",
+    //   description:
+    //     "Los auriculares Redragon Aurora ofrecen una experiencia de sonido envolvente con su tarjeta de sonido integrada y audio virtual 7.1 para una máxima calidad. Sus controladores de 40 mm brindan un sonido claro y detallado, ideal para juegos, música y comunicación. Con almohadillas de polipiel, garantiza comodidad incluso durante largas sesiones. El micrófono ajustable permite una comunicación clara, mientras que el diseño ergonómico ofrece un ajuste perfecto y una comodidad duradera.",
+    //   brand: "REDRAGON",
+    //   price: 73000.0,
+    //   category: Category.PERIPHERAL,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265882.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265883.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265885.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265884.jpg",
+    //       },
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "Aurora",
+    //       specs: {
+    //         tipodeconexion: "Con cable",
+    //         conector: "USB",
+    //         impedancia: "32 ohm",
+    //         drivers: "40 mm",
+    //         sensibilidaddelmicrofono: "-42 ± 3dB",
+    //         calidaddesonido: "7.1 Virtual",
+    //         longituddelcable: "2 m",
+    //         material: "Almohadillas de cuero",
+    //         color: "Blanco",
+    //       },
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Headset Gamer Kingston Hyper X Cloud Stinger HX-HSCS-BK-NA - Negro",
+    //   description:
+    //     "Aqui na Atacado Games você encontra o Fone Kingston Hyper, proporciona alta fidelidade sonora de tons baixos, médios e agudos e ainda reprodução de graves intensos que garantem um ambiente de jogo ainda mais imersivo. Oferece máximo conforto mesmo após longos períodos de utilização. Venha aproveitar seu passeio no           Paraguai na maior distribuidora de games da                                  América Latina e confira a linha                                  Kingston.",
+    //   brand: "HYPERX",
+    //   price: 73000.0,
+    //   category: Category.PERIPHERAL,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/2/1958.jpg",
+    //       },
+    //       // {
+    //       //     url: "http://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/2/383721.jpg"
+    //       // },
+    //       // {
+    //       //     url: "http://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/3/383721.jpg"
+    //       // },
+    //       // {
+    //       //     url: "http://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/4/383721.jpg"
+    //       // }
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "Hyper X Cloud Stinger",
+    //       specs: {
+    //         frecuenciaderespuesta: "18-23.000 Hz",
+    //         impedancia: "30 ohms",
+    //         compatibilidad: "PC | Mac | S4 | Xbox | Nintendo Swicth",
+    //         longituddelcable: "1.6 m",
+    //         color: "Negro",
+    //         weight: "275 g",
+    //       },
+    //     },
+    //   },
+    // },
+    // {
+    //     name: "Auricular Xiaomi Redmi Buds 6 Play M2420E1 Wireless - Azul",
+    //     description: "Los auriculares Xiaomi Redmi Buds 6 Play ofrecen un sonido envolvente con controladores de 10 mm y conexión Bluetooth 5.4 para una máxima estabilidad. Equipados con un micrófono integrado, garantizan llamadas claras y prácticas. Su batería dura hasta 36 horas con el estuche, ideal para quienes buscan autonomía y practicidad. La carga a través de USB-C hace que el uso sea aún más conveniente y sirve para diversas rutinas diarias de manera efectiva y eficiente.",
+    //     brand: "XIAOMI",
+    //     price: 34999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-play-m2420e1-wireless-azul/2/249056.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-play-m2420e1-wireless-azul/2/249057.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-play-m2420e1-wireless-azul/2/249058.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-play-m2420e1-wireless-azul/2/249059.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Play",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.4",
+    //                 drivers: "10 mm",
+    //                 microfone: "Integrado",
+    //                 autonomiadelabateria: "Hasta 36 horas con estuche",
+    //                 conector: "USB-C",
+    //                 color: "Azul",
+    //                 weight: "0.094 kg",
+    //                 dimensions: "12.10 cm X 10.10 cm X 3.20 cm"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Xiaomi Redmi Buds 6 Play Bluetooth - Rosa",
+    //     description: "Los Xiaomi Redmi Buds 6 Play con controladores de 10 mm, que ofrecen un sonido equilibrado entre graves potentes y agudos claros en el rango de 20 Hz a 20 kHz. Equipados con Bluetooth 5.4 para una buena conexión, aseguran velocidad y estabilidad con los dispositivos. La cancelación de ruido incorporada bloquea los sonidos externos, brindando una experiencia más inmersiva. La batería de 57 mAh en los auriculares y 600 mAh en el estuche garantizan un uso prolongado durante todo el día.",
+    //     brand: "XIAOMI",
+    //     price: 34999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-mi-redmi-buds-6-play-m2420e1-bluetooth-rosa/2/247681.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-mi-redmi-buds-6-play-m2420e1-bluetooth-rosa/2/247683.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-mi-redmi-buds-6-play-m2420e1-bluetooth-rosa/2/247682.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Play",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.4",
+    //                 drivers: "10 mm",
+    //                 frecuenciaderespuesta: "20Hz - 20kHz",
+    //                 impedancia: "16 Ohms",
+    //                 cancelamientoderuido: "Sí",
+    //                 microfone: "Integrado",
+    //                 autonomiadelabateria: "Auriculares: 57 mAh | Estuche de carga: 600 mAh",
+    //                 tiempodecarga: "Hasta 7,5 horas con una sola carga | Hasta 36 horas con el estuche de carga.",
+    //                 interfaz: "USB-C",
+    //                 color: "Rosa"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Redmi Buds 6 Play Wireless - Negro",
+    //     description: "Los auriculares Redmi Buds 6 Play ofrecen una experiencia de audio inalámbrica confiable y de alta calidad con conexión Bluetooth 5.4. Equipados con controladores de 10 mm, proporcionan un sonido claro y potente. La interfaz USB-C permite una carga rápida y eficiente. Con una autonomía de hasta 7,5 horas en los auriculares y hasta 36 horas con el estuche de carga, estos auriculares son ideales para un uso prolongado durante todo el día.",
+    //     brand: "XIAOMI",
+    //     price: 34999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-redmi-buds-6-play-bhr8776gl-wireless-negro/2/235346.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-redmi-buds-6-play-bhr8776gl-wireless-negro/2/235347.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Play",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.4",
+    //                 drivers: "10 mm",
+    //                 cancelamientoderuido: "Sí",
+    //                 battery: "Auriculares: 57 mAh | Case: 600 mAh",
+    //                 autonomiadelabateria: "Auriculares: 7,5 horas | Case: 36 horas",
+    //                 tiempodecarga: "2 horas",
+    //                 interfaz: "USB-C",
+    //                 color: "Negro"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Xiaomi Mi Redmi Buds 6 Active M2344E1 - Rosa",
+    //     description: "Los auriculares activos Xiaomi Mi Redmi Buds 6 cuentan con tecnología Bluetooth 5.4 y controladores de 14,2 mm para un sonido de alta calidad. Con hasta 6 horas de uso continuo y 24 horas con el estuche, podrás aprovechar al máximo tu música durante todo el día. Al tener cancelación de ruido, ofrece una experiencia auditiva clara durante tus llamadas. Además, el botón con sensor táctil incorporado facilita la reproducción y las llamadas.",
+    //     brand: "XIAOMI",
+    //     price: 38999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-mi-redmi-buds-6-active-m2344e1-rosa/2/231243.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Active",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.4",
+    //                 drivers: "14.2 mm",
+    //                 cancelamientoderuido: "Sí",
+    //                 microfone: "Integrado",
+    //                 battery: "Auricular 37 mAh | Case 475 mAh",
+    //                 autonomiadelabateria: "Auricular 6 horas | Case 24 horas",
+    //                 tiempodecarga: "1 Hora",
+    //                 interfaz: "USB-C",
+    //                 color: "Rosa",
+    //                 features: "Botón sensor táctil para reproducción y llamada, integrado en la estructura | Compatible con la aplicación de auriculares Xiaomi"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Xiaomi Mi Redmi Buds 6 Active M2344E1 - Blanco",
+    //     description: "Los auriculares Redmi Buds 6 Active están diseñados para ofrecer una experiencia de sonido superior y cómoda. Con conexión inalámbrica Bluetooth 5.4, garantizan una conexión estable y eficiente. Equipados con controladores de 14 mm, brindan una calidad de audio clara y potente. Ofrecen 6 horas de autonomía en los auriculares y hasta 30 horas adicionales con el estuche de carga. La resistencia al agua IPX4 garantiza durabilidad y protección contra salpicaduras.",
+    //     brand: "XIAOMI",
+    //     price: 38999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-mi-redmi-buds-6-active-m2344e1-blanco/2/229693.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Active",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.4",
+    //                 drivers: "14.2 mm",
+    //                 cancelamientoderuido: "Sí",
+    //                 microfone: "Integrado",
+    //                 battery: "Auricular 37 mAh | Case 475 mAh",
+    //                 autonomiadelabateria: "Auricular 6 horas | Case 24 horas",
+    //                 tiempodecarga: "1 Hora",
+    //                 interfaz: "USB-C",
+    //                 color: "Blanco",
+    //                 features: "Botón sensor táctil para reproducción y llamada, integrado en la estructura | Compatible con la aplicación de auriculares Xiaomi"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Xiaomi Redmi Buds 6 Lite M2111E1 Wireless - Azul",
+    //     description: "Los auriculares Redmi Buds 6 Lite ofrecen una experiencia de audio de alta calidad con comodidad y durabilidad. Con conexión inalámbrica Bluetooth 5.3, garantizan una transmisión estable y rápida. Equipados con controladores de 12,4 mm, proporcionan un sonido claro y potente. La autonomía de 7 horas con los auriculares y hasta 38 horas con el estuche de carga permite largas sesiones de uso. Resistencia al agua IP54. Los micrófonos duales incorporados garantizan llamadas claras y nítidas.",
+    //     brand: "XIAOMI",
+    //     price: 43999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-azul/2/237649.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-azul/2/237650.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-azul/2/237648.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-azul/2/237647.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Lite",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.3",
+    //                 drivers: "12.4 mm",
+    //                 frecuenciaderespuesta: "20Hz - 20kHz",
+    //                 impedancia: "32 ohm",
+    //                 sensibilidad: "40 dB",
+    //                 cancelamientoderuido: "Sí",
+    //                 microfone: "Doble",
+    //                 battery: "Auriculares: 45 mAh | Caja: 480 mAh",
+    //                 autonomiadelabateria: "Auriculares: 7 horas | Caja: 38 horas",
+    //                 resistentealagua: "IP54",
+    //                 compatibilidad: "Android | iOS",
+    //                 interfaz: "USB-C",
+    //                 color: "Azul"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Xiaomi Redmi Buds 6 Lite M2111E1 Wireless - Blanco",
+    //     description: "Los auriculares Redmi Buds 6 Lite ofrecen una experiencia de audio de alta calidad con comodidad y durabilidad. Con conexión inalámbrica Bluetooth 5.3, garantizan una transmisión estable y rápida. Equipados con controladores de 12,4 mm, proporcionan un sonido claro y potente. La autonomía de 7 horas con los auriculares y hasta 38 horas con el estuche de carga permite largas sesiones de uso. Resistencia al agua IP54. Los micrófonos duales incorporados garantizan llamadas claras y nítidas.",
+    //     brand: "XIAOMI",
+    //     price: 43999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-blanco/2/237253.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-blanco/2/237252.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-blanco/2/237254.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-xiaomi-redmi-buds-6-lite-m2111e1-wireless-blanco/2/237255.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Redmi Buds 6 Lite",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.3",
+    //                 drivers: "12.4 mm",
+    //                 frecuenciaderespuesta: "20Hz - 20kHz",
+    //                 impedancia: "32 ohm",
+    //                 sensibilidad: "40 dB",
+    //                 cancelamientoderuido: "Sí",
+    //                 microfone: "Doble",
+    //                 battery: "Auriculares: 45 mAh | Caja: 480 mAh",
+    //                 autonomiadelabateria: "Auriculares: 7 horas | Caja: 38 horas",
+    //                 resistentealagua: "IP54",
+    //                 compatibilidad: "Android | iOS",
+    //                 interfaz: "USB-C",
+    //                 color: "Blanco"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Amazon Echo Buds 2023 Wireless - Blanco",
+    //     description: "Los auriculares Amazon Echo Buds 2023 ofrecen una calidad de sonido excepcional con controladores de 12 mm y conectividad Bluetooth 5.2. Con hasta 5 horas de autonomía en los auriculares y 20 horas con el estuche de carga, es ideal para largas sesiones musicales, llamadas y podcasts. Compatible con iOS y Android, proporciona un ajuste cómodo y un sonido claro. Compacto y eficiente, es perfecto para quienes buscan practicidad y rendimiento, ya sea en el trabajo, en la formación o en el ocio.",
+    //     brand: "AMAZON",
+    //     price: 67999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-blanco/2/253340.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-blanco/2/253341.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-blanco/2/253343.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-blanco/2/253342.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Echo Buds 2023",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.2",
+    //                 drivers: "12 mm",
+    //                 cancelamientoderuido: "No",
+    //                 microfone: "Integrado",
+    //                 autonomiadelabateria: "Auricular 5 horas | Case 20 horas",
+    //                 compatibilidad: "iOS | Android",
+    //                 interfaz: "USB-C",
+    //                 color: "Blanco"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Amazon Echo Buds 2023 Wireless - Negro",
+    //     description: "Los auriculares Amazon Echo Buds 2023 ofrecen una calidad de sonido excepcional con controladores de 12 mm y conectividad Bluetooth 5.2. Con hasta 5 horas de autonomía en los auriculares y 20 horas con el estuche de carga, es ideal para largas sesiones musicales, llamadas y podcasts. Compatible con iOS y Android, proporciona un ajuste cómodo y un sonido claro. Compacto y eficiente, es perfecto para quienes buscan practicidad y rendimiento, ya sea en el trabajo, en la formación o en el ocio.",
+    //     brand: "AMAZON",
+    //     price: 67999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-negro/2/253365.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-negro/2/253366.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-amazon-echo-buds-2023-wireless-negro/2/253367.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Echo Buds 2023",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.2",
+    //                 drivers: "12 mm",
+    //                 cancelamientoderuido: "No",
+    //                 microfone: "Integrado",
+    //                 autonomiadelabateria: "Auricular 5 horas | Case 20 horas",
+    //                 compatibilidad: "iOS | Android",
+    //                 interfaz: "USB-C",
+    //                 color: "Negro"
+    //             }
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Auricular Samsung Galaxy Buds Core SM-R410 Wireless - Negro",
+    //     description: "Los Samsung Galaxy Buds Core integran cancelación activa de ruido, conectividad Bluetooth 5.4 y certificación IP54 contra polvo y salpicaduras, ideales para el uso diario. Con solo 5,3 g por auricular, ofrecen hasta 35 h de música con el estuche, o 20 h con ANC activado. Incorporan funciones de Galaxy AI, como intérprete y traducción en tiempo real directamente en los auriculares, combinando comodidad, sonido de calidad e inteligencia avanzada.",
+    //     brand: "SAMSUNG",
+    //     price: 74999.0,
+    //     category: Category.ACCESSORY,
+    //     stock: 10,
+    //     images: {
+    //         create: [
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-negro/2/302854.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-negro/2/302851.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-negro/2/302852.jpg"
+    //             },
+    //             {
+    //                 url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-negro/2/302853.jpg"
+    //             }
+    //         ]
+    //     },
+    //     properties: {
+    //         create: {
+    //             model: "Galaxy Buds Core",
+    //             specs: {
+    //                 connectivity: "Bluetooth 5.4",
+    //                 cancelamientoderuido: "Sí",
+    //                 battery: "500 mAh",
+    //                 autonomiadelabateria: "35 h",
+    //                 resistentealagua: "IP54",
+    //                 interfaz: "USB-C",
+    //                 color: "Negro",
+    //                 features: "Funciones Galaxy AI"
+    //             }
+    //         }
+    //     }
+    // },
     {
-      name: "Headset Gamer Corsair HS55 CA-9011260-NA Mini Jack 3.5mm - Negro",
+      name: "Auricular Samsung Galaxy Buds Core SM-R410 Wireless - Blanco",
       description:
-        "Los auriculares Corsair HS55 son ligeros y duraderos, ideales para largas sesiones de juego con comodidad. Equipado con controladores de 50 mm, ofrece un sonido de alta calidad. El micrófono omnidireccional con función de giro para silenciar garantiza una comunicación clara. La conexión estable con interfaz Jack de 3.5 mm proporciona compatibilidad con varios dispositivos. Con suave espuma viscoelástica y orejeras de piel sintética, ofrece comodidad duradera.",
-      brand: "CORSAIR",
-      price: 107500.0,
-      category: Category.PERIPHERAL,
+        "Los Samsung Galaxy Buds Core ofrecen comodidad y tecnología avanzada: cancelación activa de ruido (ANC), certificación IP54, Bluetooth 5.4, y hasta 35 horas de reproducción con el estuche (20 h con ANC activado). Cada auricular pesa apenas 5,3 g y el estuche 31,2 g. Incluyen funciones de Galaxy AI, como intérprete y traducción en tiempo real directamente en los auriculares. Una opción accesible y completa para el uso diario.",
+      brand: "SAMSUNG",
+      price: 74999.0,
+      category: Category.ACCESSORY,
       stock: 10,
       images: {
         create: [
           {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226741.jpg",
+            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302877.jpg",
           },
           {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226742.jpg",
+            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302874.jpg",
           },
           {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226743.jpg",
+            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302875.jpg",
           },
           {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-corsair-hs55-ca-9011260-na-mini-jack-3-5mm-negro/2/226744.jpg",
+            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302876.jpg",
           },
         ],
       },
       properties: {
         create: {
-          model: "HS55",
+          model: "Galaxy Buds Core",
           specs: {
-            tipodeconexion: "Con cable",
-            conector: "Mini Jack 3.5 mm",
-            frecuenciaderespuesta: "20 Hz - 20 kHz",
-            impedancia: "32k Ohms | 1 kHz",
-            drivers: "50 mm",
-            microfono: "Omnidireccional",
-            sensibilidaddelmicrofono: "-41dB (+/-3dB)",
-            compatibilidad: "PC, PS4/5, Xbox One, X | S, Mobile",
-            longituddelcable: "1.8 m",
-            color: "Carbón",
-          },
-        },
-      },
-    },
-    {
-      name: "Headset Gamer Hyperx Cloud Stinger 2 3.5mm - Negro",
-      description:
-        "El Headset HyperX Cloud Stinger II combina comodidad y calidad de sonido para una experiencia inmersiva. Equipado con transductores de 50 mm, ofrece un audio potente y equilibrado. Su micrófono bidireccional con cancelación de ruido garantiza una comunicación clara. La tecnología DTS Headphone:X Spatial Audio ofrece un sonido espacial para una mayor precisión. Con una interfaz de 3,5 mm, es compatible con varios dispositivos. Las suaves almohadillas de cuero sintético garantizan la comodidad.",
-      brand: "HYPERX",
-      price: 98500.0,
-      category: Category.PERIPHERAL,
-      stock: 10,
-      images: {
-        create: [
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269604.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269601.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269602.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269603.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-hyperx-cloud-stinger-2-3-5mm-negro/2/269600.jpg",
-          },
-        ],
-      },
-      properties: {
-        create: {
-          model: "Cloud Stinger II",
-          specs: {
-            tipodeconexion: "Con cable",
-            conector: "Mini Jack 3.5 mm",
-            frecuenciaderespuesta: "10 Hz - 28 kHz",
-            impedancia: "32 ohm",
-            drivers: "50 mm",
-            microfono: "Bidireccional",
-            sensibilidaddelmicrofono: "-40,5 dBV (1 V/Pa a 1 kHz)",
-            calidaddesonido: "DTS Headphone:X Spatial Audio",
-            controldevolumen: "Integrado",
-            iluminacion: "No",
-            material: "Plástico",
-            color: "Negro",
-          },
-        },
-      },
-    },
-    {
-      name: "Headset Gamer Redragon Zeus 2 H510W USB - Blanco",
-      description:
-        "Con sonido envolvente 7.1 y controladores de 53 mm, el Redragon Zeus 2 H510W ofrece una alta calidad de sonido. Compatible con entrada USB 2.0 y 3,5 mm, se adapta a múltiples plataformas. Las almohadillas de cuero sintético brindan comodidad duradera, incluso durante sesiones de juego maratónicas. Una elección equilibrada entre rendimiento y comodidad para jugadores exigentes.",
-      brand: "REDRAGON",
-      price: 95350.0,
-      category: Category.PERIPHERAL,
-      stock: 10,
-      images: {
-        create: [
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/131974.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/71474.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/106271.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-zeus-2-h510w-usb-blanco/2/22694.jpg",
-          },
-        ],
-      },
-      properties: {
-        create: {
-          model: "Zeus 2",
-          specs: {
-            tipodeconexion: "Con cable",
-            interfaz: "USB",
-            conector: "Mini Jack 3.5 mm",
-            alcance: "2 m",
-            frecuenciaderespuesta: "20 Hz - 20 kHz",
-            impedancia: "64O ± 15% (f = 1KHZ)",
-            drivers: "53 mm",
-            microfono:
-              "Omnidireccional | Micrófono Desmontable con Captación de voz Totalmente Libre de Ruido para su Comunicación en el Juego",
-            sensibilidaddelmicrofono: "-42 ± 3dB",
-            calidaddesonido: "7.1 Surround",
-            compatibilidad: "PC | PS4, PS3 | Xbox One | Switch | Smartphones",
-            material:
-              "Almohadillas Courino de Calidad Avanzada para Mayor Durabilidad",
-            color: "Blanco",
-            features:
-              "Conexiones Extraíbles para Compatibilidad, Comodidad de Transporte y Durabilidad | Fantástica Calidad de Sonido para la Reproducción de Música, con Modo de Ecualización para Diferentes Estilos | Equipado con Almohadas Suaves y Cómodas",
-          },
-        },
-      },
-    },
-    {
-      name: "Headset Gamer Redragon H610 Wireless - Negro",
-      description:
-        "Sonido potente y aislamiento para concentrarse. El Headset Redragon H610 ofrece drivers de 40 mm con rango de frecuencia 20 Hz–20 kHz, ideal para juegos, música o películas. Su sistema ANC bloquea ruidos externos entre 35 y 40 dB, garantizando inmersión incluso en entornos ruidosos. Con batería de hasta 50 h por Bluetooth y diseño over-ear ergonómico, resulta cómodo en sesiones largas. Conectividad por Bluetooth 5.3 o cable AUX, micrófono integrado, es versátil para PC, consolas o móvil.",
-      brand: "REDRAGON",
-      price: 74350.0,
-      category: Category.PERIPHERAL,
-      stock: 10,
-      images: {
-        create: [
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316830.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316829.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316831.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-redragon-h610-wireless-negro/2/316832.jpg",
-          },
-        ],
-      },
-      properties: {
-        create: {
-          model: "VibeCore H610",
-          specs: {
-            tipodeconexion: "Sin cable",
-            conectividad: "Bluetooth 5.3 | AUX 3,5 mm",
-            conector: "Mini Jack 3.5 mm",
-            alcance: "15 m",
-            frecuenciaderespuesta: "20 Hz – 20 kHz",
-            impedancia: "16",
-            drivers: "40 mm",
-            microfono: "Integrado",
-            calidaddesonido: "Audio estéreo",
-            longituddelcable: "1,2m",
+            connectivity: "Bluetooth 5.4",
+            cancelamientoderuido: "Sí",
             battery: "500 mAh",
-            autonomiadelabateria: "50h",
-            tiempodecarga: "2–3h",
-            color: "Negro",
-            features: "Cancelación activa de ruido (ANC)",
-            weight: "327g",
-            dimensions: "186 × P83 × A182 mm",
-          },
-        },
-      },
-    },
-    {
-      name: "Headset Redragon Aurora H376WG USB - Blanco",
-      description:
-        "Los auriculares Redragon Aurora ofrecen una experiencia de sonido envolvente con su tarjeta de sonido integrada y audio virtual 7.1 para una máxima calidad. Sus controladores de 40 mm brindan un sonido claro y detallado, ideal para juegos, música y comunicación. Con almohadillas de polipiel, garantiza comodidad incluso durante largas sesiones. El micrófono ajustable permite una comunicación clara, mientras que el diseño ergonómico ofrece un ajuste perfecto y una comodidad duradera.",
-      brand: "REDRAGON",
-      price: 73000.0,
-      category: Category.PERIPHERAL,
-      stock: 10,
-      images: {
-        create: [
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265882.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265883.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265885.jpg",
-          },
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-redragon-aurora-h376wg-usb-blanco/2/265884.jpg",
-          },
-        ],
-      },
-      properties: {
-        create: {
-          model: "Aurora",
-          specs: {
-            tipodeconexion: "Con cable",
-            conector: "USB",
-            impedancia: "32 ohm",
-            drivers: "40 mm",
-            sensibilidaddelmicrofono: "-42 ± 3dB",
-            calidaddesonido: "7.1 Virtual",
-            longituddelcable: "2 m",
-            material: "Almohadillas de cuero",
+            autonomiadelabateria: "35 h",
+            resistentealagua: "IP54",
+            interfaz: "USB-C",
             color: "Blanco",
-          },
-        },
-      },
-    },
-    {
-      name: "Headset Gamer Kingston Hyper X Cloud Stinger HX-HSCS-BK-NA - Negro",
-      description:
-        "Aqui na Atacado Games você encontra o Fone Kingston Hyper, proporciona alta fidelidade sonora de tons baixos, médios e agudos e ainda reprodução de graves intensos que garantem um ambiente de jogo ainda mais imersivo. Oferece máximo conforto mesmo após longos períodos de utilização. Venha aproveitar seu passeio no           Paraguai na maior distribuidora de games da                                  América Latina e confira a linha                                  Kingston.",
-      brand: "HYPERX",
-      price: 73000.0,
-      category: Category.PERIPHERAL,
-      stock: 10,
-      images: {
-        create: [
-          {
-            url: "https://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/2/1958.jpg",
-          },
-          // {
-          //     url: "http://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/2/383721.jpg"
-          // },
-          // {
-          //     url: "http://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/3/383721.jpg"
-          // },
-          // {
-          //     url: "http://www.atacadoconnect.com/imagem/headsets/headset-gamer-kingston-hyper-x-cloud-stinger-hx-hscs-bk-na-negro/4/383721.jpg"
-          // }
-        ],
-      },
-      properties: {
-        create: {
-          model: "Hyper X Cloud Stinger",
-          specs: {
-            frecuenciaderespuesta: "18-23.000 Hz",
-            impedancia: "30 ohms",
-            compatibilidad: "PC | Mac | S4 | Xbox | Nintendo Swicth",
-            longituddelcable: "1.6 m",
-            color: "Negro",
-            weight: "275 g",
+            features: "Funciones Galaxy AI",
           },
         },
       },
