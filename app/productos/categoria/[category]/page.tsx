@@ -42,7 +42,7 @@ export default function ProductCategoryPage() {
         <h1 className="mb-8 mt-4 text-center text-3xl font-semibold">
           {mappedCategory}
         </h1>
-        <div className="flex flex-row flex-wrap gap-4">
+        <div className="grid justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
           {Array.from({ length: products?.length || 6 }).map((_, index) => (
             <SkeletonCard key={index} />
           ))}

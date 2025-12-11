@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/app/_components/ui/card";
 
 export function SkeletonCard() {
   return (
-    <Card className="w-full max-w-[220px] overflow-hidden">
+    <Card className="w-full overflow-hidden sm:max-w-[220px]">
       <div className="aspect-square w-full">
         <Skeleton className="h-full w-full" />
       </div>
