@@ -342,7 +342,7 @@ export default function ProductForm({
                 onChange={(e) =>
                   handlePropertyNameChange(index, property, e.target.value)
                 }
-                placeholder="Property name (example: color)"
+                placeholder="Nombre (ej: color)"
               />
               <input
                 type="text"
@@ -351,7 +351,7 @@ export default function ProductForm({
                   handlePropertyValuesChange(index, property, e.target.value)
                 }
                 value={property.values}
-                placeholder="Values, comma separated"
+                placeholder="Valores, separados por comas"
               />
               <button
                 type="button"

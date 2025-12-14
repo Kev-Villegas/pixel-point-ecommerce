@@ -40,6 +40,10 @@ import {
   Signal,
   Ruler,
   Tag,
+  Mic,
+  Shield,
+  Video,
+  Clock,
 } from "lucide-react";
 import ProductList from "@/app/_components/ProductList";
 import { fbq } from "@/app/_utils/pixel";
@@ -70,6 +74,44 @@ const getIconByKey = (key: string) => {
   )
     return Wifi;
   if (k.includes("network") || k.includes("red")) return Signal;
+  if (k.includes("camera") || k.includes("cámara")) return Camera;
+  if (k.includes("dimension")) return Ruler;
+  if (k.includes("micrófono") || k.includes("microphone")) return Mic;
+  if (
+    k.includes("driver") ||
+    k.includes("audio") ||
+    k.includes("sound") ||
+    k.includes("impédancia") ||
+    k.includes("frecuencia")
+  )
+    return Volume2;
+  if (k.includes("autonomía") || k.includes("autonomy") || k.includes("tiempo"))
+    return Clock;
+  if (k.includes("distancia") || k.includes("distance") || k.includes("rango"))
+    return Map;
+  if (k.includes("video") || k.includes("resolución")) return Video;
+  if (
+    k.includes("resistencia") ||
+    k.includes("resistance") ||
+    k.includes("protection")
+  )
+    return Shield;
+  if (k.includes("compatibilidad") || k.includes("compatible"))
+    return ListChecks;
+  if (k.includes("navegación") || k.includes("gps")) return Map;
+  if (
+    k.includes("carga") ||
+    k.includes("charging") ||
+    k.includes("batería") ||
+    k.includes("voltaje") ||
+    k.includes("voltage")
+  )
+    return Zap;
+  if (k.includes("velocidad") || k.includes("speed")) return ActivitySquare;
+  if (k.includes("sensor")) return ActivitySquare;
+  if (k.includes("ruido") || k.includes("noise") || k.includes("cancela"))
+    return Volume2;
+  if (k.includes("sim") || k.includes("chip")) return Microchip;
 
   return Tag;
 };
