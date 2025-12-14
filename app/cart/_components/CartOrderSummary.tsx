@@ -25,9 +25,7 @@ export function CartOrderSummary({
   getTotalOrderPrice,
 }: CartOrderSummaryProps) {
   const subtotal = getTotalOrderPrice();
-  const discount = 1000; // Placeholder
-  const deliveryFee = 50; // Placeholder
-  const total = subtotal - discount + deliveryFee;
+  const total = subtotal;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
@@ -153,7 +151,7 @@ export function CartOrderSummary({
           <div className="flex justify-between text-gray-600">
             <span>Envío</span>
             <span className="font-medium text-gray-900">
-              ${deliveryFee.toLocaleString("es-AR")}
+              ${(0).toLocaleString("es-AR")}
             </span>
           </div>
 
