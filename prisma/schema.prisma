@@ -189,4 +189,5 @@ enum Category {
   PERIPHERAL
   ACCESSORY
   OTHER
+  DRONE
 }

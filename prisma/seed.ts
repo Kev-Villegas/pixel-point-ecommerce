@@ -1018,42 +1018,97 @@ async function main() {
     //         }
     //     }
     // },
+    // {
+    //   name: "Auricular Samsung Galaxy Buds Core SM-R410 Wireless - Blanco",
+    //   description:
+    //     "Los Samsung Galaxy Buds Core ofrecen comodidad y tecnología avanzada: cancelación activa de ruido (ANC), certificación IP54, Bluetooth 5.4, y hasta 35 horas de reproducción con el estuche (20 h con ANC activado). Cada auricular pesa apenas 5,3 g y el estuche 31,2 g. Incluyen funciones de Galaxy AI, como intérprete y traducción en tiempo real directamente en los auriculares. Una opción accesible y completa para el uso diario.",
+    //   brand: "SAMSUNG",
+    //   price: 74999.0,
+    //   category: Category.ACCESSORY,
+    //   stock: 10,
+    //   images: {
+    //     create: [
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302877.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302874.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302875.jpg",
+    //       },
+    //       {
+    //         url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302876.jpg",
+    //       },
+    //     ],
+    //   },
+    //   properties: {
+    //     create: {
+    //       model: "Galaxy Buds Core",
+    //       specs: {
+    //         connectivity: "Bluetooth 5.4",
+    //         cancelamientoderuido: "Sí",
+    //         battery: "500 mAh",
+    //         autonomiadelabateria: "35 h",
+    //         resistentealagua: "IP54",
+    //         interfaz: "USB-C",
+    //         color: "Blanco",
+    //         features: "Funciones Galaxy AI",
+    //       },
+    //     },
+    //   },
+    // },
     {
-      name: "Auricular Samsung Galaxy Buds Core SM-R410 Wireless - Blanco",
+      name: "Drone DJI Neo",
       description:
-        "Los Samsung Galaxy Buds Core ofrecen comodidad y tecnología avanzada: cancelación activa de ruido (ANC), certificación IP54, Bluetooth 5.4, y hasta 35 horas de reproducción con el estuche (20 h con ANC activado). Cada auricular pesa apenas 5,3 g y el estuche 31,2 g. Incluyen funciones de Galaxy AI, como intérprete y traducción en tiempo real directamente en los auriculares. Una opción accesible y completa para el uso diario.",
-      brand: "SAMSUNG",
-      price: 74999.0,
-      category: Category.ACCESSORY,
+        'El DJI Neo es un dron ultraligero de 135g con cámara de 12 MP y sensor 1/2", ideal para tomas aéreas en 4K a 30 fps. Tiene 22 GB de memoria interna y hasta 18 minutos de vuelo con alcance de 10 km. Ofrece modos automáticos, estabilización avanzada y control por app, mando o voz. Compacto y fácil de usar, es perfecto para creadores que buscan movilidad y calidad en cada captura.',
+      brand: "DJI",
+      price: 499000.0,
+      category: Category.DRONE,
       stock: 10,
       images: {
         create: [
           {
-            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302877.jpg",
+            url: "https://www.atacadoconnect.com/imagem/drones/drone-dji-neo/2/237026.jpg",
           },
           {
-            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302874.jpg",
+            url: "https://www.atacadoconnect.com/imagem/drones/drone-dji-neo/2/237031.jpg",
           },
           {
-            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302875.jpg",
+            url: "https://www.atacadoconnect.com/imagem/drones/drone-dji-neo/2/237032.jpg",
           },
           {
-            url: "https://www.atacadoconnect.com/imagem/auriculares/auricular-samsung-galaxy-buds-core-sm-r410-wireless-blanco/2/302876.jpg",
+            url: "https://www.atacadoconnect.com/imagem/drones/drone-dji-neo/2/237151.jpg",
           },
         ],
       },
       properties: {
         create: {
-          model: "Galaxy Buds Core",
+          model: "Neo",
           specs: {
-            connectivity: "Bluetooth 5.4",
-            cancelamientoderuido: "Sí",
-            battery: "500 mAh",
-            autonomiadelabateria: "35 h",
-            resistentealagua: "IP54",
-            interfaz: "USB-C",
-            color: "Blanco",
-            features: "Funciones Galaxy AI",
+            connectivity: "Wi-Fi 802.11a/b/g/n/ac | Bluetooth 5.1",
+            capacity: "1435 mAh",
+            cargamaxima: "8,6 V",
+            velocidadmaxima: "16 m/s",
+            altitudmaxima: "2000 m",
+            distanciamaximadevuelo: "7 km",
+            tiempomaximodevuelo: "18 minutos",
+            resoluciondelacamara: "12 MP",
+            sensordelacamara: "Sensor de imagen de 1/2”",
+            estabilizaciondelacamara:
+              "Estabilizador mecánico de un solo eje                                (inclinación)",
+            tasadebitsdevideomaxima: "75 Mbps",
+            formatodevideo: "MP4",
+            frecuenciadeoperacion:
+              "2,400 a 2,4835 GHz | 5,170 a 5,250 GHz | 5,725                                a 5,850 GHz",
+            precisiondeposicion:
+              "Vertical: ±0,1 m (con posicionamiento visual),                                ±0,5 m (con posicionamiento GNSS) | Horizontal:               ±0,3 m (con posicionamiento visual), ±1,5 m (con                                posicionamiento GNSS)",
+            resistenciaalviento: "8 m/s",
+            navigation: "GPS | Galileo | BeiDou",
+            color: "Gris",
+            features:
+              "Rango mecánico: Inclinación -120° a 120° | Rango controlable: Inclinación -90° a 60° |                                velocidad máxima controlable (inclinación) 100                                °/s | Rango de vibración angular ±0,01° | Tipo                                de detección: posicionamiento visual inferior",
+            dimensions: "130 x 157 x 48.5 mm",
           },
         },
       },

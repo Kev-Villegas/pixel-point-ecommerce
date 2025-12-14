@@ -34,6 +34,11 @@ export const PRODUCT_CATEGORIES = [
     value: "OTHER",
     brands: [],
   },
+  {
+    name: "Drones",
+    value: "DRONE",
+    brands: ["DJI", "Autel", "Parrot", "Ryze", "BetaFPV"],
+  },
 ];
 
 export const ALL_BRANDS = Array.from(
