@@ -82,39 +82,39 @@ export default function Footer() {
 
           {/* Redes sociales */}
           <div>
-            <h2 className="mb-4 text-base font-semibold text-gray-900">
-              Síguenos
+            <h2 className="mb-2 text-base font-semibold text-gray-900">
+              Contacto
             </h2>
-            <div className="flex space-x-4">
-              <a
-                href="https://www.instagram.com/pixel.pointt/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 transition-colors hover:text-pink-600"
-                aria-label="Instagram"
-              >
-                <Instagram size={20} />
-              </a>
-            </div>
+            <a
+              href="mailto:contacto@pixel-point.com.ar"
+              className="flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
+            >
+              <Mail size={18} />
+              <span>contacto@pixel-point.com.ar</span>
+            </a>
 
             <div className="mt-6">
-              <h2 className="mb-4 text-base font-semibold text-gray-900">
-                Contacto
+              <h2 className="mb-2 text-base font-semibold text-gray-900">
+                Síguenos
               </h2>
-              <a
-                href="mailto:contacto@pixel-point.com.ar"
-                className="flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
-              >
-                <Mail size={18} />
-                <span>contacto@pixel-point.com.ar</span>
-              </a>
+              <div className="flex space-x-4">
+                <a
+                  href="https://www.instagram.com/pixel.pointt/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 transition-colors hover:text-pink-600"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={20} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="mt-8 border-t border-gray-200 pt-6">
           <div className="flex flex-col items-center justify-between gap-4 text-center text-xs text-gray-500 sm:flex-row sm:text-left">
-            <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-4">
+            {/* <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-4">
               <div className="flex flex-col items-center sm:flex-row sm:items-center sm:gap-1">
                 <span>Desarrollado por Kevin Villegas</span>
                 <div className="flex space-x-2">
@@ -164,7 +164,7 @@ export default function Footer() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <p className="text-gray-500">
               &copy; {new Date().getFullYear()} PixelPoint. Todos los derechos
