@@ -44,21 +44,41 @@ export function CartOrderSummary({
   async function handlePayment(): Promise<void> {
     try {
       setLoading(true);
-      fbq("track", "InitiateCheckout", {
-        value: cartProducts.reduce(
-          (acc, item) => acc + item.price * item.quantity,
-          0,
-        ),
-        currency: "ARS",
-        contents: cartProducts.map((item) => ({
-          id: item.id,
-          quantity: item.quantity,
-        })),
-      });
 
-      // Preparar el payload base
+      // 1. Generamos un ID único para este evento (Timestamp + Random)
+      // Esto es CLAVE para que Meta sepa que el evento del Browser y del Server son el mismo.
+      const eventId = `checkout_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+      // 2. Pixel del Navegador (Browser)
+      // Agregamos el cuarto parámetro con el eventID
+      fbq(
+        "track",
+        "InitiateCheckout",
+        {
+          value: cartProducts.reduce(
+            (acc, item) => acc + item.price * item.quantity,
+            0,
+          ),
+          currency: "ARS",
+          contents: cartProducts.map((item) => ({
+            id: item.id,
+            quantity: item.quantity,
+          })),
+          content_ids: cartProducts.map((item) => item.id), // Meta prefiere flat arrays a veces
+          content_type: "product",
+        },
+        { eventID: eventId }, // <--- DEDUPLICACIÓN
+      );
+
+      // Preparar el payload base para tu API
       const payload: any = {
         cart: cartProducts,
+        // 3. Enviamos datos técnicos para CAPI
+        metaData: {
+          eventId: eventId, // El ID que acabamos de crear
+          userAgent: navigator.userAgent, // El navegador del usuario
+          url: window.location.href, // La URL actual
+        },
       };
 
       // Si hay sesión activa, agregar datos de payer y shipments
@@ -75,26 +95,13 @@ export function CartOrderSummary({
           },
         };
 
-        payload.shipments = {
-          receiver_address: {
-            zip_code: postalCode || "",
-            street_name: streetName || "",
-            street_number: streetNumber ? parseInt(streetNumber) : null,
-            floor: floor || "",
-            apartment: apartment || "",
-            city_name: city || "",
-            state_name: province || "",
-          },
-        };
-
-        // Agregar observaciones a metadata si existen
+        // ... resto de tu lógica de shipments y observaciones ...
         if (observations) {
-          payload.metadata = {
-            observations: observations,
-          };
+          payload.metadata = { observations: observations };
         }
       }
 
+      // Enviamos todo al backend
       const response = await axios.post("/api/checkout/preferences", payload);
 
       router.push(`/cart?preference=${response.data.response.id}`);

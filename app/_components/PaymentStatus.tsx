@@ -30,9 +30,9 @@ export default function PaymentStatus({
   const paymentId = propPaymentId || (searchParams.get("id") as string);
   const isApproved =
     propIsApproved !== undefined ? propIsApproved : searchParams.has("ok");
-  const orderId = searchParams.get("orderId")
-    ? parseInt(searchParams.get("orderId") as string)
-    : null;
+
+  // Obtenemos el orderId de la URL (asegurate de que tu backend redirija con ?orderId=...)
+  const orderId = searchParams.get("orderId");
 
   const initialization = { paymentId };
 
@@ -52,25 +52,37 @@ export default function PaymentStatus({
   }, [cartProducts]);
 
   useEffect(() => {
-    if (isApproved && !hasFiredRef.current) {
+    // Solo disparamos si está aprobado, no se disparó antes, Y TENEMOS ORDER ID
+    if (isApproved && !hasFiredRef.current && orderId) {
       hasFiredRef.current = true;
 
       setIsModalOpen(true);
 
-      fbq("track", "Purchase", {
-        value: totalAmount,
-        currency: "ARS",
-        contents: cartProducts.map((p) => ({
-          id: p.id,
-          quantity: p.quantity,
-          item_price: p.price,
-        })),
-        content_type: "product",
-      });
+      // ---------------------------------------------------------
+      // 🔥 ACÁ ESTÁ LA CLAVE DE LA DEDUPLICACIÓN
+      // ---------------------------------------------------------
+      fbq(
+        "track",
+        "Purchase",
+        {
+          value: totalAmount,
+          currency: "ARS",
+          contents: cartProducts.map((p) => ({
+            id: p.id,
+            quantity: p.quantity,
+            item_price: p.price,
+          })),
+          content_ids: cartProducts.map((p) => p.id), // Recomendado agregar esto
+          content_type: "product",
+        },
+        // 👇 ESTE TERCER ARGUMENTO ES EL QUE VINCULA CON EL SERVIDOR
+        { eventID: orderId.toString() },
+      );
+      // ---------------------------------------------------------
 
       clearCart();
     }
-  }, [isApproved, totalAmount, cartProducts, clearCart]);
+  }, [isApproved, totalAmount, cartProducts, clearCart, orderId]);
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
@@ -83,7 +95,7 @@ export default function PaymentStatus({
       <PaymentConfirmationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        orderId={orderId}
+        orderId={orderId ? parseInt(orderId) : null}
       />
       <StatusScreen
         initialization={initialization}

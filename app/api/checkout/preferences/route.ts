@@ -1,3 +1,4 @@
+import { sendServerEvent } from "@/app/_lib/fb-conversion-api";
 import { getClientContext } from "@/app/_lib/getClientContext";
 import MercadoPagoConfig, { Preference } from "mercadopago";
 import { NextRequest, NextResponse } from "next/server";
@@ -7,9 +8,45 @@ export async function POST(request: NextRequest) {
     accessToken: process.env.ACCESS_TOKEN as string,
   });
   const preference = new Preference(client);
-  const { cart, orderId, payer, shipments, metadata } = await request.json();
 
-  const { ip, userAgent } = getClientContext(request);
+  // 1. Recibimos 'metaData' (camelCase) que viene del Front con el eventId
+  const { cart, orderId, payer, shipments, metadata, metaData } =
+    await request.json();
+
+  // 2. Usamos TU función existente para sacar la data técnica del request
+  const { ip, userAgent: serverUserAgent } = getClientContext(request);
+
+  // ---------------------------------------------------------------------------
+  // 🚀 IMPLEMENTACIÓN META CAPI (InitiateCheckout)
+  // ---------------------------------------------------------------------------
+  try {
+    const totalValue = cart.reduce(
+      (acc: number, item: any) => acc + item.price * item.quantity,
+      0,
+    );
+
+    // Fire & Forget: No usamos await para no demorar la creación de la preferencia
+    sendServerEvent(
+      "InitiateCheckout",
+      {
+        value: totalValue,
+        currency: "ARS",
+        contentIds: cart.map((item: any) => item.id),
+      },
+      {
+        email: payer?.email,
+        phone: payer?.phone?.number,
+        // Usamos la IP limpia que sacó tu función
+        ip: ip,
+        // Priorizamos el UserAgent del navegador (metaData) si existe, sino el del server
+        userAgent: metaData?.userAgent || serverUserAgent,
+      },
+      metaData?.eventId, // <--- EL ID CLAVE PARA DEDUPLICAR
+    );
+  } catch (error) {
+    console.error("⚠️ Error silencioso Meta CAPI:", error);
+  }
+  // ---------------------------------------------------------------------------
 
   const body: any = {
     items: cart.map((item: any) => ({
@@ -18,7 +55,7 @@ export async function POST(request: NextRequest) {
       quantity: item.quantity,
       title: item.name,
       description: item.description,
-      picture_url: item.images[0].url,
+      picture_url: item.images?.[0]?.url,
       category_id: item.brand,
     })),
     notification_url:
@@ -34,13 +71,13 @@ export async function POST(request: NextRequest) {
     metadata: {
       orderId: orderId,
       created_from: payer ? "user-checkout" : "guest-checkout",
-      ip_address: ip,
-      user_agent: userAgent,
-      ...(metadata || {}), // Merge additional metadata if provided
+      ip_address: ip, // Guardamos la IP en MP por las dudas
+      user_agent: serverUserAgent, // Guardamos el UA en MP
+      ...(metadata || {}),
     },
   };
 
-  // Agregar información del payer si está disponible
+  // ... (El resto de tu lógica para payer y shipments queda igual) ...
   if (payer) {
     body.payer = {
       email: payer.email,
@@ -56,7 +93,6 @@ export async function POST(request: NextRequest) {
     };
   }
 
-  // Agregar información de shipments si está disponible
   if (shipments) {
     body.shipments = {
       receiver_address: {
