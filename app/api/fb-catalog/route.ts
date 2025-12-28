@@ -37,7 +37,7 @@ export async function GET() {
         .slice(1, 10)
         .map((img) => img.url);
 
-      const productLink = `${baseUrl}/producto/${product.id}`;
+      const productLink = `${baseUrl}/productos/${product.id}`;
 
       xml += `
       <item>
