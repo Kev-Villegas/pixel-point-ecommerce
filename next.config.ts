@@ -37,6 +37,11 @@ const nextConfig: NextConfig = {
         hostname: "www.atacadoconnect.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.atacadoconnect.com",
+        pathname: "/**",
+      },
     ],
   },
   compiler: {
