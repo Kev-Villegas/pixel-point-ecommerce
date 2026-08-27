@@ -8,24 +8,41 @@ type ProductWithImages = Product & {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const query = searchParams.get("q") || "";
-
-  // console.log("Received query:", query);
+  const query = (searchParams.get("q") || "").trim();
 
   try {
     const products: ProductWithImages[] = await db.product.findMany({
-      where: {
-        name: {
-          contains: query,
-          mode: "insensitive",
-        },
-      },
+      where: query
+        ? {
+            OR: [
+              {
+                name: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                brand: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }
+        : undefined,
       include: {
         images: true,
       },
+      orderBy: {
+        stock: "desc",
+      },
     });
-
-    // console.log("Products found:", products);
 
     return NextResponse.json(products);
   } catch (error) {

@@ -28,16 +28,6 @@ const nextConfig: NextConfig = {
         pathname: "/df11ucbfe/image/upload/v*/pixelpoint/*",
       },
       {
-        protocol: "http",
-        hostname: "www.atacadoconnect.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "www.atacadoconnect.com",
-        pathname: "/**",
-      },
-      {
         protocol: "https",
         hostname: "cdn.atacadoconnect.com",
         pathname: "/**",
