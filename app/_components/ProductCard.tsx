@@ -30,7 +30,8 @@ export default function ProductCard({
 
   const isLiked = likedProductIds.includes(id);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     if (isAdding || stock < 1) return;
     setIsAdding(true);
     const itemToAdd: CartProduct = {
@@ -47,7 +48,8 @@ export default function ProductCard({
     setTimeout(() => setIsAdding(false), 800);
   };
 
-  const toggleLike = async () => {
+  const toggleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     if (likeLoading) return;
     setLikeLoading(true);
     const prevLikedIds = [...likedProductIds];
@@ -74,9 +76,24 @@ export default function ProductCard({
     }
   };
 
+  const handleCardClick = () => {
+    router.push(`/productos/${id}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      if (e.target === e.currentTarget) {
+        e.preventDefault();
+        router.push(`/productos/${id}`);
+      }
+    }
+  };
+
   return (
     <Card
-      className="product-card w-full overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400 sm:max-w-[220px]"
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      className="product-card w-full cursor-pointer overflow-hidden transition-transform duration-300 hover:shadow-lg hover:shadow-gray-400 sm:max-w-[220px]"
       tabIndex={0}
       style={stock > 0 ? {} : { opacity: 0.5 }}
     >
@@ -113,6 +130,7 @@ export default function ProductCard({
           </span>
           <div className="flex items-center gap-1">
             <button
+              type="button"
               onClick={toggleLike}
               disabled={likeLoading}
               title={isLiked ? "Eliminar de favoritos" : "Agregar a favoritos"}
@@ -132,6 +150,7 @@ export default function ProductCard({
             </button>
             {stock > 0 ? (
               <button
+                type="button"
                 onClick={handleAddToCart}
                 disabled={isAdding}
                 className={`rounded-full p-2 text-primary transition-transform duration-200 ease-in-out hover:scale-110 hover:bg-primary hover:text-primary-foreground ${
