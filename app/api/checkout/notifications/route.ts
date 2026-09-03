@@ -85,7 +85,27 @@ export async function POST(req: NextRequest) {
     if (body.type === "payment") {
       // Usamos el id firmado, no el del body: el body no esta cubierto por la firma
       const paymentId = signedDataId;
-      const data: any = await payment.get({ id: paymentId });
+
+      let data: any;
+
+      try {
+        data = await payment.get({ id: paymentId });
+      } catch (error: any) {
+        // El simulador del panel manda ids que no existen (ej. 123456), y un
+        // pago borrado tampoco va a aparecer nunca. Reintentar no cambia nada,
+        // asi que confirmamos la recepción en vez de devolver 500 y quedar en
+        // un loop de reintentos que ensucia las métricas de entrega de MP.
+        if (error?.status === 404) {
+          console.warn(
+            `Pago ${paymentId} inexistente en MP, se descarta la notificación.`,
+          );
+          return new NextResponse(null, { status: 204 });
+        }
+
+        // Cualquier otro error (5xx, timeout, red) sí puede ser transitorio,
+        // asi que lo propagamos para responder 500 y que MP reintente.
+        throw error;
+      }
 
       // Recuperamos datos básicos
       const orderId =
