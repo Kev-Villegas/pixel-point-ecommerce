@@ -5,7 +5,6 @@
 **Production e-commerce for an electronics shop in Argentina.**
 Mercado Pago payments with signed, idempotent webhooks · role-based admin dashboard · end-to-end tests in CI.
 
-[![Playwright Tests](https://github.com/Kev-Villegas/pixel-point-ecommerce/actions/workflows/playwright.yml/badge.svg)](https://github.com/Kev-Villegas/pixel-point-ecommerce/actions/workflows/playwright.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma&logoColor=white)
@@ -193,7 +192,7 @@ The suite covers sign-in, registration, form validation and a checkout against M
 
 ## Known limitations and next steps
 
-- CI runs the Playwright suite against the deployed site. Next: run it against a local server with a seeded database, so a test run never depends on production.
+- CI runs the Playwright suite against the deployed site, and the workflow has been failing since the Mercado Pago and search changes. Next: fix the suite and run it against a local server with a seeded database, so a test run never depends on production.
 - The workflow only runs the end-to-end tests. Next: add lint, type-check and build steps.
 - The paid-flag update and the stock decrement in the webhook are separate statements. The idempotency guard makes retries safe, but a crash between the two would leave stock undiscounted. Next: wrap both in a single `$transaction`.
 - Some `any` types remain in the API routes. Next: move them to shared, validated schemas.
